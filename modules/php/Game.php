@@ -41,6 +41,9 @@ class Game extends \Table
         
         self::$instance = $this; // ATTENTION
 
+        $this->cards = self::getNew("module.common.deck");
+        $this->cards->init("cards");
+
         
     }
 
@@ -98,6 +101,36 @@ protected function setupNewGame($players, $options = [])
     $this->reattributeColorsBasedOnPreferences($players, $gameinfos["player_colors"]);
     $this->reloadPlayersBasicInfos();
 
+
+    /* init cards */
+
+    for ($i = 1; $i <= 36; $i++) {
+
+        $card[] = array('type' => $i, 'type_arg' => 0, 'nbr' => 1);
+    }
+
+    $this->cards->createCards($card, 'deck');
+
+    $this->cards->shuffle('deck');
+
+    /* init cards players*/
+
+    foreach ($players as $player_id => $player) {
+
+        for ($i = 1; $i <= 8; $i++) {
+
+            $this->cards->pickCardForLocation('deck', 'position_'.$i, $player_id);
+        }
+    }
+
+    /* init cards river*/
+
+    for ($i = 1; $i <= 4; $i++) {
+
+        $this->cards->pickCardForLocation('deck', 'river_'.$i, 0);
+    }
+
+
     
     /************ Init Pending *****/
 
@@ -128,9 +161,9 @@ $current_player_id = (int) $this->getCurrentPlayerId();
 
 // Get information about players.
 // NOTE: you can retrieve some extra field you added for "player" table in `dbmodel.sql` if you need it.
-$result["players"] = $this->getCollectionFromDb(
-    "SELECT `player_id` `id`, `player_score` `score` FROM `player`"
-);
+$result["players"] = self::getCollectionFromDB( "SELECT player_id id, player_name name, player_no no, player_score score FROM player" );
+
+$result['cards'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, card_visible visible FROM cards WHERE card_location != 'deck'");
 
 // TODO: Gather all information about current game situation (visible by player $current_player_id).
 

@@ -58,10 +58,14 @@ setup: function( gamedatas )
 {
     console.log( "Starting game setup" );
 
-               
+            
     // TODO: Set up your game interface here, according to "gamedatas"
 
     this.players = gamedatas.players; // A RAJOUTER POUR MOTEUR (UTILITY METHODS)
+
+    this.createBoard();
+
+    
     
 
     // Setup game notifications to handle (see "setupNotifications" method below)
@@ -276,7 +280,15 @@ return box;
 },
 
 
+createBoard: function() {
 
+    /*this.players.forEach(function(element) {
+        console.warn(element);
+    }); */
+
+    
+
+},
 
 
 
