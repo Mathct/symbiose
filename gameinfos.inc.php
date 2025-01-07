@@ -11,19 +11,19 @@
 
 $gameinfos = [
     // Name of the game in English (will serve as the basis for translation)
-    'game_name' => "My Great Game",
+    'game_name' => "Symbiose",
 
     // Game publisher (use empty string if there is no publisher)
-    'publisher' => 'My Publishing Company',
+    'publisher' => 'Subverti',
 
     // Url of game publisher website
-    'publisher_website' => 'http://www.mypublishingcompany.com/',
+    'publisher_website' => 'https://subverti.com/',
 
     // Board Game Geek ID of the publisher
-    'publisher_bgg_id' => 1234,
+    'publisher_bgg_id' => 42018,
 
     // Board game geek ID of the game
-    'bgg_id' => 0,
+    'bgg_id' => 432451,
 
     // Players configuration that can be played (ex: 2 to 4 players)
     'players' => [2, 3, 4],
