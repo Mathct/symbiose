@@ -17,6 +17,27 @@ class Pending extends APP_GameClass
         $this->player_score = $p['player_score'];
         $this->player_color = $p['player_color'];
     }
+
+    function argMulti($parg1, $parg2)
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+        $ret['title'] = clienttranslate('${actplayer}');
+        $ret['titleyou'] = clienttranslate('${you}');
+
+
+        
+        return $ret;
+    }
+
+    function Multi($parg1, $parg2, $varg1, $varg2)
+    {
+        game::$instance->gamestate->setAllPlayersMultiactive();
+        game::$instance->gamestate->nextState( 'multi' );
+        
+    }
     
     function argNormalTurn($parg1, $parg2)
     {

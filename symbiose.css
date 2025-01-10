@@ -45,21 +45,77 @@
  #board {
     position: relative;
     width: 100%;
-    height: 620px;
+    height: auto;
  }
-.carre {
-    height: 300px;
-    width: 200px;
-    background-color: red;
+
+.cardposition {
+    height: 225px;
+    width: 150px;
+    /*background-color: red;*/
     position: absolute;
     
 }
 
+.river {
+    position: relative;
+    height: 225px;
+    width: 630px;
+
+}
+
 .player_cards {
     position: relative;
-    height: 610px;
-    width: 830px;
+    height: 480px;
+    width: 630px;
+    margin-top: 30px;
 
+}
+
+.nameplayer{
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    width: 630px;
+    display: flex;
+    justify-content: center;
+
+    
+}
+
+
+.card{
+    height: 225px;
+    width: 150px;
+    position: absolute;
+    background-image: url('img/cards.jpg');
+    background-size: 600% 600%;
+    border-radius: 8px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
+    z-index: 1;
+}
+
+.card:hover {
+    transform: scale(1.3);
+    z-index: 10;
+}
+
+.cardback{
+    height: 225px;
+    width: 150px;
+    position: absolute;
+    background-image: url('img/back.jpg');
+    background-size: 100% 100%;
+    border-radius: 8px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
+    z-index: 2;
+}
+
+
+.selectable {
+    cursor: pointer;
+    border: 2px solid red;
 }
 
 

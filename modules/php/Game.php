@@ -119,7 +119,7 @@ protected function setupNewGame($players, $options = [])
 
         for ($i = 1; $i <= 8; $i++) {
 
-            $this->cards->pickCardForLocation('deck', 'position_'.$i, $player_id);
+            $this->cards->pickCardForLocation('deck', 'cardposition_'.$i, $player_id);
         }
     }
 
@@ -127,18 +127,23 @@ protected function setupNewGame($players, $options = [])
 
     for ($i = 1; $i <= 4; $i++) {
 
-        $this->cards->pickCardForLocation('deck', 'river_'.$i, 0);
+        $this->cards->pickCardForLocation('deck', 'river', $i);
     }
 
+    self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river'");
 
     
     /************ Init Pending *****/
 
+    //$firstplayer = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no=1");
+    //$this->addPendingFirst($firstplayer, "Multi");
             
     foreach( $players as $player_id => $player )
     {
         $this->addPendingFirst($player_id, "NormalTurn");
     }
+
+    
 }
 
 /////////////////////////////////////////////////////////////////////////////////  
@@ -156,16 +161,14 @@ protected function getAllDatas()
 {
 $result = [];
 
-// WARNING: We must only return information visible by the current player.
+
 $current_player_id = (int) $this->getCurrentPlayerId();
 
-// Get information about players.
-// NOTE: you can retrieve some extra field you added for "player" table in `dbmodel.sql` if you need it.
 $result["players"] = self::getCollectionFromDB( "SELECT player_id id, player_name name, player_no no, player_score score FROM player" );
-
 $result['cards'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, card_visible visible FROM cards WHERE card_location != 'deck'");
+$result["new_ordre_players"] = $this->getPlayerRelativePositions();
 
-// TODO: Gather all information about current game situation (visible by player $current_player_id).
+
 
 return $result;
 }
@@ -229,6 +232,34 @@ function checkArgs($arg1)
 }
 
 
+function getPlayerRelativePositions()  // permet de mettre dans view.php les joueurs dans l'ordre de la base de données et de positionner le current player en haut avec les autres joueurs dans l'ordre du tour
+    {
+        $result = array();
+        
+        $players = self::loadPlayersBasicInfos();
+        $nextPlayer = self::createNextPlayerTable(array_keys($players)); //met joueurs dans l'ordre du tour au niveau de l'affichage à droite
+        
+        $current_player = self::getCurrentPlayerId();
+        
+        if(!isset($nextPlayer[$current_player])) {
+            // Spectator mode: prend la vue du premier joueur de la liste
+            $player_id = $nextPlayer[0];
+        }
+        else {
+            // Normal mode: current player est premier de la liste puis les autres dans l ordre de la base de données player
+            $player_id = $current_player;
+        }
+        $result[] = $player_id;
+        
+        for($i=1; $i<count($players); $i++) {
+            $player_id = $nextPlayer[$player_id];
+            $result[] = $player_id;
+        }
+        return $result;
+    }
+
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////// 
@@ -246,6 +277,40 @@ function checkArgs($arg1)
 public function actSelect(string $arg1)
 {
 
+    if($this->gamestate->state()['name'] == "playerTurnMulti")
+    {
+        $explode = explode('_', $arg1);
+        $player_id = $this->getCurrentPlayerId(); // CURRENT!!! not active
+        $name = self::getUniqueValueFromDB("SELECT player_name FROM player WHERE player_id={$player_id}");
+        self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_id = '{$explode[1]}'");
+
+        $cards = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location_arg = '{$player_id}'", true );
+    
+        game::$instance->notifyAllPlayers('firstcard',clienttranslate('${player_name} flips his first card'), array(
+            'player_name' => $name, 
+            'cards' => $cards,
+             
+            )
+            );
+
+        $cardinfo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM cards WHERE card_id = '{$explode[1]}'" );
+
+        game::$instance->notifyAllPlayers('flip','', array(
+            
+            'cardinfo' => $cardinfo,
+                
+            )
+            );
+
+        
+        $this->gamestate->setPlayerNonMultiactive($player_id, 'next'); // desactivation player et redirection vers next quand tous les joueurs seront desactivés
+    }
+
+
+
+    else
+    {
+
     self::checkArgs($arg1);        
     
     $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
@@ -253,6 +318,8 @@ public function actSelect(string $arg1)
     self::DbQuery("delete from pending where id=".$pending['id']);
     //$this->giveExtraTime(self::getActivePlayerId());
     $this->gamestate->nextState( 'next');
+
+    }
     
 }
 
@@ -279,6 +346,26 @@ public function actButton(string $arg1)
 //                                                                    __/ |                                   
 //                                                                   |___/                                    
 ///////////////////////////////////////////////////////////////////////////////// 
+
+
+public function argPlayerTurnMulti()
+{
+    $args = array();
+
+    $players = self::getObjectListFromDB( "SELECT player_id FROM player", true );
+
+    foreach ($players as $player)
+    {
+        $cards = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location_arg = '{$player}'", true );
+
+        foreach($cards as $card)
+        {
+            $args['selectable'][$player][] = 'card_'.$card.'_back';
+        }
+    }
+   
+    return $args;
+}
 
 
 public function argPlayerTurn()
@@ -323,7 +410,7 @@ public function callPending($pending, $execute, $arg1 = null, $arg2 = null)
     {
         $ret = $obj->$fname($pending['arg'], $pending['arg2'], $arg1, $arg2);
     }
-//}
+
 return $ret;
 }
 
@@ -366,6 +453,13 @@ else
    }            
 }
 
+}
+
+public function st_MultiPlayerActivation() 
+{
+    game::$instance->gamestate->setAllPlayersMultiactive();
+    //game::$instance->gamestate->nextState('next');
+    
 }
 
 ///////////////////////////////////////////////////////////////////////////////// 

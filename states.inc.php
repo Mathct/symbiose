@@ -59,7 +59,18 @@ $machinestates = [
         "description" => "",
         "type" => "manager",
         "action" => "stGameSetup",
-        "transitions" => ["" => 2]
+        "transitions" => ["" => 4]
+    ),
+
+    4 => array(
+        "name" => "playerTurnMulti",
+        "description" => clienttranslate('The other players must perform their actions'),
+        "descriptionmyturn" => clienttranslate('${you} must take an action'),
+        "type" => "multipleactiveplayer",
+        "args" => "argPlayerTurnMulti",
+        "action" => 'st_MultiPlayerActivation',
+        "possibleactions" => array( "actSelect"),
+        "transitions" => array("next" => 2, "same" => 4, "zombiePass" => 4, "end" => 99)
     ),
 
     
@@ -69,7 +80,7 @@ $machinestates = [
         "type" => "game",
         "action" => "stPending",
         "updateGameProgression" => true,
-        "transitions" => array("end" => 99, "player"=> 3, "same" => 2)
+        "transitions" => array("end" => 99, "player"=> 3, "same" => 2, "multi" =>4)
     ),
     
     3 => array(
@@ -79,7 +90,7 @@ $machinestates = [
         "type" => "activeplayer",
         "args" => "argPlayerTurn",
         "possibleactions" => array( "actSelect", "actButton"),
-        "transitions" => array( "next" => 2, "zombiePass" => 2, "end" => 99)
+        "transitions" => array( "next" => 2, "zombiePass" => 2, "end" => 99, "multi" =>4)
     ), 
 
     // Final state.

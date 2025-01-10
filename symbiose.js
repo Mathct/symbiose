@@ -65,13 +65,22 @@ setup: function( gamedatas )
 
     this.createBoard();
 
+
+    for( var card in gamedatas.cards )   
+        {
+            var card = gamedatas.cards[card];
+
+            this.addCard(card.id, card.type, card.location, card.location_arg, card.visible);
+        }
+
     
     
 
     // Setup game notifications to handle (see "setupNotifications" method below)
     this.setupNotifications();
 
-    dojo.query(".carre").connect('onclick', this, 'onSelect' )
+    dojo.query(".card").connect('onclick', this, 'onSelect' )
+    dojo.query(".cardback").connect('onclick', this, 'onSelect' )
     
 
     console.log( "Ending game setup" );
@@ -145,7 +154,23 @@ onEnteringState: function( stateName, args )
         
         break;
 
-   
+
+
+
+    case 'playerTurnMulti':
+        this.args = args.args;
+
+        if(this.isCurrentPlayerActive())
+        {
+        for( var sid in this.args['selectable'][this.getCurrentPlayerId()])
+            {
+                dojo.query("#"+this.args['selectable'][this.getCurrentPlayerId()][sid]).addClass("selectable");
+            }
+
+        }
+    break;
+
+
    
     case 'dummmy':
         break;
@@ -282,11 +307,137 @@ return box;
 
 createBoard: function() {
 
-    /*this.players.forEach(function(element) {
-        console.warn(element);
-    }); */
+    const parent = document.getElementById("board");
 
+    const River = document.createElement("div");
+    River.id = "river";
+    River.className = "river";
+
+    River.innerHTML = 
+                    `<div id="river_1" class="cardposition" style="left: 0px; top: 0px;"></div>
+                    <div id="river_2" class="cardposition" style="left: 160px; top: 0px;"></div>
+                    <div id="river_3" class="cardposition" style="left: 320px; top: 0px;"></div>
+                    <div id="river_4" class="cardposition" style="left: 480px; top: 0px;"></div>`;
+
+    parent.appendChild(River);
     
+  
+
+    for( var player_id in this.gamedatas.new_ordre_players)   
+    {
+        var player = this.gamedatas.new_ordre_players[player_id];  // le nouvel ordre
+               
+        const Playercards = document.createElement("div");
+        Playercards.id = "player_cards_"+player_id;
+        Playercards.className = "player_cards";
+
+        Playercards.innerHTML = 
+                    `
+                    <div class="nameplayer" style="color: #${this.gamedatas.players[player].color}; left: 0px; top: 0px; border: 1px solid #${this.gamedatas.players[player].color};">${this.gamedatas.players[player].name}</div>
+                    <div id="cardposition_1_${player}" class="cardposition" style="left: 0px; top: 25px;"></div>
+                    <div id="cardposition_2_${player}" class="cardposition" style="left: 160px; top: 25px;"></div>
+                    <div id="cardposition_3_${player}" class="cardposition" style="left: 320px; top: 25px;"></div>
+                    <div id="cardposition_4_${player}" class="cardposition" style="left: 480px; top: 25px;"></div>
+
+                    <div id="cardposition_5_${player}" class="cardposition" style="left: 0px; top: 260px;"></div>
+                    <div id="cardposition_6_${player}" class="cardposition" style="left: 160px; top: 260px;"></div>
+                    <div id="cardposition_7_${player}" class="cardposition" style="left: 320px; top: 260px;"></div>
+                    <div id="cardposition_8_${player}" class="cardposition" style="left: 480px; top: 260px;"></div>
+                    `;
+
+    parent.appendChild(Playercards);
+
+    }
+
+},
+
+addCard: function( id, type, location, location_arg, visible )  
+{
+
+    if( visible == 0)
+    {
+        dojo.place( this.format_block( 'jstpl_cardback', {
+            id: id,
+            
+                                
+        } ) , location+'_'+location_arg );
+
+    }
+
+    else
+    {
+        if((type>=1)&&(type <= 6))
+            {
+                
+                dojo.place( this.format_block( 'jstpl_card', {
+                    id: id,
+                    x: (type-1)*(-100),
+                    y: 0,
+                    
+                                        
+                } ) , location+'_'+location_arg );
+            }
+        if((type>=7)&&(type <= 12))
+            {
+                
+                dojo.place( this.format_block( 'jstpl_card', {
+                    id: id,
+                    x: (type-7)*(-100),
+                    y: -100,
+                    
+                                        
+                } ) , location+'_'+location_arg );
+            }
+
+        if((type>=13)&&(type <= 18))
+            {
+                
+                dojo.place( this.format_block( 'jstpl_card', {
+                    id: id,
+                    x: (type-13)*(-100),
+                    y: -200,
+                    
+                                        
+                } ) , location+'_'+location_arg );
+            }
+
+            if((type>=19)&&(type <= 24))
+                {
+                    
+                    dojo.place( this.format_block( 'jstpl_card', {
+                        id: id,
+                        x: (type-19)*(-100),
+                        y: -300,
+                        
+                                            
+                    } ) , location+'_'+location_arg );
+                }
+            if((type>=25)&&(type <= 30))
+                {
+                    
+                    dojo.place( this.format_block( 'jstpl_card', {
+                        id: id,
+                        x: (type-25)*(-100),
+                        y: -400,
+                        
+                                            
+                    } ) , location+'_'+location_arg );
+                }
+    
+            if((type>=31)&&(type <= 36))
+                {
+                    
+                    dojo.place( this.format_block( 'jstpl_card', {
+                        id: id,
+                        x: (type-31)*(-100),
+                        y: -500,
+                        
+                                            
+                    } ) , location+'_'+location_arg );
+                }
+
+
+    }
 
 },
 
@@ -362,23 +513,37 @@ setupNotifications: function()
     // dojo.subscribe( 'cardPlayed', this, "notif_cardPlayed" );
     // this.notifqueue.setSynchronous( 'cardPlayed', 3000 );
     // 
+
+    dojo.subscribe( 'firstcard', this, "notif_firstcard" );
+    dojo.subscribe( 'flip', this, "notif_flip" );
 },  
 
-// TODO: from this point and below, you can write your game notifications handling methods
-
-/*
-Example:
-
-notif_cardPlayed: function( notif )
+notif_firstcard: function( notif )
 {
-    console.log( 'notif_cardPlayed' );
-    console.log( notif );
     
-    // Note: notif.args contains the arguments specified during you "notifyAllPlayers" / "notifyPlayer" PHP call
+    for( var index in notif.args.cards)
+    {
+        dojo.query("#card_"+notif.args.cards[index]).removeClass("selectable");
+    }
+   
     
-    // TODO: play the card in the user interface.
-},    
+},
 
-*/
+notif_flip: function( notif )
+{
+    console.warn (notif.args.card);
+    
+    
+},
+
+
+
+
+
+
+
+
+
+
 });             
 });
