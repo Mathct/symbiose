@@ -51,7 +51,6 @@
 .cardposition {
     height: 225px;
     width: 150px;
-    /*background-color: red;*/
     position: absolute;
     
 }
@@ -93,11 +92,29 @@
     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
     z-index: 1;
+    box-sizing: border-box;
+    
+    
+    transition: transform 1s ease-in-out;
+    transform-style: preserve-3d;
+    
+        
+    /*transition: transform 0.3s ease-in-out, z-index 0s 0.3s;*/
+        
 }
 
-.card:hover {
+.rotate {
+    transform: rotateY(180deg);
+}
+
+.scalable {
+    transition: transform 0.3s ease-in-out, z-index 0s 0.3s;
+}
+
+.card.scalable:hover { 
     transform: scale(1.3);
     z-index: 10;
+    transition: transform 0.3s ease-in-out; 
 }
 
 .cardback{
@@ -110,6 +127,21 @@
     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.9));
     z-index: 2;
+    box-sizing: border-box;
+
+    
+
+    transition: transform 1s ease-in-out;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+.cardback.flip {
+    transform: rotateY(180deg);
+}
+
+.card.flip {
+    transform: rotateY(0deg);
 }
 
 
@@ -117,7 +149,6 @@
     cursor: pointer;
     border: 2px solid red;
 }
-
 
 
 

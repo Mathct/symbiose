@@ -351,7 +351,7 @@ createBoard: function() {
 
 },
 
-addCard: function( id, type, location, location_arg, visible )  
+addCard: function( id, type, location, location_arg, visible, rotate=0, scalable=1 )  
 {
 
     if( visible == 0)
@@ -436,7 +436,17 @@ addCard: function( id, type, location, location_arg, visible )
                     } ) , location+'_'+location_arg );
                 }
 
+        
+    }
 
+    if(rotate == 1)
+    {
+        dojo.query("#card_"+id).addClass("rotate");
+    }
+
+    if(scalable == 1)
+    {
+        dojo.query("#card_"+id).addClass("scalable"); 
     }
 
 },
@@ -523,7 +533,7 @@ notif_firstcard: function( notif )
     
     for( var index in notif.args.cards)
     {
-        dojo.query("#card_"+notif.args.cards[index]).removeClass("selectable");
+        dojo.query("#card_"+notif.args.cards[index]+"_back").removeClass("selectable");
     }
    
     
@@ -531,10 +541,28 @@ notif_firstcard: function( notif )
 
 notif_flip: function( notif )
 {
-    console.warn (notif.args.card);
+        
+    this.addCard(notif.args.cardinfo[0].id, notif.args.cardinfo[0].type, notif.args.cardinfo[0].location, notif.args.cardinfo[0].location_arg, 1, 1, 0);
+   
+    setTimeout(function() {
+    dojo.query("#card_"+notif.args.cardinfo[0].id).addClass("flip");
+    dojo.query("#card_"+notif.args.cardinfo[0].id+"_back").addClass("flip");
     
+    }, 100); 
+
+
+
+    setTimeout(function() {
+    const card = document.getElementById("card_"+notif.args.cardinfo[0].id+"_back");
+    card.remove();
+
+    dojo.query("#card_"+notif.args.cardinfo[0].id).addClass("scalable");
+    }, 1500); 
+
     
 },
+
+
 
 
 

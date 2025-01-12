@@ -286,7 +286,7 @@ public function actSelect(string $arg1)
 
         $cards = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location_arg = '{$player_id}'", true );
     
-        game::$instance->notifyAllPlayers('firstcard',clienttranslate('${player_name} flips his first card'), array(
+        game::$instance->notifyAllPlayers('firstcard',clienttranslate('${player_name} flips the first card'), array(
             'player_name' => $name, 
             'cards' => $cards,
              
