@@ -79,9 +79,7 @@ setup: function( gamedatas )
     // Setup game notifications to handle (see "setupNotifications" method below)
     this.setupNotifications();
 
-    dojo.query(".card").connect('onclick', this, 'onSelect' )
-    dojo.query(".cardback").connect('onclick', this, 'onSelect' )
-    
+        
 
     console.log( "Ending game setup" );
 },
@@ -129,7 +127,7 @@ onEnteringState: function( stateName, args )
         {
             if(this.isCurrentPlayerActive())
             {
-                dojo.query("#"+this.args.selectable[sid]).addClass("selected");
+                dojo.query("#"+this.args.selected[sid]).addClass("selected");
             }
         }
 
@@ -362,6 +360,8 @@ addCard: function( id, type, location, location_arg, visible, rotate=0, scalable
                                 
         } ) , location+'_'+location_arg );
 
+        dojo.query("#card_"+id+"_back").connect('onclick', this, 'onSelect' )
+
     }
 
     else
@@ -436,6 +436,8 @@ addCard: function( id, type, location, location_arg, visible, rotate=0, scalable
                     } ) , location+'_'+location_arg );
                 }
 
+    dojo.query("#card_"+id).connect('onclick', this, 'onSelect' )
+
         
     }
 
@@ -447,6 +449,7 @@ addCard: function( id, type, location, location_arg, visible, rotate=0, scalable
     if(scalable == 1)
     {
         dojo.query("#card_"+id).addClass("scalable"); 
+        dojo.query("#card_"+id).addClass("zindex3"); 
     }
 
 },
@@ -526,6 +529,7 @@ setupNotifications: function()
 
     dojo.subscribe( 'firstcard', this, "notif_firstcard" );
     dojo.subscribe( 'flip', this, "notif_flip" );
+    dojo.subscribe( 'switch', this, "notif_switch" );
 },  
 
 notif_firstcard: function( notif )
@@ -557,8 +561,20 @@ notif_flip: function( notif )
     card.remove();
 
     dojo.query("#card_"+notif.args.cardinfo[0].id).addClass("scalable");
+    dojo.query("#card_"+notif.args.cardinfo[0].id).addClass("zindex3");
     }, 1500); 
 
+    
+},
+
+notif_switch: function( notif )
+{
+    
+    this.attachToNewParentNoDestroy( notif.args.card_id_river, notif.args.position_mare+'_'+notif.args.player_id );
+    this.slideToObject( notif.args.card_id_river, notif.args.position_mare+'_'+notif.args.player_id ).play();
+
+    this.attachToNewParentNoDestroy( notif.args.card_id_mare, 'river_'+notif.args.position_river );
+    this.slideToObject( notif.args.card_id_mare, 'river_'+notif.args.position_river ).play();
     
 },
 

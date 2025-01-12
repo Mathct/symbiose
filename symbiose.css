@@ -56,6 +56,8 @@
 }
 
 .river {
+    margin-left: 50px;
+    margin-top: 20px;
     position: relative;
     height: 225px;
     width: 630px;
@@ -63,6 +65,7 @@
 }
 
 .player_cards {
+    margin-left: 50px;
     position: relative;
     height: 480px;
     width: 630px;
@@ -97,10 +100,7 @@
     
     transition: transform 1s ease-in-out;
     transform-style: preserve-3d;
-    
-        
-    /*transition: transform 0.3s ease-in-out, z-index 0s 0.3s;*/
-        
+       
 }
 
 .rotate {
@@ -147,8 +147,15 @@
 
 .selectable {
     cursor: pointer;
-    border: 2px solid red;
+    border: 3px solid red;
 }
 
+.selected {
+    border: 3px solid blue;
+}
+
+.zindex3 {
+    z-index: 3;
+}
 
 

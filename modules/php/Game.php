@@ -302,7 +302,7 @@ public function actSelect(string $arg1)
             )
             );
 
-        
+        $this->giveExtraTime($this->getCurrentPlayerId());
         $this->gamestate->setPlayerNonMultiactive($player_id, 'next'); // desactivation player et redirection vers next quand tous les joueurs seront desactivés
     }
 

@@ -45,27 +45,232 @@ class Pending extends APP_GameClass
         $ret["selectable"] = array();
         $ret["selected"] = array();
         $ret['buttons'] = array();
-        $ret['title'] = clienttranslate('${actplayer} blabla2');
-        $ret['titleyou'] = clienttranslate('${you} blabla1');
+        $ret['title'] = clienttranslate('${actplayer} must take an action');
+        $ret['titleyou'] = clienttranslate('${you} must choose a river card');
 
+        $cards = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location = 'river'", true );
+        $nbre = count(self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location_arg = '{$this->player_id}' AND card_visible = 1", true ));
 
         
-        $ret['buttons'][]='cancel';
-        $ret['buttons'][]='pass';
+        if($nbre < 8)
+        {
+            foreach ($cards as $card)
+            {
+                $ret["selectable"][] = 'card_'.$card;
+            }
+        }
         
+               
         return $ret;
     }
 
     function NormalTurn($parg1, $parg2, $varg1, $varg2)
     {
-        if($varg1 == "cancel")
+        if ($varg1 == null)
         {
-            game::$instance->addPending($this->player_id, "NormalTurn");  
+            game::$instance->addPending($this->player_id, "EndGame");
         }
-        if($varg1 == "pass")
+        else
         {
-            game::$instance->addPendingFirst($this->player_id, "NormalTurn");  
+            game::$instance->addPending($this->player_id, "Step2", $varg1);
         }
         
     }
+
+
+    function argStep2($parg1, $parg2)
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+        $ret['title'] = clienttranslate('${actplayer} must take an action');
+        $ret['titleyou'] = clienttranslate('${you} must choose a location for the pond');
+
+        $cards_visible = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location_arg = '{$this->player_id}' AND card_visible = 1", true );
+        $cards_novisible = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location_arg = '{$this->player_id}' AND card_visible = 0 ", true );
+
+        
+        foreach ($cards_visible as $card)
+        {
+            $ret["selectable"][] = 'card_'.$card;
+        }
+
+        foreach ($cards_novisible as $card)
+        {
+            $ret["selectable"][] = 'card_'.$card.'_back';
+        }
+
+        $ret["selected"][] = $parg1;
+
+        $ret['buttons'][]='cancel';
+
+
+        
+               
+        return $ret;
+    }
+
+    function Step2($parg1, $parg2, $varg1, $varg2)
+    {
+
+        if($varg1 == 'cancel')
+        {
+            game::$instance->addPending($this->player_id, "NormalTurn");
+        }
+
+        else
+        {
+            
+            $explode_card_river = explode('_', $parg1);
+            $position_card_river = self::getUniqueValueFromDB("SELECT card_location_arg FROM cards WHERE card_id = '{$explode_card_river[1]}'");
+
+            $explode_card_mare = explode('_', $varg1);
+            $position_card_mare = self::getUniqueValueFromDB("SELECT card_location FROM cards WHERE card_id = '{$explode_card_mare[1]}'");
+
+
+            if (str_ends_with($varg1, "back"))
+            {
+                self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_id = '{$explode_card_mare[1]}'");
+                
+                $cardinfo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM cards WHERE card_id = '{$explode_card_mare[1]}'" );
+                game::$instance->notifyAllPlayers('flip','', array(
+            
+                    'cardinfo' => $cardinfo,
+                        
+                    )
+                    );
+                
+                game::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1600] ); 
+
+                game::$instance->cards->moveCard($explode_card_river[1], $position_card_mare, $this->player_id );
+                game::$instance->cards->moveCard($explode_card_mare[1], 'river', $position_card_river );
+
+                game::$instance->notifyAllPlayers('switch',clienttranslate('${player_name} swiches'), array(
+                    'player_name' => $this->player_name,
+                    'player_id' => $this->player_id,
+                    'card_id_river' => $parg1,
+                    'position_river' => $position_card_river,
+                    'card_id_mare' => 'card_'.$explode_card_mare[1],
+                    'position_mare' => $position_card_mare,
+
+                     
+                    )
+                    );
+
+
+
+                game::$instance->giveExtraTime($this->player_id);
+                game::$instance->addPendingFirst($this->player_id, "NormalTurn");
+
+            }
+
+            else
+            {
+                game::$instance->cards->moveCard($explode_card_river[1], $position_card_mare, $this->player_id );
+                game::$instance->cards->moveCard($explode_card_mare[1], 'river', $position_card_river );
+
+                game::$instance->notifyAllPlayers('switch','', array(
+                    'player_name' => $this->player_name,
+                    'player_id' => $this->player_id,
+                    'card_id_river' => $parg1,
+                    'position_river' => $position_card_river,
+                    'card_id_mare' => $varg1,
+                    'position_mare' => $position_card_mare,
+
+                     
+                    )
+                    );
+
+                
+                game::$instance->addPending($this->player_id, "Step3");
+
+
+
+            }
+        }
+
+
+        
+    }
+
+    function argStep3($parg1, $parg2)
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+        $ret['title'] = clienttranslate('${actplayer} must take an action');
+        $ret['titleyou'] = clienttranslate('${you} must flip a new card from the pond');
+
+        
+        $cards_novisible = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location_arg = '{$this->player_id}' AND card_visible = 0 ", true );
+
+        
+       
+        foreach ($cards_novisible as $card)
+        {
+            $ret["selectable"][] = 'card_'.$card.'_back';
+        }
+
+        
+
+        
+        
+               
+        return $ret;
+    }
+
+    function Step3($parg1, $parg2, $varg1, $varg2)
+    {
+        $explode_card_mare = explode('_', $varg1);
+
+        self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_id = '{$explode_card_mare[1]}'");
+
+        $cardinfo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM cards WHERE card_id = '{$explode_card_mare[1]}'" );
+        game::$instance->notifyAllPlayers('flip',clienttranslate('${player_name} swiches'), array(
+            'player_name' => $this->player_name,
+            'cardinfo' => $cardinfo,
+                
+            )
+            );
+
+
+
+        game::$instance->giveExtraTime($this->player_id);
+        game::$instance->addPendingFirst($this->player_id, "NormalTurn");
+
+        
+    }
+
+
+    function argEndGame($parg1, $parg2)
+    {
+        $ret = array();
+        $ret["selectable"] = array();
+        $ret["selected"] = array();
+        $ret['buttons'] = array();
+        $ret['title'] = clienttranslate('${actplayer}');
+        $ret['titleyou'] = clienttranslate('${you}');
+
+        
+        $ret['buttons'][]='cancel';
+        
+
+        
+        
+               
+        return $ret;
+    }
+
+    function EndGame($parg1, $parg2, $varg1, $varg2)
+    {
+        game::$instance->addPendingFirst($this->player_id, "NormalTurn");
+
+        
+    }
+
+
+
+
 }
