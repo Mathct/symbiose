@@ -449,7 +449,6 @@ addCard: function( id, type, location, location_arg, visible, rotate=0, scalable
     if(scalable == 1)
     {
         dojo.query("#card_"+id).addClass("scalable"); 
-        dojo.query("#card_"+id).addClass("zindex3"); 
     }
 
 },
@@ -552,8 +551,8 @@ notif_flip: function( notif )
     dojo.query("#card_"+notif.args.cardinfo[0].id).addClass("flip");
     dojo.query("#card_"+notif.args.cardinfo[0].id+"_back").addClass("flip");
     
+    
     }, 100); 
-
 
 
     setTimeout(function() {
@@ -561,7 +560,8 @@ notif_flip: function( notif )
     card.remove();
 
     dojo.query("#card_"+notif.args.cardinfo[0].id).addClass("scalable");
-    dojo.query("#card_"+notif.args.cardinfo[0].id).addClass("zindex3");
+    
+    
     }, 1500); 
 
     
@@ -569,12 +569,14 @@ notif_flip: function( notif )
 
 notif_switch: function( notif )
 {
+    document.getElementById(notif.args.card_river).style.zIndex = "10";
+    document.getElementById(notif.args.card_mare).style.zIndex = "10";
     
-    this.attachToNewParentNoDestroy( notif.args.card_id_river, notif.args.position_mare+'_'+notif.args.player_id );
-    this.slideToObject( notif.args.card_id_river, notif.args.position_mare+'_'+notif.args.player_id ).play();
+    this.attachToNewParentNoDestroy( notif.args.card_river, notif.args.position_mare+'_'+notif.args.player_id );
+    this.slideToObject( notif.args.card_river, notif.args.position_mare+'_'+notif.args.player_id ).play();
 
-    this.attachToNewParentNoDestroy( notif.args.card_id_mare, 'river_'+notif.args.position_river );
-    this.slideToObject( notif.args.card_id_mare, 'river_'+notif.args.position_river ).play();
+    this.attachToNewParentNoDestroy( notif.args.card_mare, 'river_'+notif.args.position_river );
+    this.slideToObject( notif.args.card_mare, 'river_'+notif.args.position_river ).play();
     
 },
 

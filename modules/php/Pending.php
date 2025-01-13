@@ -149,9 +149,9 @@ class Pending extends APP_GameClass
                 game::$instance->notifyAllPlayers('switch',clienttranslate('${player_name} swiches'), array(
                     'player_name' => $this->player_name,
                     'player_id' => $this->player_id,
-                    'card_id_river' => $parg1,
+                    'card_river' => 'card_'.$explode_card_river[1],
                     'position_river' => $position_card_river,
-                    'card_id_mare' => 'card_'.$explode_card_mare[1],
+                    'card_mare' => 'card_'.$explode_card_mare[1],
                     'position_mare' => $position_card_mare,
 
                      
@@ -173,9 +173,9 @@ class Pending extends APP_GameClass
                 game::$instance->notifyAllPlayers('switch','', array(
                     'player_name' => $this->player_name,
                     'player_id' => $this->player_id,
-                    'card_id_river' => $parg1,
+                    'card_river' => 'card_'.$explode_card_river[1],
                     'position_river' => $position_card_river,
-                    'card_id_mare' => $varg1,
+                    'card_mare' => 'card_'.$explode_card_mare[1],
                     'position_mare' => $position_card_mare,
 
                      

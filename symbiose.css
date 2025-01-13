@@ -48,6 +48,17 @@
     height: auto;
  }
 
+ 
+.selectable {
+    cursor: pointer;
+    border: 3px solid red;
+}
+
+.selected {
+    border: 3px solid blue;
+}
+
+
 .cardposition {
     height: 225px;
     width: 150px;
@@ -103,20 +114,6 @@
        
 }
 
-.rotate {
-    transform: rotateY(180deg);
-}
-
-.scalable {
-    transition: transform 0.3s ease-in-out, z-index 0s 0.3s;
-}
-
-.card.scalable:hover { 
-    transform: scale(1.3);
-    z-index: 10;
-    transition: transform 0.3s ease-in-out; 
-}
-
 .cardback{
     height: 225px;
     width: 150px;
@@ -144,18 +141,19 @@
     transform: rotateY(0deg);
 }
 
-
-.selectable {
-    cursor: pointer;
-    border: 3px solid red;
+.rotate {
+    transform: rotateY(180deg);
 }
 
-.selected {
-    border: 3px solid blue;
+.scalable {
+    transition: transform 0.3s ease-in-out, z-index 0s 0.3s;
 }
 
-.zindex3 {
-    z-index: 3;
+.card.scalable:hover { 
+    transform: scale(1.3);
+    z-index: 10;
+    transition: transform 0.3s ease-in-out; 
 }
+
 
 
