@@ -146,7 +146,7 @@ class Pending extends APP_GameClass
                 game::$instance->cards->moveCard($explode_card_river[1], $position_card_mare, $this->player_id );
                 game::$instance->cards->moveCard($explode_card_mare[1], 'river', $position_card_river );
 
-                game::$instance->notifyAllPlayers('switch',clienttranslate('${player_name} swiches'), array(
+                game::$instance->notifyAllPlayers('switch',clienttranslate('${player_name} switches a card with the river'), array(
                     'player_name' => $this->player_name,
                     'player_id' => $this->player_id,
                     'card_river' => 'card_'.$explode_card_river[1],
@@ -170,7 +170,7 @@ class Pending extends APP_GameClass
                 game::$instance->cards->moveCard($explode_card_river[1], $position_card_mare, $this->player_id );
                 game::$instance->cards->moveCard($explode_card_mare[1], 'river', $position_card_river );
 
-                game::$instance->notifyAllPlayers('switch','', array(
+                game::$instance->notifyAllPlayers('switch',clienttranslate('${player_name} switches a card with the river'), array(
                     'player_name' => $this->player_name,
                     'player_id' => $this->player_id,
                     'card_river' => 'card_'.$explode_card_river[1],
@@ -228,7 +228,7 @@ class Pending extends APP_GameClass
         self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_id = '{$explode_card_mare[1]}'");
 
         $cardinfo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM cards WHERE card_id = '{$explode_card_mare[1]}'" );
-        game::$instance->notifyAllPlayers('flip',clienttranslate('${player_name} swiches'), array(
+        game::$instance->notifyAllPlayers('flip',clienttranslate('${player_name} reveals a new card of the pond'), array(
             'player_name' => $this->player_name,
             'cardinfo' => $cardinfo,
                 

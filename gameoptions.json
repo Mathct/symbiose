@@ -1,1 +1,54 @@
-{}
+{
+    "100": {
+        "name": "Scoring - Game Mode",
+        "values": {
+            "1": {
+                "name": "Normal", 
+                "tmdisplay": "Normal Scoring", 
+                "description": "Scores are displayed at the end of the game"
+            },
+
+            "2": {
+                "name": "Beginners", 
+                "tmdisplay": "Beginners Scoring", 
+                "description": "Scores are displayed in real time"
+            }   
+                
+        },
+        
+        
+        "default": 1
+              
+    },
+    
+
+    "101": {
+        "name": "2 vs 2 - Game Mode",
+        "values": {
+            "1": {
+                "name": "Duel", 
+                "tmdisplay": "Duel"
+                
+            },
+
+            "2": {
+                "name": "Normal", 
+                "tmdisplay": "Normal"
+                
+            },
+            
+            "displaycondition": [
+            {
+                "type": "maxplayers",
+                "value": [ 2 ]
+            }
+            ]
+                
+        },
+        
+        
+        "default": 1
+              
+    }
+
+}

@@ -42,45 +42,66 @@
            Consequently, don't hesitate to put as many comments as necessary.
 */
 
+/*BASE*/
+
  #board {
     position: relative;
     width: 100%;
-    height: auto;
+    height: 1000px;
  }
 
- 
-.selectable {
-    cursor: pointer;
-    border: 3px solid red;
+ .scorepad{
+    height: 116px;
+    width: 224px;
+    position: absolute;
+    background-image: url('img/scorepad.png');
+    background-size: 100% 100%;
+    
+           
 }
 
-.selected {
-    border: 3px solid blue;
-}
 
-
-.cardposition {
+.card_position {
     height: 225px;
     width: 150px;
     position: absolute;
     
+    
 }
 
+.card_position_mini {
+    height: 150px;
+    width: 100px;
+    position: absolute;
+    
+}
+
+
 .river {
-    margin-left: 50px;
-    margin-top: 20px;
-    position: relative;
+   position: absolute;
     height: 225px;
     width: 630px;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    
 
 }
 
 .player_cards {
-    margin-left: 50px;
-    position: relative;
+    position: absolute;
     height: 480px;
     width: 630px;
-    margin-top: 30px;
+    
+    
+
+}
+
+.player_cards_mini {
+    position: absolute;
+    height: 310px;
+    width: 430px;
+    
 
 }
 
@@ -91,14 +112,42 @@
     width: 630px;
     display: flex;
     justify-content: center;
-
+    
     
 }
 
+.nameplayer_mini_1{
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    width: 310px;
+    display: flex;
+    justify-content: center;
+    top: 60px;
+    left: 150px;
+    
+    
+}
+
+.nameplayer_mini_3{
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    width: 310px;
+    display: flex;
+    justify-content: center;
+    top: 60px;
+    right: 150px;
+    
+    
+}
+
+/* CARD */
+
 
 .card{
-    height: 225px;
-    width: 150px;
+    height: 100%;
+    width: 100%;
     position: absolute;
     background-image: url('img/cards.jpg');
     background-size: 600% 600%;
@@ -115,8 +164,8 @@
 }
 
 .cardback{
-    height: 225px;
-    width: 150px;
+    height: 100%;
+    width: 100%;
     position: absolute;
     background-image: url('img/back.jpg');
     background-size: 100% 100%;
@@ -133,6 +182,8 @@
     transform-style: preserve-3d;
 }
 
+/* FLIP */
+
 .cardback.flip {
     transform: rotateY(180deg);
 }
@@ -145,6 +196,8 @@
     transform: rotateY(180deg);
 }
 
+/* SCALE HOVER */
+
 .scalable {
     transition: transform 0.3s ease-in-out, z-index 0s 0.3s;
 }
@@ -155,5 +208,161 @@
     transition: transform 0.3s ease-in-out; 
 }
 
+/* SELECTABLE */
 
+.selectable {
+    cursor: pointer;
+    border: 3px solid red;
+}
+
+.selected {
+    border: 3px solid blue;
+}
+
+
+/* POSITIONS */
+
+
+.position_0{
+    top: 270px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.position_1{
+    top: 150px;
+    left: 93px;
+    transform: rotate(90deg);
+}
+
+.position_2{
+    transform: rotate(180deg);
+}
+
+
+.position_3{
+    top: 150px;
+    right: 93px;
+    transform: rotate(-90deg);
+}
+
+
+
+
+
+
+@media (min-width: 1680px) and (max-width: 1840px) {
+    .position_1{
+        
+        left: 15px;
+        
+    }
+
+    .position_3{
+        
+        right: 15px;
+        
+    }
+
+    .nameplayer_mini_1{
+        
+        left: 73px;
+    
+        
+    }
+    
+    .nameplayer_mini_3{
+        
+        right: 73px;
+    
+        
+    }
+    
+  }
+
+  @media (min-width: 1295px) and (max-width: 1680px) {
+
+    .position_0{
+        
+        top: 730px;
+        
+        
+    }
+    .position_1{
+        
+        top: 350px;
+        left: 55px;
+        
+    }
+
+    .position_3{
+        
+        top: 350px;
+        right: 55px;
+        
+    }
+
+    .nameplayer_mini_1{
+        
+        top: 260px;
+        left: 112px;
+    
+        
+    }
+    
+    .nameplayer_mini_3{
+        
+        top: 260px;
+        right: 112px;
+    
+        
+    }
+
+    
+    
+  }
+
+  @media (max-width: 1295px) {
+
+    .position_0{
+        
+        top: 730px;
+        
+        
+    }
+    .position_1{
+        
+        top: 350px;
+        left: 10px;
+        
+        
+    }
+
+    .position_3{
+        
+        top: 350px;
+        right: 10px;
+        
+        
+    }
+
+    .nameplayer_mini_1{
+        
+        top: 260px;
+        left: 67px;
+        
+    
+        
+    }
+    
+    .nameplayer_mini_3{
+        
+        top: 260px;
+        right: 67px;
+        
+    
+        
+    }
+
+}
 

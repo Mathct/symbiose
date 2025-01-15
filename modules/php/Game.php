@@ -36,6 +36,9 @@ class Game extends \Table
         require 'material.inc.php'; // ATTENTION
 
         $this->initGameStateLabels([
+
+            "scoring_mode" => 100,
+            "game_mode" => 101,
             
         ]);  
         
@@ -167,6 +170,11 @@ $current_player_id = (int) $this->getCurrentPlayerId();
 $result["players"] = self::getCollectionFromDB( "SELECT player_id id, player_name name, player_no no, player_score score FROM player" );
 $result['cards'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, card_visible visible FROM cards WHERE card_location != 'deck'");
 $result["new_ordre_players"] = $this->getPlayerRelativePositions();
+
+$result["nbre_players"] = count($result["players"]);
+
+$result["scoring_mode"] = $this->gamestate->table_globals[100];
+$result["game_mode"] = $this->gamestate->table_globals[101];
 
 
 
