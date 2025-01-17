@@ -12,7 +12,7 @@
 var jstpl_card='<div id="card_${id}" class="card" style="background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
 var jstpl_cardback='<div id="card_${id}_back" class="cardback"</div>';
 
-var jstpl_scorepad = '<div class="scorepad" id="player_scorepad_${id}" style="display: flex; align-items: center; flex-direction: column; justify-content: center; z-index: 100; position: relative;">\
+var jstpl_scorepad = '<div class="scorepad" id="player_scorepad_${id}" style="margin-left: 5px; display: flex; align-items: center; flex-direction: column; justify-content: center; z-index: 100; position: relative;">\
 <div class="scorepad">\
 <div id="score1_${id}" style="position: absolute; display: flex; justify-content: center; align-items: center; left: 15px; top: 18px; height: 35px; width: 35px; font-weight: bold; font-size: 25px; font-style: italic;"></div>\
 <div id="score2_${id}" style="position: absolute; display: flex; justify-content: center; align-items: center; left: 68px; top: 18px; height: 35px; width: 35px; font-weight: bold; font-size: 25px; font-style: italic;"></div>\

@@ -68,6 +68,19 @@ class Pending extends APP_GameClass
     {
         if ($varg1 == null)
         {
+            if (game::$instance->getGameStateValue('scoring_mode') == 1)  // affichage score
+            {
+            
+            game::$instance->setGameStateValue('end', 1);
+
+            game::$instance->notifyAllPlayers('affichescore','', array(
+                )
+                );
+            
+            }
+
+            game::$instance->Score();
+
             game::$instance->addPending($this->player_id, "EndGame");
         }
         else
@@ -159,6 +172,10 @@ class Pending extends APP_GameClass
                     );
 
 
+                if (game::$instance->getGameStateValue('scoring_mode') == 2)
+                {
+                    game::$instance->Score();
+                }
 
                 game::$instance->giveExtraTime($this->player_id);
                 game::$instance->addPendingFirst($this->player_id, "NormalTurn");
@@ -182,8 +199,14 @@ class Pending extends APP_GameClass
                     )
                     );
 
+                if (game::$instance->getGameStateValue('scoring_mode') == 2)
+                {
+                    game::$instance->Score();
+                }
                 
                 game::$instance->addPending($this->player_id, "Step3");
+
+
 
 
 
@@ -234,8 +257,12 @@ class Pending extends APP_GameClass
                 
             )
             );
+            
 
-
+        if (game::$instance->getGameStateValue('scoring_mode') == 2)
+        {
+            game::$instance->Score();
+        }
 
         game::$instance->giveExtraTime($this->player_id);
         game::$instance->addPendingFirst($this->player_id, "NormalTurn");
@@ -265,6 +292,8 @@ class Pending extends APP_GameClass
 
     function EndGame($parg1, $parg2, $varg1, $varg2)
     {
+        
+        
         game::$instance->addPendingFirst($this->player_id, "NormalTurn");
 
         

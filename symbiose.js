@@ -626,6 +626,10 @@ setupNotifications: function()
     dojo.subscribe( 'firstcard', this, "notif_firstcard" );
     dojo.subscribe( 'flip', this, "notif_flip" );
     dojo.subscribe( 'switch', this, "notif_switch" );
+    dojo.subscribe( 'score', this, "notif_score" );
+    dojo.subscribe( 'affichescore', this, "notif_affichescore" );
+
+    
 },  
 
 notif_firstcard: function( notif )
@@ -666,7 +670,7 @@ notif_flip: function( notif )
 
 notif_switch: function( notif )
 {
-    
+    const overlay = document.getElementById('overlay');
     
     const element = document.getElementById(notif.args.card_river);
     element.style.zIndex = "10";
@@ -735,29 +739,29 @@ notif_switch: function( notif )
     }
 
     if(parentId == "player_cards_3")
-        {
+    {
+
+    const globalContainer = document.getElementById(parentId);
+    const globalRect = globalContainer.getBoundingClientRect();
+
+    const angle = -90 * (Math.PI / 180); // Rotation de 90° en radians
+
+    // Position ajustée de element2 par rapport à son conteneur global
+    const adjustedX2 = Math.cos(-angle) * (elementRect2.left - globalRect.left) - Math.sin(-angle) * (elementRect2.top - globalRect.top);
+    const adjustedY2 = Math.sin(-angle) * (elementRect2.left - globalRect.left) + Math.cos(-angle) * (elementRect2.top - globalRect.top);
+
+    // Position ajustée de la cible
+    const adjustedTargetX2 = Math.cos(-angle) * (targetRect2.left - globalRect.left) - Math.sin(-angle) * (targetRect2.top - globalRect.top);
+    const adjustedTargetY2 = Math.sin(-angle) * (targetRect2.left - globalRect.left) + Math.cos(-angle) * (targetRect2.top - globalRect.top);
+
+    // Calcul du déplacement corrigé
+    const deltaX2 = adjustedTargetX2 - adjustedX2;
+    const deltaY2 = adjustedTargetY2 - adjustedY2;
     
-        const globalContainer = document.getElementById(parentId);
-        const globalRect = globalContainer.getBoundingClientRect();
-    
-        const angle = -90 * (Math.PI / 180); // Rotation de 90° en radians
-    
-        // Position ajustée de element2 par rapport à son conteneur global
-        const adjustedX2 = Math.cos(-angle) * (elementRect2.left - globalRect.left) - Math.sin(-angle) * (elementRect2.top - globalRect.top);
-        const adjustedY2 = Math.sin(-angle) * (elementRect2.left - globalRect.left) + Math.cos(-angle) * (elementRect2.top - globalRect.top);
-    
-        // Position ajustée de la cible
-        const adjustedTargetX2 = Math.cos(-angle) * (targetRect2.left - globalRect.left) - Math.sin(-angle) * (targetRect2.top - globalRect.top);
-        const adjustedTargetY2 = Math.sin(-angle) * (targetRect2.left - globalRect.left) + Math.cos(-angle) * (targetRect2.top - globalRect.top);
-    
-        // Calcul du déplacement corrigé
-        const deltaX2 = adjustedTargetX2 - adjustedX2;
-        const deltaY2 = adjustedTargetY2 - adjustedY2;
-        
-    
-        element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(-90deg)`;
-        element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(90deg)`;
-        }
+
+    element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(-90deg)`;
+    element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(90deg)`;
+    }
 
 
 
@@ -780,6 +784,106 @@ notif_switch: function( notif )
 
     }
     
+    
+},
+
+notif_score: function( notif )
+{
+    if (notif.args.score1 != 'no')
+    {
+        $('score1_'+notif.args.player_id).innerHTML = notif.args.score1;
+    }
+
+    else
+    {
+        $('score1_'+notif.args.player_id).innerHTML = '';
+    }
+
+    if (notif.args.score2 != 'no')
+    {
+        $('score2_'+notif.args.player_id).innerHTML = notif.args.score2;
+    }
+
+    else
+    {
+        $('score2_'+notif.args.player_id).innerHTML = '';
+    }
+
+    if (notif.args.score3 != 'no')
+    {
+        $('score3_'+notif.args.player_id).innerHTML = notif.args.score3;
+    }
+
+    else
+    {
+        $('score3_'+notif.args.player_id).innerHTML = '';
+    }
+
+    if (notif.args.score4 != 'no')
+    {
+        $('score4_'+notif.args.player_id).innerHTML = notif.args.score4;
+    }
+
+    else
+    {
+        $('score4_'+notif.args.player_id).innerHTML = '';
+    }
+
+    if (notif.args.score5 != 'no')
+    {
+        $('score5_'+notif.args.player_id).innerHTML = notif.args.score5;
+    }
+
+    else
+    {
+        $('score5_'+notif.args.player_id).innerHTML = '';
+    }
+
+    if (notif.args.score6 != 'no')
+    {
+        $('score6_'+notif.args.player_id).innerHTML = notif.args.score6;
+    }
+
+    else
+    {
+        $('score6_'+notif.args.player_id).innerHTML = '';
+    }
+
+    if (notif.args.score7 != 'no')
+    {
+        $('score7_'+notif.args.player_id).innerHTML = notif.args.score7;
+    }
+
+    else
+    {
+        $('score7_'+notif.args.player_id).innerHTML = '';
+    }
+
+    if (notif.args.score8 != 'no')
+    {
+        $('score8_'+notif.args.player_id).innerHTML = notif.args.score8;
+    }
+
+    else
+    {
+        $('score8_'+notif.args.player_id).innerHTML = '';
+    }
+   
+},
+
+notif_affichescore: function( notif )
+{
+    
+    for( var player_id in this.gamedatas.players )   
+        {
+                             
+            var player_board_div = $('player_board_'+player_id);
+            dojo.place( this.format_block('jstpl_scorepad', {id: player_id} ), player_board_div );
+            
+            
+            
+        }
+
     
 },
 

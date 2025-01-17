@@ -39,6 +39,8 @@ class Game extends \Table
 
             "scoring_mode" => 100,
             "game_mode" => 101,
+
+            "end" => 10,
             
         ]);  
         
@@ -136,11 +138,13 @@ protected function setupNewGame($players, $options = [])
     self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river'");
 
     
-    /************ Init Pending *****/
+    //init global ///
 
-    //$firstplayer = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no=1");
-    //$this->addPendingFirst($firstplayer, "Multi");
-            
+    game::$instance->setGameStateValue('end', 0);
+
+
+    /************ Init Pending *****/
+         
     foreach( $players as $player_id => $player )
     {
         $this->addPendingFirst($player_id, "NormalTurn");
@@ -175,6 +179,8 @@ $result["nbre_players"] = count($result["players"]);
 
 $result["scoring_mode"] = $this->gamestate->table_globals[100];
 $result["game_mode"] = $this->gamestate->table_globals[101];
+
+$result["end"] = game::$instance->getGameStateValue('end');
 
 
 
@@ -267,6 +273,304 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
     }
 
 
+    function Score()  
+    {
+
+        
+        if ((game::$instance->getGameStateValue('scoring_mode') == 2)||(game::$instance->getGameStateValue('end') == 1))
+        {
+            $listcard = array();
+            $nbresigne = array();
+            $listplayers = self::getObjectListFromDB( "SELECT player_id FROM player", true );
+
+            foreach ($listplayers as $player)
+            {
+                $listcard[$player] = self::getObjectListFromDB( "SELECT card_type FROM cards WHERE card_location_arg = '{$player}' AND card_visible = 1 ", true );
+
+                $gr = 0;
+                $es = 0;
+                $po = 0;
+                $li = 0;
+                $r = 0;
+                $v = 0;
+                $o = 0;
+                $b = 0;
+
+                foreach ($listcard[$player] as $type)
+                {
+                    $animal = $this->_cards[$type]['animal'];
+                    $saison = $this->_cards[$type]['saison'];
+
+                    if ( $animal == 1)
+                    {
+                        $gr++;
+                    }
+
+                    if ( $animal == 2)
+                    {
+                        $es++;
+                    }
+
+                    if ( $animal == 3)
+                    {
+                        $po++;
+                    }
+
+                    if ( $animal == 4)
+                    {
+                        $li++;
+                    }
+
+                    if ( $saison == 1)
+                    {
+                        $r++;
+                    }
+
+                    if ( $saison == 2)
+                    {
+                        $v++;
+                    }
+
+                    if ( $saison == 3)
+                    {
+                        $o++;
+                    }
+
+                    if ( $saison == 4)
+                    {
+                        $b++;
+                    }
+
+
+                }
+
+
+                $nbresigne[$player] = [$gr, $es, $po, $li, $r, $v, $o, $b];
+    
+
+            }
+
+            
+            foreach ($listplayers as $player)
+            {
+                $nextplayer = game::$instance->getPlayerAfter( $player );
+                $beforeplayer = game::$instance->getPlayerBefore( $player );
+
+                $score1 = 'no';
+                $score2 = 'no';
+                $score3 = 'no';
+                $score4 = 'no';
+                $score5 = 'no';
+                $score6 = 'no';
+                $score7 = 'no';
+                $score8 = 'no';
+
+                foreach ($listcard[$player] as $type)
+                {
+                    $position = self::getUniqueValueFromDB("SELECT card_location FROM cards WHERE card_type = '{$type}'");
+                    $scoretype = $this->_cards[$type]['scoretype'];
+                    $score = $this->_cards[$type]['score'];
+
+                    if ($position == 'cardposition_1')
+                    {
+                        if($scoretype == 0)
+                        {
+                            $score1 = $score;
+                        }
+
+                        else
+                        {
+                            $score1 = $nbresigne[$nextplayer][$scoretype-1] * $score;
+                        }
+
+                        if ($score1 >=1)
+                        {
+                            self::DbQuery( "UPDATE player set score1 = '{$score1}'  WHERE player_id = '{$player}'" );
+                        }
+
+
+                    }
+
+                    if ($position == 'cardposition_2')
+                    {
+
+                        if($scoretype == 0)
+                        {
+                            $score2 = $score;
+                        }
+
+                        else
+                        {
+                            $score2 = $nbresigne[$player][$scoretype-1] * $score;
+                        }
+
+                        if ($score2 >=1)
+                        {
+                            self::DbQuery( "UPDATE player set score2 = '{$score2}'  WHERE player_id = '{$player}'" );
+                        }
+
+
+
+                    }
+
+                    if ($position == 'cardposition_3')
+                    {
+
+                        if($scoretype == 0)
+                        {
+                            $score3 = $score;
+                        }
+
+                        else
+                        {
+                            $score3 = $nbresigne[$player][$scoretype-1] * $score;
+                        }
+
+                        if ($score3 >=1)
+                        {
+                            self::DbQuery( "UPDATE player set score3 = '{$score3}'  WHERE player_id = '{$player}'" );
+                        }
+
+
+                    }
+
+                    if ($position == 'cardposition_4')
+                    {
+
+                        if($scoretype == 0)
+                        {
+                            $score4 = $score;
+                        }
+
+                        else
+                        {
+                            $score4 = $nbresigne[$beforeplayer][$scoretype-1] * $score;
+                        }
+
+                        if ($score4 >=1)
+                        {
+                            self::DbQuery( "UPDATE player set score4 = '{$score4}'  WHERE player_id = '{$player}'" );
+                        }
+
+
+                    }
+
+                    if ($position == 'cardposition_5')
+                    {
+
+                        if($scoretype == 0)
+                        {
+                            $score5 = $score;
+                        }
+
+                        else
+                        {
+                            $score5 = $nbresigne[$nextplayer][$scoretype-1] * $score;
+                        }
+
+                        if ($score5 >=1)
+                        {
+                            self::DbQuery( "UPDATE player set score5 = '{$score5}'  WHERE player_id = '{$player}'" );
+                        }
+
+
+                        
+
+                    }
+
+                    if ($position == 'cardposition_6')
+                    {
+                        if($scoretype == 0)
+                        {
+                            $score6 = $score;
+                        }
+
+                        else
+                        {
+                            $score6= $nbresigne[$player][$scoretype-1] * $score;
+                        }
+
+                        if ($score6 >=1)
+                        {
+                            self::DbQuery( "UPDATE player set score6 = '{$score6}'  WHERE player_id = '{$player}'" );
+                        }
+
+
+
+                        
+                    }
+
+                    if ($position == 'cardposition_7')
+                    {
+                        if($scoretype == 0)
+                        {
+                            $score7 = $score;
+                        }
+
+                        else
+                        {
+                            $score7 = $nbresigne[$player][$scoretype-1] * $score;
+                        }
+
+                        if ($score7 >=1)
+                        {
+                            self::DbQuery( "UPDATE player set score7 = '{$score7}'  WHERE player_id = '{$player}'" );
+                        }
+
+
+
+                    }
+
+                    if ($position == 'cardposition_8')
+                    {
+
+                        if($scoretype == 0)
+                        {
+                            $score8 = $score;
+                        }
+
+                        else
+                        {
+                            $score8 = $nbresigne[$beforeplayer][$scoretype-1] * $score;
+                        }
+
+                        if ($score8 >=1)
+                        {
+                            self::DbQuery( "UPDATE player set score8 = '{$score8}'  WHERE player_id = '{$player}'" );
+                        }
+
+
+
+                    }
+
+                }
+
+                game::$instance->notifyAllPlayers('score','', array(
+            
+                    'player_id' => $player,
+                    'score1' => $score1,
+                    'score2' => $score2,
+                    'score3' => $score3,
+                    'score4' => $score4,
+                    'score5' => $score5,
+                    'score6' => $score6,
+                    'score7' => $score7,
+                    'score8' => $score8,
+
+                        
+                    )
+                    );
+
+            
+            }
+
+
+
+        }
+    }
+
+
+
 
 
 
@@ -309,7 +613,7 @@ public function actSelect(string $arg1)
                 
             )
             );
-
+        game::$instance->Score();
         $this->giveExtraTime($this->getCurrentPlayerId());
         $this->gamestate->setPlayerNonMultiactive($player_id, 'next'); // desactivation player et redirection vers next quand tous les joueurs seront desactivés
     }
