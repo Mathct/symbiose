@@ -72,16 +72,14 @@ class Pending extends APP_GameClass
             {
             
             game::$instance->setGameStateValue('end', 1);
-
             game::$instance->notifyAllPlayers('affichescore','', array(
                 )
                 );
             
             }
-
             game::$instance->Score();
 
-            game::$instance->addPending($this->player_id, "EndGame");
+            game::$instance->gamestate->nextState( 'end' );
         }
         else
         {
@@ -271,35 +269,6 @@ class Pending extends APP_GameClass
     }
 
 
-    function argEndGame($parg1, $parg2)
-    {
-        $ret = array();
-        $ret["selectable"] = array();
-        $ret["selected"] = array();
-        $ret['buttons'] = array();
-        $ret['title'] = clienttranslate('${actplayer}');
-        $ret['titleyou'] = clienttranslate('${you}');
-
-        
-        $ret['buttons'][]='cancel';
-        
-
-        
-        
-               
-        return $ret;
-    }
-
-    function EndGame($parg1, $parg2, $varg1, $varg2)
-    {
-        
-        
-        game::$instance->addPendingFirst($this->player_id, "NormalTurn");
-
-        
-    }
-
-
-
+    
 
 }

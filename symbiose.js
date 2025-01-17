@@ -70,11 +70,42 @@ setup: function( gamedatas )
                              
             var player_board_div = $('player_board_'+player_id);
             dojo.place( this.format_block('jstpl_scorepad', {id: player_id} ), player_board_div );
+
+            
+            for (var i=1; i<=8; i++)
+            {
+                if (gamedatas.players[player_id]['score' + i] >= 0) {
+                    document.getElementById('score' + i + '_' + player_id).innerHTML = gamedatas.players[player_id]['score' + i];
+                }
+
+            }
             
             
             
         }
     }
+
+    if ((gamedatas.scoring_mode == 1)&&(gamedatas.end == 1))
+        {
+        for( var player_id in gamedatas.players )   
+            {
+                                 
+                var player_board_div = $('player_board_'+player_id);
+                dojo.place( this.format_block('jstpl_scorepad', {id: player_id} ), player_board_div );
+    
+                
+                for (var i=1; i<=8; i++)
+                {
+                    if (gamedatas.players[player_id]['score' + i] >= 0) {
+                        document.getElementById('score' + i + '_' + player_id).innerHTML = gamedatas.players[player_id]['score' + i];
+                    }
+    
+                }
+                
+                
+                
+            }
+        }
 
 
 
@@ -868,6 +899,8 @@ notif_score: function( notif )
     {
         $('score8_'+notif.args.player_id).innerHTML = '';
     }
+
+    this.scoreCtrl[ notif.args.player_id ].toValue( notif.args.scoretotal );
    
 },
 
