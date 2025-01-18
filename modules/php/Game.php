@@ -130,12 +130,46 @@ protected function setupNewGame($players, $options = [])
 
     /* init cards river*/
 
+    $nbreplayers = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
+
+    if ($nbreplayers >=3)
+    {
+
     for ($i = 1; $i <= 4; $i++) {
 
         $this->cards->pickCardForLocation('deck', 'river', $i);
     }
 
     self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river'");
+    }
+
+    if ($nbreplayers == 2)
+
+    {
+        if( $this->gamestate->table_globals[101] == 2)
+        {
+            for ($i = 1; $i <= 4; $i++) {
+
+                $this->cards->pickCardForLocation('deck', 'river', $i);
+            }
+        
+            self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river'");
+        }
+
+        if( $this->gamestate->table_globals[101] == 1)
+        {
+            for ($i = 1; $i <= 8; $i++) {
+
+                $this->cards->pickCardForLocation('deck', 'river', $i);
+            }
+
+                  
+            self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river' AND card_location_arg = 1");
+            self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river' AND card_location_arg = 2");
+            self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river' AND card_location_arg = 3");
+            self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river' AND card_location_arg = 4");
+        }
+    }
 
     
     //init global ///

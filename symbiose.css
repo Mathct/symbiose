@@ -51,7 +51,7 @@
  }
 
  .board2 {
-    height: 1000px;
+    height: 1110px;
  }
 
  .board3 {
@@ -59,7 +59,7 @@
  }
 
  .board4 {
-    height: 1110px;
+    height: 1140px;
  }
 
  .scorepad{
@@ -91,22 +91,58 @@
 
 .river {
    position: absolute;
-    height: 225px;
-    width: 630px;
-    top: 20px;
+    height: 245px;
+    width: 650px;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
+    background-color: rgba(255, 255, 255, 0.5);
+     border-radius: 8px;
+     border: 2px solid white;
     
 
 }
 
 .river2 {
     position: absolute;
-     height: 225px;
-     width: 630px;
+    height: 245px;
+    width: 650px;
      top: 375px;
      left: 50%;
      transform: translateX(-50%);
+     background-color: rgba(255, 255, 255, 0.5);
+     border-radius: 8px;
+     border: 2px solid white;
+     
+ 
+ }
+
+ .river2_2 {
+    position: absolute;
+     height: 245px;
+     width: 650px;
+     top: 365px;
+     left: 50%;
+     transform: translateX(-50%);
+     background-color: rgba(255, 255, 255, 0.5);
+     border-radius: 8px;
+     border: 2px solid white;
+     
+ 
+ }
+
+ .river2_3 {
+    position: absolute;
+     height: 330px;
+     width: 450px;
+     top: 130px;
+     
+    
+     background-color: rgba(255, 255, 255, 0.5);
+     border-radius: 8px;
+     border: 2px solid white;
+     left: 50%;
+     transform: translateX(50%) rotate(-135deg);
      
  
  }
@@ -178,6 +214,38 @@
     
     
 }
+
+.nameplayer_mini_2_2{
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    width: 430px;
+    display: flex;
+    justify-content: center;
+    top: 340px;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    
+    
+}
+
+.nameplayer_mini_2_2_duel{
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    width: 430px;
+    display: flex;
+    justify-content: center;
+    top: 402px;
+    left: 50%;
+    transform: translateX(-120%) rotate(-45deg);
+    
+    
+    
+    
+}
+
 
 
 .nameplayer_mini_2_4{
@@ -288,6 +356,11 @@
 
 /* POSITIONS */
 
+.position_0_2{
+    top: 620px;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
 .position_0_3{
     top: 270px;
@@ -296,7 +369,7 @@
 }
 
 .position_0_4{
-    top: 620px;
+    top: 640px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -313,6 +386,18 @@
     transform: rotate(90deg);
 }
 
+.position_2_2{
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) rotate(180deg);
+}
+
+.position_2_2_duel{
+    top: 130px;
+    left: 50%;
+     transform: translateX(-150%) rotate(135deg);
+    
+}
 
 
 .position_2_4{
@@ -338,7 +423,7 @@
 
 
 
-@media (min-width: 1680px) and (max-width: 1840px) {
+@media (min-width: 1700px) and (max-width: 1840px) {
     .position_1_3{
         
         left: 15px;
@@ -393,19 +478,26 @@
     
   }
 
-  @media (min-width: 1295px) and (max-width: 1680px) {
+  @media (min-width: 1295px) and (max-width: 1700px) {
 
     .board3 {
-        height: 1225px;
+        height: 1250px;
      }
 
     .board4 {
-        height: 1590px;
+        height: 1615px;
      }
 
     .position_0_3{
         
-        top: 730px;
+        top: 755px;
+        
+        
+    }
+
+    .position_0_4{
+        
+        top: 1120px;
         
         
     }
@@ -420,12 +512,7 @@
         top: 855px;
     }
 
-    .position_0_4{
-        
-        top: 1095px;
-        
-        
-    }
+    
     .position_1_3{
         
         top: 110px;
@@ -495,11 +582,11 @@
   @media (max-width: 1295px) {
 
     .board3 {
-        height: 1225px;
+        height: 1250px;
      }
 
      .board4 {
-        height: 1590px;
+        height: 1615px;
      }
 
      .river {
@@ -516,14 +603,14 @@
 
     .position_0_3{
         
-        top: 730px;
+        top: 755px;
         
         
     }
 
     .position_0_4{
         
-        top: 1095px;
+        top: 1120px;
         
         
     }
@@ -597,5 +684,27 @@
         
     }
 
+}
+
+/* DUEL */
+
+@media (min-width: 1295px) and (max-width: 1750px) {
+
+
+    .position_2_2_duel {
+        top: 130px;
+        left: 50%;
+        transform: translateX(-129%) rotate(135deg);
+    }
+
+    .nameplayer_mini_2_2_duel {
+        left: 50%;
+        transform: translateX(-100%) rotate(-45deg);
+    }
+    .river2_3 {
+        
+        left: 50%;
+        transform: translateX(30%) rotate(-135deg);
+    }
 }
 

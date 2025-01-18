@@ -353,34 +353,154 @@ createBoard: function() {
 
     const parent = document.getElementById("board");
     
-    if (this.gamedatas.nbre_players == 2)
+    if ((this.gamedatas.nbre_players == 2)&&(this.gamedatas.game_mode == 2))
     {
-        for( var player_id in this.gamedatas.new_ordre_players)   
+        parent.className = "board2";
+
+            const Playercards0 = document.createElement("div");
+            Playercards0.id = "player_cards_0";
+            Playercards0.className = "player_cards";
+            Playercards0.innerHTML = 
+                                `
+                                <div class="nameplayer" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color}; left: 0px; top: 0px; border: 1px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].name}</div>
+                                <div id="cardposition_1_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 0px; top: 30px;"></div>
+                                <div id="cardposition_2_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 160px; top: 30px;"></div>
+                                <div id="cardposition_3_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 320px; top: 30px;"></div>
+                                <div id="cardposition_4_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 480px; top: 30px;"></div>
+        
+                                <div id="cardposition_5_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 0px; top: 265px;"></div>
+                                <div id="cardposition_6_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 160px; top: 265px;"></div>
+                                <div id="cardposition_7_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 320px; top: 265px;"></div>
+                                <div id="cardposition_8_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 480px; top: 265px;"></div>
+                                `;
+        
+            parent.appendChild(Playercards0);
+    
+            const Playercards1_name = document.createElement("div");
+            const Playercards1 = document.createElement("div");
+            
+            
+    
+            const Playercards2_name = document.createElement("div");
+            const Playercards2 = document.createElement("div");
+            Playercards2.id = "player_cards_2";
+            Playercards2.className = "player_cards_mini";
+            Playercards2_name.innerHTML = 
+                                `
+                                <div class="nameplayer_mini_2_2" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color}; border: 1px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].name}</div>
+                                `;
+            Playercards2.innerHTML = 
+                                `
+                                <div id="cardposition_1_${this.gamedatas.new_ordre_players[1]}" class="card_position_mini" style="left: 0px; top: 0px;"></div>
+                                <div id="cardposition_2_${this.gamedatas.new_ordre_players[1]}" class="card_position_mini" style="left: 110px; top: 0px;"></div>
+                                <div id="cardposition_3_${this.gamedatas.new_ordre_players[1]}" class="card_position_mini" style="left: 220px; top: 0px;"></div>
+                                <div id="cardposition_4_${this.gamedatas.new_ordre_players[1]}" class="card_position_mini" style="left: 330px; top: 0px;"></div>
+        
+                                <div id="cardposition_5_${this.gamedatas.new_ordre_players[1]}" class="card_position_mini" style="left: 0px; top: 160px;"></div>
+                                <div id="cardposition_6_${this.gamedatas.new_ordre_players[1]}" class="card_position_mini" style="left: 110px; top: 160px;"></div>
+                                <div id="cardposition_7_${this.gamedatas.new_ordre_players[1]}" class="card_position_mini" style="left: 220px; top: 160px;"></div>
+                                <div id="cardposition_8_${this.gamedatas.new_ordre_players[1]}" class="card_position_mini" style="left: 330px; top: 160px;"></div>
+                                `;
+        
+            parent.appendChild(Playercards2_name);
+            parent.appendChild(Playercards2);
+
+
+                
+            dojo.query("#player_cards_0").addClass("position_0_2");
+            dojo.query("#player_cards_2").addClass("position_2_2");
+            
+
+
+            const River = document.createElement("div");
+            River.id = "river";
+            River.className = "river2_2";
+
+            River.innerHTML = 
+                            `<div id="river_1" class="card_position" style="left: 10px; top: 10px;"></div>
+                            <div id="river_2" class="card_position" style="left: 170px; top: 10px;"></div>
+                            <div id="river_3" class="card_position" style="left: 330px; top: 10px;"></div>
+                            <div id="river_4" class="card_position" style="left: 490px; top: 10px;"></div>`;
+
+            parent.appendChild(River);
+    }
+
+    if ((this.gamedatas.nbre_players == 2)&&(this.gamedatas.game_mode == 1))
         {
             parent.className = "board2";
-            var player = this.gamedatas.new_ordre_players[player_id];  // le nouvel ordre
+    
+                const Playercards0 = document.createElement("div");
+                Playercards0.id = "player_cards_0";
+                Playercards0.className = "player_cards";
+                Playercards0.innerHTML = 
+                                    `
+                                    <div class="nameplayer" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color}; left: 0px; top: 0px; border: 1px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].name}</div>
+                                    <div id="cardposition_1_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 0px; top: 30px;"></div>
+                                    <div id="cardposition_2_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 160px; top: 30px;"></div>
+                                    <div id="cardposition_3_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 320px; top: 30px;"></div>
+                                    <div id="cardposition_4_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 480px; top: 30px;"></div>
+            
+                                    <div id="cardposition_5_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 0px; top: 265px;"></div>
+                                    <div id="cardposition_6_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 160px; top: 265px;"></div>
+                                    <div id="cardposition_7_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 320px; top: 265px;"></div>
+                                    <div id="cardposition_8_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 480px; top: 265px;"></div>
+                                    `;
+            
+                parent.appendChild(Playercards0);
+        
+                const Playercards1_name = document.createElement("div");
+                const Playercards1 = document.createElement("div");
                 
-            const Playercards = document.createElement("div");
-            Playercards.id = "player_cards_"+player_id;
-            Playercards.className = "player_cards";
+                
+        
+                const Playercards2_name = document.createElement("div");
+                const Playercards2 = document.createElement("div");
+                Playercards2.id = "player_cards_2";
+                Playercards2.className = "player_cards_mini";
+                Playercards2_name.innerHTML = 
+                                    `
+                                    <div class="nameplayer_mini_2_2_duel" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color}; border: 1px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].name}</div>
+                                    `;
+                Playercards2.innerHTML = 
+                                    `
+                                    <div id="cardposition_1_${this.gamedatas.new_ordre_players[1]}" class="card_position_mini" style="left: 0px; top: 0px;"></div>
+                                    <div id="cardposition_2_${this.gamedatas.new_ordre_players[1]}" class="card_position_mini" style="left: 110px; top: 0px;"></div>
+                                    <div id="cardposition_3_${this.gamedatas.new_ordre_players[1]}" class="card_position_mini" style="left: 220px; top: 0px;"></div>
+                                    <div id="cardposition_4_${this.gamedatas.new_ordre_players[1]}" class="card_position_mini" style="left: 330px; top: 0px;"></div>
+            
+                                    <div id="cardposition_5_${this.gamedatas.new_ordre_players[1]}" class="card_position_mini" style="left: 0px; top: 160px;"></div>
+                                    <div id="cardposition_6_${this.gamedatas.new_ordre_players[1]}" class="card_position_mini" style="left: 110px; top: 160px;"></div>
+                                    <div id="cardposition_7_${this.gamedatas.new_ordre_players[1]}" class="card_position_mini" style="left: 220px; top: 160px;"></div>
+                                    <div id="cardposition_8_${this.gamedatas.new_ordre_players[1]}" class="card_position_mini" style="left: 330px; top: 160px;"></div>
+                                    `;
+            
+                parent.appendChild(Playercards2_name);
+                parent.appendChild(Playercards2);
+    
+    
+                    
+                dojo.query("#player_cards_0").addClass("position_0_2");
+                dojo.query("#player_cards_2").addClass("position_2_2_duel");
+                
+    
+    
+                const River = document.createElement("div");
+                River.id = "river";
+                River.className = "river2_3";
+    
+                River.innerHTML = 
+                `<div id="river_1" class="card_position_mini" style="left: 10px; top: 10px;"></div>
+                <div id="river_2" class="card_position_mini" style="left: 120px; top: 10px;"></div>
+                <div id="river_3" class="card_position_mini" style="left: 230px; top: 10px;"></div>
+                <div id="river_4" class="card_position_mini" style="left: 340px; top: 10px;"></div>
+                <div id="river_5" class="card_position_mini" style="left: 10px; top: 170px;"></div>
+                <div id="river_6" class="card_position_mini" style="left: 120px; top: 170px;"></div>
+                <div id="river_7" class="card_position_mini" style="left: 230px; top: 170px;"></div>
+                <div id="river_8" class="card_position_mini" style="left: 340px; top: 170px;"></div>`;
 
-            Playercards.innerHTML = 
-                        `
-                        <div class="nameplayer" style="color: #${this.gamedatas.players[player].color}; left: 0px; top: 0px; border: 1px solid #${this.gamedatas.players[player].color};">${this.gamedatas.players[player].name}</div>
-                        <div id="cardposition_1_${player}" class="card_position" style="left: 0px; top: 30px;"></div>
-                        <div id="cardposition_2_${player}" class="card_position" style="left: 160px; top: 30px;"></div>
-                        <div id="cardposition_3_${player}" class="card_position" style="left: 320px; top: 30px;"></div>
-                        <div id="cardposition_4_${player}" class="card_position" style="left: 480px; top: 30px;"></div>
-
-                        <div id="cardposition_5_${player}" class="card_position" style="left: 0px; top: 265px;"></div>
-                        <div id="cardposition_6_${player}" class="card_position" style="left: 160px; top: 265px;"></div>
-                        <div id="cardposition_7_${player}" class="card_position" style="left: 320px; top: 265px;"></div>
-                        <div id="cardposition_8_${player}" class="card_position" style="left: 480px; top: 265px;"></div>
-                        `;
-
-        parent.appendChild(Playercards);
+                parent.appendChild(River);
         }
-    }
+
 
     if (this.gamedatas.nbre_players == 3)
     {
@@ -463,10 +583,10 @@ createBoard: function() {
         River.className = "river";
 
         River.innerHTML = 
-                        `<div id="river_1" class="card_position" style="left: 0px; top: 0px;"></div>
-                        <div id="river_2" class="card_position" style="left: 160px; top: 0px;"></div>
-                        <div id="river_3" class="card_position" style="left: 320px; top: 0px;"></div>
-                        <div id="river_4" class="card_position" style="left: 480px; top: 0px;"></div>`;
+                            `<div id="river_1" class="card_position" style="left: 10px; top: 10px;"></div>
+                            <div id="river_2" class="card_position" style="left: 170px; top: 10px;"></div>
+                            <div id="river_3" class="card_position" style="left: 330px; top: 10px;"></div>
+                            <div id="river_4" class="card_position" style="left: 490px; top: 10px;"></div>`;
 
         parent.appendChild(River);
       
@@ -581,10 +701,10 @@ createBoard: function() {
             River.className = "river2";
 
             River.innerHTML = 
-                            `<div id="river_1" class="card_position" style="left: 0px; top: 0px;"></div>
-                            <div id="river_2" class="card_position" style="left: 160px; top: 0px;"></div>
-                            <div id="river_3" class="card_position" style="left: 320px; top: 0px;"></div>
-                            <div id="river_4" class="card_position" style="left: 480px; top: 0px;"></div>`;
+                            `<div id="river_1" class="card_position" style="left: 10px; top: 10px;"></div>
+                            <div id="river_2" class="card_position" style="left: 170px; top: 10px;"></div>
+                            <div id="river_3" class="card_position" style="left: 330px; top: 10px;"></div>
+                            <div id="river_4" class="card_position" style="left: 490px; top: 10px;"></div>`;
 
             parent.appendChild(River);
           
