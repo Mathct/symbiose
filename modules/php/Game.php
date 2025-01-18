@@ -178,7 +178,11 @@ $result["new_ordre_players"] = $this->getPlayerRelativePositions();
 $result["nbre_players"] = count($result["players"]);
 
 $result["scoring_mode"] = $this->gamestate->table_globals[100];
+
+if($result["nbre_players"] == 2)
+{
 $result["game_mode"] = $this->gamestate->table_globals[101];
+}
 
 $result["end"] = game::$instance->getGameStateValue('end');
 

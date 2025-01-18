@@ -35,19 +35,20 @@
                 "name": "Normal", 
                 "tmdisplay": "Normal"
                 
-            },
+            }
             
-            "displaycondition": [
+                            
+        },
+
+        "displaycondition": [
             {
                 "type": "maxplayers",
-                "value": [ 2 ]
+                "value": 2
             }
-            ]
-                
-        },
+        ]
         
         
-        "default": 1
+        
               
     }
 
