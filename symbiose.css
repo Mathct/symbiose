@@ -135,14 +135,30 @@
     position: absolute;
      height: 330px;
      width: 450px;
-     top: 130px;
+     top: 120px;
      
     
      background-color: rgba(255, 255, 255, 0.5);
      border-radius: 8px;
      border: 2px solid white;
      left: 50%;
-     transform: translateX(50%) rotate(-135deg);
+     transform: translateX(30%) rotate(-135deg);
+     
+ 
+ }
+
+ .river2_4 {
+    position: absolute;
+     height: 330px;
+     width: 450px;
+     top: 120px;
+     
+    
+     background-color: rgba(255, 255, 255, 0.5);
+     border-radius: 8px;
+     border: 2px solid white;
+     left: 50%;
+     transform: translateX(-129%) rotate(135deg);
      
  
  }
@@ -182,8 +198,9 @@
     width: 310px;
     display: flex;
     justify-content: center;
-    top: 60px;
-    left: 150px;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-209%);
     
     
 }
@@ -196,8 +213,9 @@
     width: 310px;
     display: flex;
     justify-content: center;
-    top: 60px;
-    right: 150px;
+    top: 10px;
+    left: 50%;
+    transform: translateX(108%);
     
     
 }
@@ -210,7 +228,8 @@
     display: flex;
     justify-content: center;
     top: 425px;
-    left: 150px;
+    left: 50%;
+    transform: translateX(-209%);
     
     
 }
@@ -239,7 +258,23 @@
     justify-content: center;
     top: 402px;
     left: 50%;
-    transform: translateX(-120%) rotate(-45deg);
+    transform: translateX(-100%) rotate(-45deg);
+    
+    
+    
+    
+}
+
+.nameplayer_mini_2_2_duel_2{
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    width: 430px;
+    display: flex;
+    justify-content: center;
+    top: 400px;
+    left: 50%;
+    transform: translateX(0%) rotate(45deg);
     
     
     
@@ -271,7 +306,8 @@
     display: flex;
     justify-content: center;
     top: 425px;
-    right: 150px;
+    left: 50%;
+    transform: translateX(108%);
     
     
 }
@@ -375,15 +411,19 @@
 }
 
 .position_1_3{
-    top: 150px;
-    left: 93px;
-    transform: rotate(90deg);
+    top: 100px;
+    /*left: 93px;*/
+    left: 50%;
+    transform: translateX(-165%) rotate(90deg);
+    /*transform: rotate(90deg);*/
 }
 
 .position_1_4{
     top: 515px;
-    left: 93px;
-    transform: rotate(90deg);
+    /*left: 93px;
+    transform: rotate(90deg);*/
+    left: 50%;
+    transform: translateX(-165%) rotate(90deg);
 }
 
 .position_2_2{
@@ -395,7 +435,14 @@
 .position_2_2_duel{
     top: 130px;
     left: 50%;
-     transform: translateX(-150%) rotate(135deg);
+     transform: translateX(-129%) rotate(135deg);
+    
+}
+
+.position_2_2_duel_2{
+    top: 130px;
+    left: 50%;
+     transform: translateX(30%) rotate(-135deg);
     
 }
 
@@ -407,304 +454,20 @@
 }
 
 .position_3_3{
-    top: 150px;
-    right: 93px;
-    transform: rotate(-90deg);
+    top: 100px;
+    /*right: 93px;*/
+    /*transform: rotate(-90deg);*/
+    left: 50%;
+    transform: translateX(65%) rotate(-90deg);
 }
 
 .position_3_4{
     top: 515px;
-    right: 93px;
-    transform: rotate(-90deg);
+    /*right: 93px;*/
+    left: 50%;
+    transform: translateX(65%) rotate(-90deg);
 }
 
 
 
-
-
-
-@media (min-width: 1700px) and (max-width: 1840px) {
-    .position_1_3{
-        
-        left: 15px;
-        
-    }
-
-    .position_3_3{
-        
-        right: 15px;
-        
-    }
-
-    .position_1_4{
-        
-        left: 15px;
-        
-    }
-
-    .position_3_4{
-        
-        right: 15px;
-        
-    }
-
-    .nameplayer_mini_1_3{
-        
-        left: 73px;
-    
-        
-    }
-    
-    .nameplayer_mini_3_3{
-        
-        right: 73px;
-    
-        
-    }
-
-    .nameplayer_mini_1_4{
-        
-        left: 73px;
-    
-        
-    }
-    
-    .nameplayer_mini_3_4{
-        
-        right: 73px;
-    
-        
-    }
-    
-  }
-
-  @media (min-width: 1295px) and (max-width: 1700px) {
-
-    .board3 {
-        height: 1250px;
-     }
-
-    .board4 {
-        height: 1615px;
-     }
-
-    .position_0_3{
-        
-        top: 755px;
-        
-        
-    }
-
-    .position_0_4{
-        
-        top: 1120px;
-        
-        
-    }
-
-    .river {
-        
-        top: 495px;
-    }
-
-    .river2 {
-        
-        top: 855px;
-    }
-
-    
-    .position_1_3{
-        
-        top: 110px;
-        left: 55px;
-        
-    }
-
-    .position_3_3{
-        
-        top: 110px;
-        right: 55px;
-        
-    }
-
-    .position_1_4{
-        
-        top: 465px;
-        left: 55px;
-        
-        
-    }
-
-    .position_3_4{
-        
-        top: 465px;
-        right: 55px;
-        
-        
-    }
-
-    .nameplayer_mini_1_3{
-        
-        top: 20px;
-        left: 112px;
-    
-        
-    }
-    
-    .nameplayer_mini_3_3{
-        
-        top: 20px;
-        right: 112px;
-    
-        
-    }
-
-    .nameplayer_mini_1_4{
-        
-        top: 375px;
-        left: 112px;
-    
-        
-    }
-    
-    .nameplayer_mini_3_4{
-        
-        top: 375px;
-        right: 112px;
-    
-        
-    }
-
-    
-    
-  }
-
-  @media (max-width: 1295px) {
-
-    .board3 {
-        height: 1250px;
-     }
-
-     .board4 {
-        height: 1615px;
-     }
-
-     .river {
-        
-        top: 495px;
-    }
-
-    .river2 {
-        
-        top: 855px;
-    }
-
-
-
-    .position_0_3{
-        
-        top: 755px;
-        
-        
-    }
-
-    .position_0_4{
-        
-        top: 1120px;
-        
-        
-    }
-
-
-    .position_1_3{
-        
-        top: 110px;
-        left: 10px;
-        
-        
-    }
-
-    .position_3_3{
-        
-        top: 110px;
-        right: 10px;
-        
-        
-    }
-
-    .position_1_4{
-        
-        top: 465px;
-        left: 55px;
-        
-        
-    }
-
-    .position_3_4{
-        
-        top: 465px;
-        right: 55px;
-        
-        
-    }
-
-    
-
-    .nameplayer_mini_1_3{
-        
-        top: 20px;
-        left: 67px;
-        
-    
-        
-    }
-    
-    .nameplayer_mini_3_3{
-        
-        top: 20px;
-        right: 67px;
-        
-    
-        
-    }
-
-    .nameplayer_mini_1_4{
-        
-        top: 375px;
-        left: 112px;
-    
-        
-    }
-    
-    .nameplayer_mini_3_4{
-        
-        top: 375px;
-        right: 112px;
-    
-        
-    }
-
-}
-
-/* DUEL */
-
-@media (min-width: 1295px) and (max-width: 1750px) {
-
-
-    .position_2_2_duel {
-        top: 130px;
-        left: 50%;
-        transform: translateX(-129%) rotate(135deg);
-    }
-
-    .nameplayer_mini_2_2_duel {
-        left: 50%;
-        transform: translateX(-100%) rotate(-45deg);
-    }
-    .river2_3 {
-        
-        left: 50%;
-        transform: translateX(30%) rotate(-135deg);
-    }
-}
 

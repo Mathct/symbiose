@@ -48,15 +48,24 @@ class Pending extends APP_GameClass
         $ret['title'] = clienttranslate('${actplayer} must take an action');
         $ret['titleyou'] = clienttranslate('${you} must choose a river card');
 
-        $cards = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location = 'river'", true );
+        //$cards = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location = 'river'", true );
+
+        $cards_visible = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location = 'river' AND card_visible = 1", true );
+        $cards_novisible = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location = 'river' AND card_visible = 0 ", true );
+
         $nbre = count(self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location_arg = '{$this->player_id}' AND card_visible = 1", true ));
 
         
         if($nbre < 8)
         {
-            foreach ($cards as $card)
+            foreach ($cards_visible as $card)
             {
                 $ret["selectable"][] = 'card_'.$card;
+            }
+
+            foreach ($cards_novisible as $card)
+            {
+                $ret["selectable"][] = 'card_'.$card.'_back';
             }
         }
         
@@ -68,6 +77,7 @@ class Pending extends APP_GameClass
     {
         if ($varg1 == null)
         {
+            
             if (game::$instance->getGameStateValue('scoring_mode') == 1)  // affichage score
             {
             
@@ -151,6 +161,21 @@ class Pending extends APP_GameClass
                         
                     )
                     );
+
+
+                if (str_ends_with($parg1, "back"))
+                {
+                    self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_id = '{$explode_card_river[1]}'");
+                    $cardinfo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM cards WHERE card_id = '{$explode_card_river[1]}'" );
+
+                    game::$instance->notifyAllPlayers('flip','', array(
+            
+                        'cardinfo' => $cardinfo,
+                            
+                        )
+                        );
+
+                }
                 
                 game::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1600] ); 
 
@@ -182,6 +207,23 @@ class Pending extends APP_GameClass
 
             else
             {
+
+                if (str_ends_with($parg1, "back"))
+                {
+                    self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_id = '{$explode_card_river[1]}'");
+                    $cardinfo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM cards WHERE card_id = '{$explode_card_river[1]}'" );
+
+                    game::$instance->notifyAllPlayers('flip','', array(
+            
+                        'cardinfo' => $cardinfo,
+                            
+                        )
+                        );
+
+                        game::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1600] );
+                        
+                }
+
                 game::$instance->cards->moveCard($explode_card_river[1], $position_card_mare, $this->player_id );
                 game::$instance->cards->moveCard($explode_card_mare[1], 'river', $position_card_river );
 
