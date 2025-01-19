@@ -1032,7 +1032,7 @@ notif_flip: function( notif )
 
 notif_switch: function( notif )
 {
-    const overlay = document.getElementById('overlay');
+    
     
     const element = document.getElementById(notif.args.card_river);
     element.style.zIndex = "10";
@@ -1041,6 +1041,8 @@ notif_switch: function( notif )
     const element2 = document.getElementById(notif.args.card_mare);
     element2.style.zIndex = "10";
     const target2 = document.getElementById('river_'+notif.args.position_river);
+
+    const river = document.getElementById('river');
 
     if (this.instantaneousMode) {
         // Déplacement immédiat pour le mode instantané
@@ -1051,12 +1053,14 @@ notif_switch: function( notif )
     else 
     {
 
-    
-    const parent_niv1 = element2.parentElement.id;
+    const parent_niv1 = element.parentElement.id;
     const parent_niv2 = document.getElementById(parent_niv1);
-    const parentId = parent_niv2.parentElement.id;  // = "player_cards_X"
-    
-    
+    const parentId = parent_niv2.parentElement.id;  // = "river"
+
+    const parent2_niv1 = element2.parentElement.id;
+    const parent2_niv2 = document.getElementById(parent2_niv1);
+    const parent2Id = parent2_niv2.parentElement.id;  // = "player_cards_X"
+
     const elementRect = element.getBoundingClientRect();
     const targetRect = target.getBoundingClientRect();
 
@@ -1066,55 +1070,207 @@ notif_switch: function( notif )
     const deltaX = targetRect.left - elementRect.left;
     const deltaY = targetRect.top - elementRect.top;
 
-    if(parentId == "player_cards_0")
-    {
     const deltaX2 = targetRect2.left - elementRect2.left;
     const deltaY2 = targetRect2.top - elementRect2.top;
 
-    element.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-    element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px)`;
-    }
-
-    if(parentId == "player_cards_1")
+    if(parent2Id == "player_cards_0")
     {
-
-    const globalContainer = document.getElementById(parentId);
-    const globalRect = globalContainer.getBoundingClientRect();
-
-    const angle = 90 * (Math.PI / 180); // Rotation de 90° en radians
-
-    // Position ajustée de element2 par rapport à son conteneur global
-    const adjustedX2 = Math.cos(-angle) * (elementRect2.left - globalRect.left) - Math.sin(-angle) * (elementRect2.top - globalRect.top);
-    const adjustedY2 = Math.sin(-angle) * (elementRect2.left - globalRect.left) + Math.cos(-angle) * (elementRect2.top - globalRect.top);
-
-    // Position ajustée de la cible
-    const adjustedTargetX2 = Math.cos(-angle) * (targetRect2.left - globalRect.left) - Math.sin(-angle) * (targetRect2.top - globalRect.top);
-    const adjustedTargetY2 = Math.sin(-angle) * (targetRect2.left - globalRect.left) + Math.cos(-angle) * (targetRect2.top - globalRect.top);
-
-    // Calcul du déplacement corrigé
-    const deltaX2 = adjustedTargetX2 - adjustedX2;
-    const deltaY2 = adjustedTargetY2 - adjustedY2;
     
+        if (river && river.classList.contains('river2_3'))
+        {
 
-    element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(90deg)`;
-    element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(-90deg)`;
+            
+            const globalContainer = document.getElementById(parentId);
+            const globalRect = globalContainer.getBoundingClientRect();
+
+            const angle = -135 * (Math.PI / 180); // Rotation de 90° en radians
+
+            // Position ajustée de element2 par rapport à son conteneur global
+            const adjustedX = Math.cos(-angle) * (elementRect.left - globalRect.left) - Math.sin(-angle) * (elementRect.top - globalRect.top);
+            const adjustedY = Math.sin(-angle) * (elementRect.left - globalRect.left) + Math.cos(-angle) * (elementRect.top - globalRect.top);
+
+            // Position ajustée de la cible
+            const adjustedTargetX = Math.cos(-angle) * (targetRect.left - globalRect.left) - Math.sin(-angle) * (targetRect.top - globalRect.top);
+            const adjustedTargetY = Math.sin(-angle) * (targetRect.left - globalRect.left) + Math.cos(-angle) * (targetRect.top - globalRect.top);
+
+            // Calcul du déplacement corrigé
+            const deltaX = adjustedTargetX - adjustedX;
+            const deltaY = adjustedTargetY - adjustedY;
+
+
+            element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(0deg)`;
+            element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(-135deg)`;
+            
+        }
+
+        else if (river && river.classList.contains('river2_4'))
+            {
+
+                
+                const globalContainer = document.getElementById(parentId);
+                const globalRect = globalContainer.getBoundingClientRect();
+
+                const angle = 135 * (Math.PI / 180); // Rotation de 90° en radians
+
+                // Position ajustée de element2 par rapport à son conteneur global
+                const adjustedX = Math.cos(-angle) * (elementRect.left - globalRect.left) - Math.sin(-angle) * (elementRect.top - globalRect.top);
+                const adjustedY = Math.sin(-angle) * (elementRect.left - globalRect.left) + Math.cos(-angle) * (elementRect.top - globalRect.top);
+
+                // Position ajustée de la cible
+                const adjustedTargetX = Math.cos(-angle) * (targetRect.left - globalRect.left) - Math.sin(-angle) * (targetRect.top - globalRect.top);
+                const adjustedTargetY = Math.sin(-angle) * (targetRect.left - globalRect.left) + Math.cos(-angle) * (targetRect.top - globalRect.top);
+
+                // Calcul du déplacement corrigé
+                const deltaX = adjustedTargetX - adjustedX;
+                const deltaY = adjustedTargetY - adjustedY;
+
+
+                element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(0deg)`;
+                element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(135deg)`;
+        
+            }
+
+        else
+        {
+            const deltaX2 = targetRect2.left - elementRect2.left;
+            const deltaY2 = targetRect2.top - elementRect2.top;
+
+            element.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+            element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px)`;
+
+        }
+    
     }
 
-    if(parentId == "player_cards_2")
+    if(parent2Id == "player_cards_1")
+    {
+        
+
+
+            const globalContainer2 = document.getElementById(parent2Id);
+            const globalRect2 = globalContainer2.getBoundingClientRect();
+
+            const angle = 90 * (Math.PI / 180); // Rotation de 90° en radians
+
+            // Position ajustée de element2 par rapport à son conteneur global
+            const adjustedX2 = Math.cos(-angle) * (elementRect2.left - globalRect2.left) - Math.sin(-angle) * (elementRect2.top - globalRect2.top);
+            const adjustedY2 = Math.sin(-angle) * (elementRect2.left - globalRect2.left) + Math.cos(-angle) * (elementRect2.top - globalRect2.top);
+
+            // Position ajustée de la cible
+            const adjustedTargetX2 = Math.cos(-angle) * (targetRect2.left - globalRect2.left) - Math.sin(-angle) * (targetRect2.top - globalRect2.top);
+            const adjustedTargetY2 = Math.sin(-angle) * (targetRect2.left - globalRect2.left) + Math.cos(-angle) * (targetRect2.top - globalRect2.top);
+
+            // Calcul du déplacement corrigé
+            const deltaX2 = adjustedTargetX2 - adjustedX2;
+            const deltaY2 = adjustedTargetY2 - adjustedY2;
+            
+
+            element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(90deg)`;
+            element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(-90deg)`;
+       
+    }
+
+    if(parent2Id == "player_cards_2")
         {
+
+            if (river && river.classList.contains('river2_3'))
+                {   
+                    const globalContainer = document.getElementById(parentId);
+                    const globalRect = globalContainer.getBoundingClientRect();
+        
+                    const angle = -135 * (Math.PI / 180); // Rotation de 90° en radians
+        
+                    // Position ajustée de element2 par rapport à son conteneur global
+                    const adjustedX = Math.cos(-angle) * (elementRect.left - globalRect.left) - Math.sin(-angle) * (elementRect.top - globalRect.top);
+                    const adjustedY = Math.sin(-angle) * (elementRect.left - globalRect.left) + Math.cos(-angle) * (elementRect.top - globalRect.top);
+        
+                    // Position ajustée de la cible
+                    const adjustedTargetX = Math.cos(-angle) * (targetRect.left - globalRect.left) - Math.sin(-angle) * (targetRect.top - globalRect.top);
+                    const adjustedTargetY = Math.sin(-angle) * (targetRect.left - globalRect.left) + Math.cos(-angle) * (targetRect.top - globalRect.top);
+        
+                    // Calcul du déplacement corrigé
+                    const deltaX = adjustedTargetX - adjustedX;
+                    const deltaY = adjustedTargetY - adjustedY;
+        
+                    const globalContainer2 = document.getElementById(parent2Id);
+                    const globalRect2 = globalContainer2.getBoundingClientRect();
+        
+                    const angle2 = 135 * (Math.PI / 180); // Rotation de 90° en radians
+        
+                    // Position ajustée de element2 par rapport à son conteneur global
+                    const adjustedX2 = Math.cos(-angle2) * (elementRect2.left - globalRect2.left) - Math.sin(-angle2) * (elementRect2.top - globalRect2.top);
+                    const adjustedY2 = Math.sin(-angle2) * (elementRect2.left - globalRect2.left) + Math.cos(-angle2) * (elementRect2.top - globalRect2.top);
+        
+                    // Position ajustée de la cible
+                    const adjustedTargetX2 = Math.cos(-angle2) * (targetRect2.left - globalRect2.left) - Math.sin(-angle2) * (targetRect2.top - globalRect2.top);
+                    const adjustedTargetY2 = Math.sin(-angle2) * (targetRect2.left - globalRect2.left) + Math.cos(-angle2) * (targetRect2.top - globalRect2.top);
+        
+                    // Calcul du déplacement corrigé
+                    const deltaX2 = adjustedTargetX2 - adjustedX2;
+                    const deltaY2 = adjustedTargetY2 - adjustedY2;
+        
+                    element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(135deg)`;
+                    element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(-135deg)`;
+        
+                }
+        
+                else if (river && river.classList.contains('river2_4'))
+                {
+
+                    const globalContainer = document.getElementById(parentId);
+                    const globalRect = globalContainer.getBoundingClientRect();
+        
+                    const angle = 135 * (Math.PI / 180); // Rotation de 90° en radians
+        
+                    // Position ajustée de element2 par rapport à son conteneur global
+                    const adjustedX = Math.cos(-angle) * (elementRect.left - globalRect.left) - Math.sin(-angle) * (elementRect.top - globalRect.top);
+                    const adjustedY = Math.sin(-angle) * (elementRect.left - globalRect.left) + Math.cos(-angle) * (elementRect.top - globalRect.top);
+        
+                    // Position ajustée de la cible
+                    const adjustedTargetX = Math.cos(-angle) * (targetRect.left - globalRect.left) - Math.sin(-angle) * (targetRect.top - globalRect.top);
+                    const adjustedTargetY = Math.sin(-angle) * (targetRect.left - globalRect.left) + Math.cos(-angle) * (targetRect.top - globalRect.top);
+        
+                    // Calcul du déplacement corrigé
+                    const deltaX = adjustedTargetX - adjustedX;
+                    const deltaY = adjustedTargetY - adjustedY;
+        
+                    const globalContainer2 = document.getElementById(parent2Id);
+                    const globalRect2 = globalContainer2.getBoundingClientRect();
+        
+                    const angle2 = -135 * (Math.PI / 180); // Rotation de 90° en radians
+        
+                    // Position ajustée de element2 par rapport à son conteneur global
+                    const adjustedX2 = Math.cos(-angle2) * (elementRect2.left - globalRect2.left) - Math.sin(-angle2) * (elementRect2.top - globalRect2.top);
+                    const adjustedY2 = Math.sin(-angle2) * (elementRect2.left - globalRect2.left) + Math.cos(-angle2) * (elementRect2.top - globalRect2.top);
+        
+                    // Position ajustée de la cible
+                    const adjustedTargetX2 = Math.cos(-angle2) * (targetRect2.left - globalRect2.left) - Math.sin(-angle2) * (targetRect2.top - globalRect2.top);
+                    const adjustedTargetY2 = Math.sin(-angle2) * (targetRect2.left - globalRect2.left) + Math.cos(-angle2) * (targetRect2.top - globalRect2.top);
+        
+                    // Calcul du déplacement corrigé
+                    const deltaX2 = adjustedTargetX2 - adjustedX2;
+                    const deltaY2 = adjustedTargetY2 - adjustedY2;
+        
+                    element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(-135deg)`;
+                    element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(135deg)`;
+        
+                }
+
+                else
+                {
     
-        const globalContainer = document.getElementById(parentId);
-        const globalRect = globalContainer.getBoundingClientRect();
+        const globalContainer2 = document.getElementById(parent2Id);
+        const globalRect2 = globalContainer2.getBoundingClientRect();
     
         const angle = 180 * (Math.PI / 180); // Rotation de 90° en radians
     
         // Position ajustée de element2 par rapport à son conteneur global
-        const adjustedX2 = Math.cos(-angle) * (elementRect2.left - globalRect.left) - Math.sin(-angle) * (elementRect2.top - globalRect.top);
-        const adjustedY2 = Math.sin(-angle) * (elementRect2.left - globalRect.left) + Math.cos(-angle) * (elementRect2.top - globalRect.top);
+        const adjustedX2 = Math.cos(-angle) * (elementRect2.left - globalRect2.left) - Math.sin(-angle) * (elementRect2.top - globalRect2.top);
+        const adjustedY2 = Math.sin(-angle) * (elementRect2.left - globalRect2.left) + Math.cos(-angle) * (elementRect2.top - globalRect2.top);
     
         // Position ajustée de la cible
-        const adjustedTargetX2 = Math.cos(-angle) * (targetRect2.left - globalRect.left) - Math.sin(-angle) * (targetRect2.top - globalRect.top);
-        const adjustedTargetY2 = Math.sin(-angle) * (targetRect2.left - globalRect.left) + Math.cos(-angle) * (targetRect2.top - globalRect.top);
+        const adjustedTargetX2 = Math.cos(-angle) * (targetRect2.left - globalRect2.left) - Math.sin(-angle) * (targetRect2.top - globalRect2.top);
+        const adjustedTargetY2 = Math.sin(-angle) * (targetRect2.left - globalRect2.left) + Math.cos(-angle) * (targetRect2.top - globalRect2.top);
     
         // Calcul du déplacement corrigé
         const deltaX2 = adjustedTargetX2 - adjustedX2;
@@ -1123,23 +1279,25 @@ notif_switch: function( notif )
     
         element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(180deg)`;
         element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(-180deg)`;
+
+                }
         }
 
-    if(parentId == "player_cards_3")
+    if(parent2Id == "player_cards_3")
     {
 
-    const globalContainer = document.getElementById(parentId);
-    const globalRect = globalContainer.getBoundingClientRect();
+    const globalContainer2 = document.getElementById(parent2Id);
+    const globalRect2 = globalContainer2.getBoundingClientRect();
 
     const angle = -90 * (Math.PI / 180); // Rotation de 90° en radians
 
     // Position ajustée de element2 par rapport à son conteneur global
-    const adjustedX2 = Math.cos(-angle) * (elementRect2.left - globalRect.left) - Math.sin(-angle) * (elementRect2.top - globalRect.top);
-    const adjustedY2 = Math.sin(-angle) * (elementRect2.left - globalRect.left) + Math.cos(-angle) * (elementRect2.top - globalRect.top);
+    const adjustedX2 = Math.cos(-angle) * (elementRect2.left - globalRect2.left) - Math.sin(-angle) * (elementRect2.top - globalRect2.top);
+    const adjustedY2 = Math.sin(-angle) * (elementRect2.left - globalRect2.left) + Math.cos(-angle) * (elementRect2.top - globalRect2.top);
 
     // Position ajustée de la cible
-    const adjustedTargetX2 = Math.cos(-angle) * (targetRect2.left - globalRect.left) - Math.sin(-angle) * (targetRect2.top - globalRect.top);
-    const adjustedTargetY2 = Math.sin(-angle) * (targetRect2.left - globalRect.left) + Math.cos(-angle) * (targetRect2.top - globalRect.top);
+    const adjustedTargetX2 = Math.cos(-angle) * (targetRect2.left - globalRect2.left) - Math.sin(-angle) * (targetRect2.top - globalRect2.top);
+    const adjustedTargetY2 = Math.sin(-angle) * (targetRect2.left - globalRect2.left) + Math.cos(-angle) * (targetRect2.top - globalRect2.top);
 
     // Calcul du déplacement corrigé
     const deltaX2 = adjustedTargetX2 - adjustedX2;

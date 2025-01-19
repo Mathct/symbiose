@@ -77,7 +77,45 @@ class Pending extends APP_GameClass
     {
         if ($varg1 == null)
         {
-            
+            $nbreplayers = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
+
+            if($nbreplayers == 2)
+            {
+                if(game::$instance->gamestate->table_globals[101] == 1)
+                {
+
+                    $list = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location ='river' AND card_visible = 0", true );
+                    $nbrelist = count ($list);
+
+                    if ($nbrelist >= 1)
+
+                    {
+
+                        foreach ($list as $card)
+                        {
+
+                            self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_id = '{$card}'");
+                            $cardinfo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM cards WHERE card_id = '{$card}'" );
+        
+                            game::$instance->notifyAllPlayers('flip','', array(
+                    
+                                'cardinfo' => $cardinfo,
+                                    
+                                )
+                                );
+                        }
+
+                        game::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1600] );
+
+
+                    }
+
+                   
+                  
+
+                }
+            }
+
             if (game::$instance->getGameStateValue('scoring_mode') == 1)  // affichage score
             {
             
@@ -303,6 +341,8 @@ class Pending extends APP_GameClass
         {
             game::$instance->Score();
         }
+
+        game::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1600] );
 
         game::$instance->giveExtraTime($this->player_id);
         game::$instance->addPendingFirst($this->player_id, "NormalTurn");
