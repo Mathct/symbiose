@@ -51,15 +51,19 @@
  }
 
  .board2 {
-    height: 1110px;
+    height: 1150px;
+ }
+
+ .board2_1 {
+    height: 1175px;
  }
 
  .board3 {
-    height: 770px;
+    height: 1000px;
  }
 
  .board4 {
-    height: 1140px;
+    height: 1345px;
  }
 
  .scorepad{
@@ -93,7 +97,7 @@
    position: absolute;
     height: 245px;
     width: 650px;
-    top: 10px;
+    top: 140px;
     left: 50%;
     transform: translateX(-50%);
     background-color: rgba(255, 255, 255, 0.5);
@@ -107,7 +111,7 @@
     position: absolute;
     height: 245px;
     width: 650px;
-     top: 375px;
+     top: 470px;
      left: 50%;
      transform: translateX(-50%);
      background-color: rgba(255, 255, 255, 0.5);
@@ -121,7 +125,7 @@
     position: absolute;
      height: 245px;
      width: 650px;
-     top: 365px;
+     top: 380px;
      left: 50%;
      transform: translateX(-50%);
      background-color: rgba(255, 255, 255, 0.5);
@@ -227,7 +231,7 @@
     width: 310px;
     display: flex;
     justify-content: center;
-    top: 425px;
+    top: 340px;
     left: 50%;
     transform: translateX(-209%);
     
@@ -305,7 +309,7 @@
     width: 310px;
     display: flex;
     justify-content: center;
-    top: 425px;
+    top: 340px;
     left: 50%;
     transform: translateX(108%);
     
@@ -398,14 +402,20 @@
     transform: translateX(-50%);
 }
 
+.position_0_2_1{
+    top: 650px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .position_0_3{
-    top: 270px;
+    top: 480px;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .position_0_4{
-    top: 640px;
+    top: 820px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -419,7 +429,7 @@
 }
 
 .position_1_4{
-    top: 515px;
+    top: 435px;
     /*left: 93px;
     transform: rotate(90deg);*/
     left: 50%;
@@ -462,7 +472,7 @@
 }
 
 .position_3_4{
-    top: 515px;
+    top: 435px;
     /*right: 93px;*/
     left: 50%;
     transform: translateX(65%) rotate(-90deg);

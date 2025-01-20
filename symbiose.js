@@ -355,7 +355,7 @@ createBoard: function() {
     
     if ((this.gamedatas.nbre_players == 2)&&(this.gamedatas.game_mode == 2))
     {
-        parent.className = "board2";
+        parent.className = "board2_1";
 
             const Playercards0 = document.createElement("div");
             Playercards0.id = "player_cards_0";
@@ -376,9 +376,7 @@ createBoard: function() {
         
             parent.appendChild(Playercards0);
     
-            const Playercards1_name = document.createElement("div");
-            const Playercards1 = document.createElement("div");
-            
+                     
             
     
             const Playercards2_name = document.createElement("div");
@@ -407,7 +405,7 @@ createBoard: function() {
 
 
                 
-            dojo.query("#player_cards_0").addClass("position_0_2");
+            dojo.query("#player_cards_0").addClass("position_0_2_1");
             dojo.query("#player_cards_2").addClass("position_2_2");
             
 
