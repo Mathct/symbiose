@@ -1,6 +1,6 @@
 {
     "100": {
-        "name": "Scoring - Game Mode",
+        "name": "Scoring Mode",
         "values": {
             "1": {
                 "name": "Normal", 
@@ -9,21 +9,21 @@
             },
 
             "2": {
-                "name": "Beginners", 
-                "tmdisplay": "Beginners Scoring", 
+                "name": "Beginner", 
+                "tmdisplay": "Beginner Scoring", 
                 "description": "Scores are displayed in real time"
             }   
                 
         },
         
         
-        "default": 1
+        "default": 2
               
     },
     
 
     "101": {
-        "name": "2 vs 2 - Game Mode",
+        "name": "1 vs 1 - Game Mode",
         "values": {
             "1": {
                 "name": "Duel", 
