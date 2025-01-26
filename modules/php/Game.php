@@ -239,9 +239,34 @@ return $result;
 
 public function getGameProgression()
 {
-// TODO: compute and return the game progression
+    $count = array();
+    $players = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+    $nbreplayers = count($players);
 
-return 0;
+    foreach($players as $player)
+    {
+        $count[] = count(self::getObjectListFromDB( "SELECT card_id id FROM cards WHERE card_location_arg = '{$player}' AND card_visible = 1", true ));
+    }
+
+    $min = min($count);
+
+    if ($nbreplayers == 2)
+    {
+        return floor(2*$min * 100 / 16);
+    }
+
+    if ($nbreplayers == 3)
+    {
+        return floor(3*$min * 100 / 24);
+    }
+
+    if ($nbreplayers == 4)
+    {
+        return floor(4*$min * 100 / 32);
+    }
+
+
+
 }
 
 
