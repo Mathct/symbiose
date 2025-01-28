@@ -51,7 +51,7 @@
  }
 
  .board2 {
-    height: 1150px;
+    height: 1030px;
  }
 
  .board2_1 {
@@ -139,14 +139,14 @@
     position: absolute;
      height: 330px;
      width: 450px;
-     top: 120px;
+     top: 65px;
      
     
      background-color: rgba(255, 255, 255, 0.5);
      border-radius: 8px;
      border: 2px solid white;
      left: 50%;
-     transform: translateX(30%) rotate(-135deg);
+     transform: translateX(30%) rotate(-90deg);
      
  
  }
@@ -155,14 +155,14 @@
     position: absolute;
      height: 330px;
      width: 450px;
-     top: 120px;
+     top: 65px;
      
     
      background-color: rgba(255, 255, 255, 0.5);
      border-radius: 8px;
      border: 2px solid white;
      left: 50%;
-     transform: translateX(-129%) rotate(135deg);
+     transform: translateX(-129%) rotate(90deg);
      
  
  }
@@ -257,12 +257,12 @@
     position: absolute;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 10px;
-    width: 430px;
+    width: 310px;
     display: flex;
     justify-content: center;
-    top: 402px;
+    top: 460px;
     left: 50%;
-    transform: translateX(-100%) rotate(-45deg);
+    transform: translateX(-160%);
     
     
     
@@ -273,12 +273,12 @@
     position: absolute;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 10px;
-    width: 430px;
+    width: 310px;
     display: flex;
     justify-content: center;
-    top: 400px;
+    top: 460px;
     left: 50%;
-    transform: translateX(0%) rotate(45deg);
+    transform: translateX(60%);
     
     
     
@@ -397,7 +397,7 @@
 /* POSITIONS */
 
 .position_0_2{
-    top: 620px;
+    top: 500px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -443,16 +443,16 @@
 }
 
 .position_2_2_duel{
-    top: 130px;
+    top: 80px;
     left: 50%;
-     transform: translateX(-129%) rotate(135deg);
+     transform: translateX(-129%) rotate(90deg);
     
 }
 
 .position_2_2_duel_2{
-    top: 130px;
+    top: 80px;
     left: 50%;
-     transform: translateX(30%) rotate(-135deg);
+     transform: translateX(30%) rotate(-90deg);
     
 }
 

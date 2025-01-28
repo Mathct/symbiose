@@ -145,9 +145,10 @@ class Pending extends APP_GameClass
                         )
                         );
 
+                        game::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1600] );
                 }
                 
-            game::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1600] );
+            
             
             game::$instance->addPending($this->player_id, "Step2", $varg1);
         }

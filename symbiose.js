@@ -1095,7 +1095,7 @@ notif_switch: function( notif )
             const globalContainer = document.getElementById(parentId);
             const globalRect = globalContainer.getBoundingClientRect();
 
-            const angle = -135 * (Math.PI / 180); // Rotation de 90° en radians
+            const angle = -90 * (Math.PI / 180); // Rotation de 90° en radians
 
             // Position ajustée de element2 par rapport à son conteneur global
             const adjustedX = Math.cos(-angle) * (elementRect.left - globalRect.left) - Math.sin(-angle) * (elementRect.top - globalRect.top);
@@ -1111,7 +1111,7 @@ notif_switch: function( notif )
 
 
             element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(0deg)`;
-            element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(-135deg)`;
+            element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(90deg)`;
             
         }
 
@@ -1122,7 +1122,7 @@ notif_switch: function( notif )
                 const globalContainer = document.getElementById(parentId);
                 const globalRect = globalContainer.getBoundingClientRect();
 
-                const angle = 135 * (Math.PI / 180); // Rotation de 90° en radians
+                const angle = 90 * (Math.PI / 180); // Rotation de 90° en radians
 
                 // Position ajustée de element2 par rapport à son conteneur global
                 const adjustedX = Math.cos(-angle) * (elementRect.left - globalRect.left) - Math.sin(-angle) * (elementRect.top - globalRect.top);
@@ -1138,7 +1138,7 @@ notif_switch: function( notif )
 
 
                 element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(0deg)`;
-                element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(135deg)`;
+                element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(-90deg)`;
         
             }
 
@@ -1190,7 +1190,7 @@ notif_switch: function( notif )
                     const globalContainer = document.getElementById(parentId);
                     const globalRect = globalContainer.getBoundingClientRect();
         
-                    const angle = -135 * (Math.PI / 180); // Rotation de 90° en radians
+                    const angle = -90 * (Math.PI / 180); // Rotation de 90° en radians
         
                     // Position ajustée de element2 par rapport à son conteneur global
                     const adjustedX = Math.cos(-angle) * (elementRect.left - globalRect.left) - Math.sin(-angle) * (elementRect.top - globalRect.top);
@@ -1207,7 +1207,7 @@ notif_switch: function( notif )
                     const globalContainer2 = document.getElementById(parent2Id);
                     const globalRect2 = globalContainer2.getBoundingClientRect();
         
-                    const angle2 = 135 * (Math.PI / 180); // Rotation de 90° en radians
+                    const angle2 = 90 * (Math.PI / 180); // Rotation de 90° en radians
         
                     // Position ajustée de element2 par rapport à son conteneur global
                     const adjustedX2 = Math.cos(-angle2) * (elementRect2.left - globalRect2.left) - Math.sin(-angle2) * (elementRect2.top - globalRect2.top);
@@ -1221,8 +1221,8 @@ notif_switch: function( notif )
                     const deltaX2 = adjustedTargetX2 - adjustedX2;
                     const deltaY2 = adjustedTargetY2 - adjustedY2;
         
-                    element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(135deg)`;
-                    element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(-135deg)`;
+                    element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(90deg)`;
+                    element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(-90deg)`;
         
                 }
         
@@ -1232,7 +1232,7 @@ notif_switch: function( notif )
                     const globalContainer = document.getElementById(parentId);
                     const globalRect = globalContainer.getBoundingClientRect();
         
-                    const angle = 135 * (Math.PI / 180); // Rotation de 90° en radians
+                    const angle = 90 * (Math.PI / 180); // Rotation de 90° en radians
         
                     // Position ajustée de element2 par rapport à son conteneur global
                     const adjustedX = Math.cos(-angle) * (elementRect.left - globalRect.left) - Math.sin(-angle) * (elementRect.top - globalRect.top);
@@ -1249,7 +1249,7 @@ notif_switch: function( notif )
                     const globalContainer2 = document.getElementById(parent2Id);
                     const globalRect2 = globalContainer2.getBoundingClientRect();
         
-                    const angle2 = -135 * (Math.PI / 180); // Rotation de 90° en radians
+                    const angle2 = -90 * (Math.PI / 180); // Rotation de 90° en radians
         
                     // Position ajustée de element2 par rapport à son conteneur global
                     const adjustedX2 = Math.cos(-angle2) * (elementRect2.left - globalRect2.left) - Math.sin(-angle2) * (elementRect2.top - globalRect2.top);
@@ -1263,8 +1263,8 @@ notif_switch: function( notif )
                     const deltaX2 = adjustedTargetX2 - adjustedX2;
                     const deltaY2 = adjustedTargetY2 - adjustedY2;
         
-                    element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(-135deg)`;
-                    element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(135deg)`;
+                    element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(-90deg)`;
+                    element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(90deg)`;
         
                 }
 
