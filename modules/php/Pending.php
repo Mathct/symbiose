@@ -181,6 +181,10 @@ class Pending extends APP_GameClass
 
         $ret["selected"][] = $parg1;
 
+        $explode = explode('_', $parg1);
+        $ret["selected"][] = 'card_'.$explode[1];
+
+
         if (!str_ends_with($parg1, "back"))
         {
         $ret['buttons'][]='cancel';
