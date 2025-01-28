@@ -151,8 +151,8 @@ onEnteringState: function( stateName, args )
 {
     console.log( 'Entering state: '+stateName, args );
 
-    dojo.query(".selectable").removeClass("selectable");
-    dojo.query(".selected").removeClass("selected");
+    //dojo.query(".selectable").removeClass("selectable");
+    //dojo.query(".selected").removeClass("selected");
     
     
     
@@ -227,6 +227,9 @@ onEnteringState: function( stateName, args )
 onLeavingState: function( stateName )
 {
     console.log( 'Leaving state: '+stateName );
+
+    dojo.query(".selectable").removeClass("selectable");
+    dojo.query(".selected").removeClass("selected");
     
     switch( stateName )
     {
@@ -809,7 +812,7 @@ createBoard: function() {
 addCard: function( id, type, location, location_arg, visible, rotate=0, scalable=1 )  
 {
 
-    if( visible == 0)
+    if(( visible == 0)||( visible == 2))
     {
         dojo.place( this.format_block( 'jstpl_cardback', {
             id: id,
@@ -818,6 +821,12 @@ addCard: function( id, type, location, location_arg, visible, rotate=0, scalable
         } ) , location+'_'+location_arg );
 
         dojo.query("#card_"+id+"_back").connect('onclick', this, 'onSelect' )
+
+        if((visible == 2)&&(location_arg == this.getCurrentPlayerId()))
+        {
+            
+            dojo.query("#card_"+id+"_back").addClass("selected");
+        }
 
     }
 
@@ -998,6 +1007,11 @@ notif_firstcard: function( notif )
     for( var index in notif.args.cards)
     {
         dojo.query("#card_"+notif.args.cards[index]+"_back").removeClass("selectable");
+
+        if (notif.args.player == this.getCurrentPlayerId())
+        {
+            dojo.query("#card_"+notif.args.cardid+"_back").addClass("selected");
+        }
     }
    
     

@@ -1138,26 +1138,48 @@ public function actSelect(string $arg1)
         $explode = explode('_', $arg1);
         $player_id = $this->getCurrentPlayerId(); // CURRENT!!! not active
         $name = self::getUniqueValueFromDB("SELECT player_name FROM player WHERE player_id={$player_id}");
-        self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_id = '{$explode[1]}'");
+        self::DbQuery("UPDATE cards set card_visible = 2 WHERE card_id = '{$explode[1]}'");
 
         $cards = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location_arg = '{$player_id}'", true );
     
         game::$instance->notifyAllPlayers('firstcard',clienttranslate('${player_name} flips the first card'), array(
             'player_name' => $name, 
             'cards' => $cards,
+            'player' => $player_id,
+            'cardid' => $explode[1],
              
             )
             );
 
-        $cardinfo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM cards WHERE card_id = '{$explode[1]}'" );
+        $nbreplayers = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
+        $cards = self::getObjectListFromDB( "SELECT card_id id FROM cards WHERE card_visible = 2", true );
+        $nbrecard = count($cards);
 
-        game::$instance->notifyAllPlayers('flip','', array(
-            
-            'cardinfo' => $cardinfo,
-                
-            )
-            );
-        game::$instance->Score();
+        if($nbrecard == $nbreplayers)
+        {
+            foreach($cards as $card)
+            {
+                self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_id = '{$card}'");
+
+        
+                $cardinfo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM cards WHERE card_id = '{$card}'" );
+
+                game::$instance->notifyAllPlayers('flip','', array(
+                    
+                    'cardinfo' => $cardinfo,
+                        
+                    )
+                    );
+        
+             }
+
+            game::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1600] );
+            game::$instance->Score();
+
+        }
+
+
+        
         $this->giveExtraTime($this->getCurrentPlayerId());
         $this->gamestate->setPlayerNonMultiactive($player_id, 'next'); // desactivation player et redirection vers next quand tous les joueurs seront desactivés
     }
@@ -1313,8 +1335,10 @@ else
 
 public function st_MultiPlayerActivation() 
 {
+ 
+    
     game::$instance->gamestate->setAllPlayersMultiactive();
-    //game::$instance->gamestate->nextState('next');
+   
     
 }
 
