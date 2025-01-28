@@ -432,10 +432,13 @@ createBoard: function() {
             parent.className = "board2";
     
             var current_id = this.getCurrentPlayerId();
+            if(!this.isSpectator)
+            {
             var ordre = this.gamedatas.players[current_id].no;
+            }
 
             
-            if (ordre == 1)
+            if ((ordre == 1)||(this.isSpectator))
             {
 
                 const Playercards0 = document.createElement("div");
@@ -497,7 +500,7 @@ createBoard: function() {
 
                 River_name.innerHTML = 
                 `
-                <div class="nameplayer_river_1" style="color: white; border: 1px solid white;">${TexteRiver}</div>
+                <div class="nameplayer_river_1" style="color: #024573; border: 1px solid #024573;">${TexteRiver}</div>
                 `;
     
                 River.innerHTML = 
@@ -580,7 +583,7 @@ createBoard: function() {
 
                     River_name.innerHTML = 
                         `
-                        <div class="nameplayer_river_2" style="color: white; border: 1px solid white;">${TexteRiver}</div>
+                        <div class="nameplayer_river_2" style="color: #024573; border: 1px solid #024573;">${TexteRiver}</div>
                         `;
         
                     River.innerHTML = 
