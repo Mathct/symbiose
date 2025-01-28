@@ -131,6 +131,24 @@ class Pending extends APP_GameClass
         }
         else
         {
+            $explode_card_river = explode('_', $varg1);
+
+            if (str_ends_with($varg1, "back"))
+                {
+                    self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_id = '{$explode_card_river[1]}'");
+                    $cardinfo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM cards WHERE card_id = '{$explode_card_river[1]}'" );
+
+                    game::$instance->notifyAllPlayers('flip','', array(
+            
+                        'cardinfo' => $cardinfo,
+                            
+                        )
+                        );
+
+                }
+                
+            game::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1600] );
+            
             game::$instance->addPending($this->player_id, "Step2", $varg1);
         }
         
@@ -162,7 +180,10 @@ class Pending extends APP_GameClass
 
         $ret["selected"][] = $parg1;
 
+        if (!str_ends_with($parg1, "back"))
+        {
         $ret['buttons'][]='cancel';
+        }
 
 
         
@@ -201,7 +222,7 @@ class Pending extends APP_GameClass
                     );
 
 
-                if (str_ends_with($parg1, "back"))
+                /*if (str_ends_with($parg1, "back"))
                 {
                     self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_id = '{$explode_card_river[1]}'");
                     $cardinfo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM cards WHERE card_id = '{$explode_card_river[1]}'" );
@@ -213,7 +234,7 @@ class Pending extends APP_GameClass
                         )
                         );
 
-                }
+                }*/
                 
                 game::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1600] ); 
 
