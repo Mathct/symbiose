@@ -428,6 +428,7 @@ createBoard: function() {
 
     if ((this.gamedatas.nbre_players == 2)&&(this.gamedatas.game_mode == 1))
         {
+            var TexteRiver = _("River");
             parent.className = "board2";
     
             var current_id = this.getCurrentPlayerId();
@@ -488,11 +489,16 @@ createBoard: function() {
                 dojo.query("#player_cards_0").addClass("position_0_2");
                 dojo.query("#player_cards_2").addClass("position_2_2_duel");
                 
-    
+                const River_name = document.createElement("div");
     
                 const River = document.createElement("div");
                 River.id = "river";
                 River.className = "river2_3";
+
+                River_name.innerHTML = 
+                `
+                <div class="nameplayer_river_1" style="color: white; border: 1px solid white;">${TexteRiver}</div>
+                `;
     
                 River.innerHTML = 
                 `<div id="river_1" class="card_position_mini" style="left: 10px; top: 10px;"></div>
@@ -504,6 +510,7 @@ createBoard: function() {
                 <div id="river_7" class="card_position_mini" style="left: 230px; top: 170px;"></div>
                 <div id="river_8" class="card_position_mini" style="left: 340px; top: 170px;"></div>`;
 
+                parent.appendChild(River_name);
                 parent.appendChild(River);
 
             }
@@ -565,11 +572,16 @@ createBoard: function() {
                     dojo.query("#player_cards_0").addClass("position_0_2");
                     dojo.query("#player_cards_2").addClass("position_2_2_duel_2");
                     
-        
+                    const River_name = document.createElement("div");
         
                     const River = document.createElement("div");
                     River.id = "river";
                     River.className = "river2_4";
+
+                    River_name.innerHTML = 
+                        `
+                        <div class="nameplayer_river_2" style="color: white; border: 1px solid white;">${TexteRiver}</div>
+                        `;
         
                     River.innerHTML = 
                     `<div id="river_1" class="card_position_mini" style="left: 10px; top: 10px;"></div>
@@ -581,6 +593,7 @@ createBoard: function() {
                     <div id="river_7" class="card_position_mini" style="left: 230px; top: 170px;"></div>
                     <div id="river_8" class="card_position_mini" style="left: 340px; top: 170px;"></div>`;
     
+                    parent.appendChild(River_name);
                     parent.appendChild(River);
     
                 }

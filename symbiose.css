@@ -269,7 +269,7 @@ body {
     width: 310px;
     display: flex;
     justify-content: center;
-    top: 460px;
+    top: 465px;
     left: 50%;
     transform: translateX(-160%);
     
@@ -285,9 +285,41 @@ body {
     width: 310px;
     display: flex;
     justify-content: center;
-    top: 460px;
+    top: 465px;
     left: 50%;
     transform: translateX(60%);
+    
+    
+    
+    
+}
+
+.nameplayer_river_1{
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    width: 310px;
+    display: flex;
+    justify-content: center;
+    top: 465px;
+    left: 50%;
+    transform: translateX(66%);
+    
+    
+    
+    
+}
+
+.nameplayer_river_2{
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    width: 310px;
+    display: flex;
+    justify-content: center;
+    top: 465px;
+    left: 50%;
+    transform: translateX(-165%);
     
     
     
