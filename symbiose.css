@@ -44,6 +44,15 @@
 
 /*BASE*/
 
+body {
+    background-image: url('img/symbiose-background.jpg');
+    background-repeat: repeat;
+    background-size: 895px 597px;
+    
+  }
+
+
+
  #board {
     position: relative;
     width: 100%;
