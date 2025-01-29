@@ -365,7 +365,7 @@ createBoard: function() {
             Playercards0.className = "player_cards";
             Playercards0.innerHTML = 
                                 `
-                                <div class="nameplayer" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color}; left: 0px; top: 0px; border: 1px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].name}</div>
+                                <div class="nameplayer" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color}; left: 0px; top: 0px; border-top: 2px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].name}</div>
                                 <div id="cardposition_1_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 0px; top: 30px;"></div>
                                 <div id="cardposition_2_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 160px; top: 30px;"></div>
                                 <div id="cardposition_3_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 320px; top: 30px;"></div>
@@ -388,7 +388,7 @@ createBoard: function() {
             Playercards2.className = "player_cards_mini";
             Playercards2_name.innerHTML = 
                                 `
-                                <div class="nameplayer_mini_2_2" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color}; border: 1px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].name}</div>
+                                <div class="nameplayer_mini_2_2" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color}; border-top: 2px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].name}</div>
                                 `;
             Playercards2.innerHTML = 
                                 `
@@ -446,7 +446,7 @@ createBoard: function() {
                 Playercards0.className = "player_cards";
                 Playercards0.innerHTML = 
                                     `
-                                    <div class="nameplayer" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color}; left: 0px; top: 0px; border: 1px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].name}</div>
+                                    <div class="nameplayer" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color}; left: 0px; top: 0px; border-top: 2px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].name}</div>
                                     <div id="cardposition_1_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 0px; top: 30px;"></div>
                                     <div id="cardposition_2_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 160px; top: 30px;"></div>
                                     <div id="cardposition_3_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 320px; top: 30px;"></div>
@@ -469,7 +469,7 @@ createBoard: function() {
                 Playercards2.className = "player_cards_mini";
                 Playercards2_name.innerHTML = 
                                     `
-                                    <div class="nameplayer_mini_2_2_duel" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color}; border: 1px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].name}</div>
+                                    <div class="nameplayer_mini_2_2_duel" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color}; border-top: 2px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].name}</div>
                                     `;
                 Playercards2.innerHTML = 
                                     `
@@ -500,7 +500,7 @@ createBoard: function() {
 
                 River_name.innerHTML = 
                 `
-                <div class="nameplayer_river_1" style="color: #024573; border: 1px solid #024573;">${TexteRiver}</div>
+                <div class="nameplayer_river_1" style="color: #024573; border-top: 2px solid #024573;">${TexteRiver}</div>
                 `;
     
                 River.innerHTML = 
@@ -528,7 +528,7 @@ createBoard: function() {
                     Playercards0.className = "player_cards";
                     Playercards0.innerHTML = 
                                         `
-                                        <div class="nameplayer" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color}; left: 0px; top: 0px; border: 1px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].name}</div>
+                                        <div class="nameplayer" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color}; left: 0px; top: 0px; border-top: 2px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].name}</div>
                                         <div id="cardposition_1_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 0px; top: 30px;"></div>
                                         <div id="cardposition_2_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 160px; top: 30px;"></div>
                                         <div id="cardposition_3_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 320px; top: 30px;"></div>
@@ -552,7 +552,7 @@ createBoard: function() {
                     Playercards2.className = "player_cards_mini";
                     Playercards2_name.innerHTML = 
                                         `
-                                        <div class="nameplayer_mini_2_2_duel_2" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color}; border: 1px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].name}</div>
+                                        <div class="nameplayer_mini_2_2_duel_2" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color}; border-top: 2px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].name}</div>
                                         `;
                     Playercards2.innerHTML = 
                                         `
@@ -583,7 +583,7 @@ createBoard: function() {
 
                     River_name.innerHTML = 
                         `
-                        <div class="nameplayer_river_2" style="color: #024573; border: 1px solid #024573;">${TexteRiver}</div>
+                        <div class="nameplayer_river_2" style="color: #024573; border-top: 2px solid #024573;">${TexteRiver}</div>
                         `;
         
                     River.innerHTML = 
@@ -614,7 +614,7 @@ createBoard: function() {
         Playercards0.className = "player_cards";
         Playercards0.innerHTML = 
                             `
-                            <div class="nameplayer" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color}; left: 0px; top: 0px; border: 1px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].name}</div>
+                            <div class="nameplayer" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color}; left: 0px; top: 0px; border-top: 2px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].name}</div>
                             <div id="cardposition_1_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 0px; top: 30px;"></div>
                             <div id="cardposition_2_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 160px; top: 30px;"></div>
                             <div id="cardposition_3_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 320px; top: 30px;"></div>
@@ -635,7 +635,7 @@ createBoard: function() {
         Playercards1.className = "player_cards_mini";
         Playercards1_name.innerHTML = 
                             `
-                            <div class="nameplayer_mini_1_3" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color}; border: 1px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].name}</div>
+                            <div class="nameplayer_mini_1_3" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color}; border-top: 2px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].name}</div>
                             `;
         Playercards1.innerHTML = 
                             `
@@ -659,7 +659,7 @@ createBoard: function() {
         Playercards2.className = "player_cards_mini";
         Playercards2_name.innerHTML = 
                             `
-                            <div class="nameplayer_mini_3_3" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[2]].color}; border: 1px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[2]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[2]].name}</div>
+                            <div class="nameplayer_mini_3_3" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[2]].color}; border-top: 2px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[2]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[2]].name}</div>
                             `;
         Playercards2.innerHTML = 
                             `
@@ -705,7 +705,7 @@ createBoard: function() {
             Playercards0.className = "player_cards";
             Playercards0.innerHTML = 
                                 `
-                                <div class="nameplayer" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color}; left: 0px; top: 0px; border: 1px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].name}</div>
+                                <div class="nameplayer" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color}; left: 0px; top: 0px; border-top: 2px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[0]].name}</div>
                                 <div id="cardposition_1_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 0px; top: 30px;"></div>
                                 <div id="cardposition_2_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 160px; top: 30px;"></div>
                                 <div id="cardposition_3_${this.gamedatas.new_ordre_players[0]}" class="card_position" style="left: 320px; top: 30px;"></div>
@@ -726,7 +726,7 @@ createBoard: function() {
             Playercards1.className = "player_cards_mini";
             Playercards1_name.innerHTML = 
                                 `
-                                <div class="nameplayer_mini_1_4" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color}; border: 1px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].name}</div>
+                                <div class="nameplayer_mini_1_4" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color}; border-top: 2px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[1]].name}</div>
                                 `;
             Playercards1.innerHTML = 
                                 `
@@ -750,7 +750,7 @@ createBoard: function() {
             Playercards2.className = "player_cards_mini";
             Playercards2_name.innerHTML = 
                                 `
-                                <div class="nameplayer_mini_2_4" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[2]].color}; border: 1px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[2]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[2]].name}</div>
+                                <div class="nameplayer_mini_2_4" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[2]].color}; border-top: 2px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[2]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[2]].name}</div>
                                 `;
             Playercards2.innerHTML = 
                                 `
@@ -775,7 +775,7 @@ createBoard: function() {
             Playercards3.className = "player_cards_mini";
             Playercards3_name.innerHTML = 
                                 `
-                                <div class="nameplayer_mini_3_4" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[3]].color}; border: 1px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[3]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[3]].name}</div>
+                                <div class="nameplayer_mini_3_4" style="color: #${this.gamedatas.players[this.gamedatas.new_ordre_players[3]].color}; border-top: 2px solid #${this.gamedatas.players[this.gamedatas.new_ordre_players[3]].color};">${this.gamedatas.players[this.gamedatas.new_ordre_players[3]].name}</div>
                                 `;
             Playercards3.innerHTML = 
                                 `

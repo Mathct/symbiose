@@ -60,7 +60,7 @@ body {
  }
 
  .board2 {
-    height: 1035px;
+    height: 1045px;
  }
 
  .board2_1 {
@@ -155,7 +155,7 @@ body {
     position: absolute;
      height: 330px;
      width: 450px;
-     top: 103px;
+     top: 112px;
      
     
     
@@ -173,7 +173,7 @@ body {
     position: absolute;
      height: 330px;
      width: 450px;
-     top: 103px;
+     top: 112px;
      
     
    
@@ -214,22 +214,29 @@ body {
 
     border: none;
     background-color: hsla(0, 0%, 100%, .3);
-    border-radius: 32px 32px 0 0;
-    padding: 4px 0 0px
+    border-radius: 20px 20px 0 0;
+    padding: 4px 0 0px;
+    padding-top: 3px;
     
     
 }
 
 .nameplayer_mini_1_3{
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
+    /*background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;*/
     width: 310px;
     display: flex;
     justify-content: center;
-    top: 10px;
+    top: 15px;
     left: 50%;
     transform: translateX(-209%);
+
+    border: none;
+    background-color: hsla(0, 0%, 100%, .3);
+    border-radius: 20px 20px 0 0;
+    padding: 4px 0 0px;
+    padding-top: 3px;
     
     
 }
@@ -237,42 +244,60 @@ body {
 
 .nameplayer_mini_3_3{
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
+    /*background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;*/
     width: 310px;
     display: flex;
     justify-content: center;
-    top: 10px;
+    top: 15px;
     left: 50%;
-    transform: translateX(108%);
+    transform: translateX(109%);
+
+    border: none;
+    background-color: hsla(0, 0%, 100%, .3);
+    border-radius: 20px 20px 0 0;
+    padding: 4px 0 0px;
+    padding-top: 3px;
     
     
 }
 
 .nameplayer_mini_1_4{
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
+    /*background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;*/
     width: 310px;
     display: flex;
     justify-content: center;
-    top: 340px;
+    top: 345px;
     left: 50%;
     transform: translateX(-209%);
+
+    border: none;
+    background-color: hsla(0, 0%, 100%, .3);
+    border-radius: 20px 20px 0 0;
+    padding: 4px 0 0px;
+    padding-top: 3px;
     
     
 }
 
 .nameplayer_mini_2_2{
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
+    /*background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;*/
     width: 430px;
     display: flex;
     justify-content: center;
-    top: 20px;
+    top: 25px;
     left: 50%;
     transform: translateX(-50%);
+
+    border: none;
+    background-color: hsla(0, 0%, 100%, .3);
+    border-radius: 20px 20px 0 0;
+    padding: 4px 0 0px;
+    padding-top: 3px;
     
     
     
@@ -280,14 +305,20 @@ body {
 
 .nameplayer_mini_2_2_duel{
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
+    /*background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;*/
     width: 310px;
     display: flex;
     justify-content: center;
-    top: 20px;
+    top: 25px;
     left: 50%;
     transform: translateX(-160%);
+
+    border: none;
+    background-color: hsla(0, 0%, 100%, .3);
+    border-radius: 20px 20px 0 0;
+    padding: 4px 0 0px;
+    padding-top: 3px;
     
     
     
@@ -296,14 +327,20 @@ body {
 
 .nameplayer_mini_2_2_duel_2{
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
+    /*background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;*/
     width: 310px;
     display: flex;
     justify-content: center;
-    top: 20px;
+    top: 25px;
     left: 50%;
-    transform: translateX(60%);
+    transform: translateX(61%);
+
+    border: none;
+    background-color: hsla(0, 0%, 100%, .3);
+    border-radius: 20px 20px 0 0;
+    padding: 4px 0 0px;
+    padding-top: 3px;
     
     
     
@@ -312,14 +349,20 @@ body {
 
 .nameplayer_river_1{
     position: absolute;
-    background-color: hsl(201deg 100% 81% / 40%);
-    border-radius: 10px;
-    width: 310px;
+    /*background-color: hsl(201deg 100% 81% / 40%);
+    border-radius: 10px;*/
+    width: 325px;
     display: flex;
     justify-content: center;
-    top: 20px;
+    top: 25px;
     left: 50%;
-    transform: translateX(66%);
+    transform: translateX(62%);
+
+    border: none;
+    background-color: hsla(0, 0%, 100%, .3);
+    border-radius: 20px 20px 0 0;
+    padding: 4px 0 0px;
+    padding-top: 3px;
     
     
     
@@ -328,14 +371,20 @@ body {
 
 .nameplayer_river_2{
     position: absolute;
-    background-color: hsl(201deg 100% 81% / 40%);
-    border-radius: 10px;
-    width: 310px;
+    /*background-color: hsl(201deg 100% 81% / 40%);
+    border-radius: 10px;*/
+    width: 325px;
     display: flex;
     justify-content: center;
-    top: 20px;
+    top: 25px;
     left: 50%;
-    transform: translateX(-165%);
+    transform: translateX(-160%);
+
+    border: none;
+    background-color: hsla(0, 0%, 100%, .3);
+    border-radius: 20px 20px 0 0;
+    padding: 4px 0 0px;
+    padding-top: 3px;
     
     
     
@@ -346,14 +395,20 @@ body {
 
 .nameplayer_mini_2_4{
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
+    /*background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;*/
     width: 430px;
     display: flex;
     justify-content: center;
-    top: 20px;
+    top: 25px;
     left: 50%;
     transform: translateX(-50%);
+
+    border: none;
+    background-color: hsla(0, 0%, 100%, .3);
+    border-radius: 20px 20px 0 0;
+    padding: 4px 0 0px;
+    padding-top: 3px;
     
     
     
@@ -361,14 +416,20 @@ body {
 
 .nameplayer_mini_3_4{
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
+    /*background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;*/
     width: 310px;
     display: flex;
     justify-content: center;
-    top: 340px;
+    top: 345px;
     left: 50%;
     transform: translateX(108%);
+
+    border: none;
+    background-color: hsla(0, 0%, 100%, .3);
+    border-radius: 20px 20px 0 0;
+    padding: 4px 0 0px;
+    padding-top: 3px;
     
     
 }
@@ -454,7 +515,7 @@ body {
 /* POSITIONS */
 
 .position_0_2{
-    top: 505px;
+    top: 515px;
     left: 50%;
     transform: translateX(-50%);
 }
