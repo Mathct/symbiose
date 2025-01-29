@@ -504,14 +504,14 @@ createBoard: function() {
                 `;
     
                 River.innerHTML = 
-                `<div id="river_1" class="card_position_mini" style="left: 10px; top: 10px;"></div>
-                <div id="river_2" class="card_position_mini" style="left: 120px; top: 10px;"></div>
-                <div id="river_3" class="card_position_mini" style="left: 230px; top: 10px;"></div>
-                <div id="river_4" class="card_position_mini" style="left: 340px; top: 10px;"></div>
-                <div id="river_5" class="card_position_mini" style="left: 10px; top: 170px;"></div>
-                <div id="river_6" class="card_position_mini" style="left: 120px; top: 170px;"></div>
-                <div id="river_7" class="card_position_mini" style="left: 230px; top: 170px;"></div>
-                <div id="river_8" class="card_position_mini" style="left: 340px; top: 170px;"></div>`;
+                `<div id="river_8" class="card_position_mini" style="left: 10px; top: 10px;"></div>
+                <div id="river_7" class="card_position_mini" style="left: 120px; top: 10px;"></div>
+                <div id="river_6" class="card_position_mini" style="left: 230px; top: 10px;"></div>
+                <div id="river_5" class="card_position_mini" style="left: 340px; top: 10px;"></div>
+                <div id="river_4" class="card_position_mini" style="left: 10px; top: 170px;"></div>
+                <div id="river_3" class="card_position_mini" style="left: 120px; top: 170px;"></div>
+                <div id="river_2" class="card_position_mini" style="left: 230px; top: 170px;"></div>
+                <div id="river_1" class="card_position_mini" style="left: 340px; top: 170px;"></div>`;
 
                 parent.appendChild(River_name);
                 parent.appendChild(River);
@@ -587,14 +587,14 @@ createBoard: function() {
                         `;
         
                     River.innerHTML = 
-                    `<div id="river_1" class="card_position_mini" style="left: 10px; top: 10px;"></div>
-                    <div id="river_2" class="card_position_mini" style="left: 120px; top: 10px;"></div>
-                    <div id="river_3" class="card_position_mini" style="left: 230px; top: 10px;"></div>
-                    <div id="river_4" class="card_position_mini" style="left: 340px; top: 10px;"></div>
-                    <div id="river_5" class="card_position_mini" style="left: 10px; top: 170px;"></div>
-                    <div id="river_6" class="card_position_mini" style="left: 120px; top: 170px;"></div>
-                    <div id="river_7" class="card_position_mini" style="left: 230px; top: 170px;"></div>
-                    <div id="river_8" class="card_position_mini" style="left: 340px; top: 170px;"></div>`;
+                    `<div id="river_8" class="card_position_mini" style="left: 10px; top: 10px;"></div>
+                    <div id="river_7" class="card_position_mini" style="left: 120px; top: 10px;"></div>
+                    <div id="river_6" class="card_position_mini" style="left: 230px; top: 10px;"></div>
+                    <div id="river_5" class="card_position_mini" style="left: 340px; top: 10px;"></div>
+                    <div id="river_4" class="card_position_mini" style="left: 10px; top: 170px;"></div>
+                    <div id="river_3" class="card_position_mini" style="left: 120px; top: 170px;"></div>
+                    <div id="river_2" class="card_position_mini" style="left: 230px; top: 170px;"></div>
+                    <div id="river_1" class="card_position_mini" style="left: 340px; top: 170px;"></div>`;
     
                     parent.appendChild(River_name);
                     parent.appendChild(River);
@@ -1111,7 +1111,7 @@ notif_switch: function( notif )
             const globalContainer = document.getElementById(parentId);
             const globalRect = globalContainer.getBoundingClientRect();
 
-            const angle = -90 * (Math.PI / 180); // Rotation de 90° en radians
+            const angle = 90 * (Math.PI / 180); // Rotation de 90° en radians
 
             // Position ajustée de element2 par rapport à son conteneur global
             const adjustedX = Math.cos(-angle) * (elementRect.left - globalRect.left) - Math.sin(-angle) * (elementRect.top - globalRect.top);
@@ -1127,7 +1127,7 @@ notif_switch: function( notif )
 
 
             element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(0deg)`;
-            element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(90deg)`;
+            element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(-90deg)`;
             
         }
 
@@ -1138,7 +1138,7 @@ notif_switch: function( notif )
                 const globalContainer = document.getElementById(parentId);
                 const globalRect = globalContainer.getBoundingClientRect();
 
-                const angle = 90 * (Math.PI / 180); // Rotation de 90° en radians
+                const angle = -90 * (Math.PI / 180); // Rotation de 90° en radians
 
                 // Position ajustée de element2 par rapport à son conteneur global
                 const adjustedX = Math.cos(-angle) * (elementRect.left - globalRect.left) - Math.sin(-angle) * (elementRect.top - globalRect.top);
@@ -1154,7 +1154,7 @@ notif_switch: function( notif )
 
 
                 element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(0deg)`;
-                element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(-90deg)`;
+                element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(90deg)`;
         
             }
 
@@ -1206,7 +1206,7 @@ notif_switch: function( notif )
                     const globalContainer = document.getElementById(parentId);
                     const globalRect = globalContainer.getBoundingClientRect();
         
-                    const angle = -90 * (Math.PI / 180); // Rotation de 90° en radians
+                    const angle = 90 * (Math.PI / 180); // Rotation de 90° en radians
         
                     // Position ajustée de element2 par rapport à son conteneur global
                     const adjustedX = Math.cos(-angle) * (elementRect.left - globalRect.left) - Math.sin(-angle) * (elementRect.top - globalRect.top);
@@ -1237,7 +1237,7 @@ notif_switch: function( notif )
                     const deltaX2 = adjustedTargetX2 - adjustedX2;
                     const deltaY2 = adjustedTargetY2 - adjustedY2;
         
-                    element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(90deg)`;
+                    element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(-90deg)`;
                     element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(-90deg)`;
         
                 }
@@ -1248,7 +1248,7 @@ notif_switch: function( notif )
                     const globalContainer = document.getElementById(parentId);
                     const globalRect = globalContainer.getBoundingClientRect();
         
-                    const angle = 90 * (Math.PI / 180); // Rotation de 90° en radians
+                    const angle = -90 * (Math.PI / 180); // Rotation de 90° en radians
         
                     // Position ajustée de element2 par rapport à son conteneur global
                     const adjustedX = Math.cos(-angle) * (elementRect.left - globalRect.left) - Math.sin(-angle) * (elementRect.top - globalRect.top);
@@ -1279,7 +1279,7 @@ notif_switch: function( notif )
                     const deltaX2 = adjustedTargetX2 - adjustedX2;
                     const deltaY2 = adjustedTargetY2 - adjustedY2;
         
-                    element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(-90deg)`;
+                    element.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(90deg)`;
                     element2.style.transform = `translate(${deltaX2}px, ${deltaY2}px) rotate(90deg)`;
         
                 }
