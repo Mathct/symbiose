@@ -46,10 +46,50 @@
                 "value": 2
             }
         ]
-        
-        
-        
-              
+             
+    },
+
+    "102": {
+        "name": "2 vs 2 - Team Mode",
+        "values": {
+            "1": {
+                "name": "Disable", 
+                "tmdisplay": "Normal"
+                
+            },
+
+            "2": {
+                "name": "Enable", 
+                "tmdisplay": "Team Mode"
+                
+            }
+            
+                            
+        },
+
+        "displaycondition": [
+            {
+                "type": "minplayers",
+                "value": 4
+            }
+            
+        ],
+
+        "startcondition": { 
+        "1": [], 
+        "2": [ 
+            { 
+            "type": "otheroption",
+            "id": 201,
+            "value": 1,
+            "message": "Variant available only in friendly mode"
+            } 
+            ] 
+        } 
+    
+             
     }
+
+
 
 }

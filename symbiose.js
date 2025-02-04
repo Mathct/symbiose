@@ -1,7 +1,7 @@
 /**
  *------
  * BGA framework: Gregory Isabelli & Emmanuel Colin & BoardGameArena
- * symbiose implementation : © <Your name here> <Your email address here>
+ * symbiose implementation : © <Mathieu Chatrain> <mathieu.chatrain@gmail.com>
  *
  * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
@@ -1013,6 +1013,8 @@ setupNotifications: function()
     dojo.subscribe( 'switch', this, "notif_switch" );
     dojo.subscribe( 'score', this, "notif_score" );
     dojo.subscribe( 'affichescore', this, "notif_affichescore" );
+    dojo.subscribe( 'scorepadequipe', this, "notif_scorepadequipe" );
+    dojo.subscribe( 'scoreequipe', this, "notif_scoreequipe" );
 
     
 },  
@@ -1443,6 +1445,103 @@ notif_score: function( notif )
     }
 
     this.scoreCtrl[ notif.args.player_id ].toValue( notif.args.scoretotal );
+   
+},
+
+notif_scorepadequipe: function( notif )
+{
+    if (notif.args.score1 != 'no')
+    {
+        $('score1_'+notif.args.player_id).innerHTML = notif.args.score1;
+    }
+
+    else
+    {
+        $('score1_'+notif.args.player_id).innerHTML = '';
+    }
+
+    if (notif.args.score2 != 'no')
+    {
+        $('score2_'+notif.args.player_id).innerHTML = notif.args.score2;
+    }
+
+    else
+    {
+        $('score2_'+notif.args.player_id).innerHTML = '';
+    }
+
+    if (notif.args.score3 != 'no')
+    {
+        $('score3_'+notif.args.player_id).innerHTML = notif.args.score3;
+    }
+
+    else
+    {
+        $('score3_'+notif.args.player_id).innerHTML = '';
+    }
+
+    if (notif.args.score4 != 'no')
+    {
+        $('score4_'+notif.args.player_id).innerHTML = notif.args.score4;
+    }
+
+    else
+    {
+        $('score4_'+notif.args.player_id).innerHTML = '';
+    }
+
+    if (notif.args.score5 != 'no')
+    {
+        $('score5_'+notif.args.player_id).innerHTML = notif.args.score5;
+    }
+
+    else
+    {
+        $('score5_'+notif.args.player_id).innerHTML = '';
+    }
+
+    if (notif.args.score6 != 'no')
+    {
+        $('score6_'+notif.args.player_id).innerHTML = notif.args.score6;
+    }
+
+    else
+    {
+        $('score6_'+notif.args.player_id).innerHTML = '';
+    }
+
+    if (notif.args.score7 != 'no')
+    {
+        $('score7_'+notif.args.player_id).innerHTML = notif.args.score7;
+    }
+
+    else
+    {
+        $('score7_'+notif.args.player_id).innerHTML = '';
+    }
+
+    if (notif.args.score8 != 'no')
+    {
+        $('score8_'+notif.args.player_id).innerHTML = notif.args.score8;
+    }
+
+    else
+    {
+        $('score8_'+notif.args.player_id).innerHTML = '';
+    }
+
+    
+   
+},
+
+notif_scoreequipe: function( notif )
+{
+    this.scoreCtrl[ notif.args.player1 ].toValue( notif.args.score1 );
+    this.scoreCtrl[ notif.args.player2 ].toValue( notif.args.score2 );
+    this.scoreCtrl[ notif.args.player3 ].toValue( notif.args.score1 );
+    this.scoreCtrl[ notif.args.player4 ].toValue( notif.args.score2 );
+   
+    
    
 },
 

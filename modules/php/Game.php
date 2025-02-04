@@ -2,7 +2,7 @@
 /**
  *------
  * BGA framework: Gregory Isabelli & Emmanuel Colin & BoardGameArena
- * symbiose implementation : © <Your name here> <Your email address here>
+ * symbiose implementation : © <Mathieu Chatrain> <mathieu.chatrain@gmail.com>
  *
  * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
@@ -39,6 +39,7 @@ class Game extends \Table
 
             "scoring_mode" => 100,
             "game_mode" => 101,
+            "team_mode" => 102,
 
             "end" => 10,
             
@@ -218,6 +219,18 @@ if($result["nbre_players"] == 2)
 $result["game_mode"] = $this->gamestate->table_globals[101];
 }
 
+/*if($result["nbre_players"] == 4)
+{
+    if(isset($this->gamestate->table_globals[102]))   // je teste si la variable existe pour éviter de casser les parties en cours
+    {
+    $result["team_mode"] = $this->gamestate->table_globals[102];
+    }
+    else
+    {
+        $result["team_mode"] = 1;
+    }
+}*/
+
 $result["end"] = game::$instance->getGameStateValue('end');
 
 
@@ -342,7 +355,9 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
     function Score()  
     {
         $duel = 0;
+        $equipe = 0;
 
+        
         $nbreplayers = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
 
         if($nbreplayers == 2)
@@ -353,8 +368,30 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
             }
         }
 
+        if($nbreplayers == 4)
+        {
+            if(isset($this->gamestate->table_globals[102]))   // je teste si la variable existe pour éviter de casser les parties en cours
+            {
+                if($this->gamestate->table_globals[102] == 1)
+                {
+                    $equipe = 0;
+                }
+                if($this->gamestate->table_globals[102] == 2)
+                {
+                    $equipe = 1;
+                }
+                
+            }
+            else
+            {
+                $equipe = 0;
+            }
+        }
 
-        if ( $duel == 0)
+       
+
+
+        if (( $duel == 0)&&($equipe ==0))
         {
         
             if ((game::$instance->getGameStateValue('scoring_mode') == 2)||(game::$instance->getGameStateValue('end') == 1))
@@ -695,6 +732,402 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
             }
         }
+
+
+        if (( $duel == 0)&&($equipe ==1))
+        {
+        
+            if ((game::$instance->getGameStateValue('scoring_mode') == 2)||(game::$instance->getGameStateValue('end') == 1))
+            {
+                $listcard = array();
+                $nbresigne = array();
+                $listplayers = self::getObjectListFromDB( "SELECT player_id FROM player", true );
+
+                foreach ($listplayers as $player)
+                {
+                    $listcard[$player] = self::getObjectListFromDB( "SELECT card_type FROM cards WHERE card_location_arg = '{$player}' AND card_visible = 1 ", true );
+
+                    $gr = 0;
+                    $es = 0;
+                    $po = 0;
+                    $li = 0;
+                    $r = 0;
+                    $v = 0;
+                    $o = 0;
+                    $b = 0;
+
+                    foreach ($listcard[$player] as $type)
+                    {
+                        $animal = $this->_cards[$type]['animal'];
+                        $saison = $this->_cards[$type]['saison'];
+
+                        if ( $animal == 1)
+                        {
+                            $gr++;
+                        }
+
+                        if ( $animal == 2)
+                        {
+                            $es++;
+                        }
+
+                        if ( $animal == 3)
+                        {
+                            $po++;
+                        }
+
+                        if ( $animal == 4)
+                        {
+                            $li++;
+                        }
+
+                        if ( $saison == 1)
+                        {
+                            $r++;
+                        }
+
+                        if ( $saison == 2)
+                        {
+                            $v++;
+                        }
+
+                        if ( $saison == 3)
+                        {
+                            $o++;
+                        }
+
+                        if ( $saison == 4)
+                        {
+                            $b++;
+                        }
+
+
+                    }
+
+
+                    $nbresigne[$player] = [$gr, $es, $po, $li, $r, $v, $o, $b];
+        
+
+                }
+
+                
+                foreach ($listplayers as $player)
+                {
+                    $no_player = self::getUniqueValueFromDB("SELECT player_no FROM player WHERE player_id = '{$player}'");
+
+                    $id_player_1 = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no = 1");
+                    $id_player_2 = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no = 2");
+                    $id_player_3 = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no = 3");
+                    $id_player_4 = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no = 4");
+
+                    if($no_player == 1)
+                    {
+                        $nextplayer = $id_player_3;
+                        $beforeplayer = $id_player_3;
+                    }
+
+                    if($no_player == 2)
+                    {
+                        $nextplayer = $id_player_4;
+                        $beforeplayer = $id_player_4;
+                    }
+
+                    if($no_player == 3)
+                    {
+                        $nextplayer = $id_player_1;
+                        $beforeplayer = $id_player_1;
+                    }
+
+                    if($no_player == 4)
+                    {
+                        $nextplayer = $id_player_2;
+                        $beforeplayer = $id_player_2;
+                    }
+                    
+
+                    $score1 = 'no';
+                    $score2 = 'no';
+                    $score3 = 'no';
+                    $score4 = 'no';
+                    $score5 = 'no';
+                    $score6 = 'no';
+                    $score7 = 'no';
+                    $score8 = 'no';
+
+                    foreach ($listcard[$player] as $type)
+                    {
+                        $position = self::getUniqueValueFromDB("SELECT card_location FROM cards WHERE card_type = '{$type}'");
+                        $scoretype = $this->_cards[$type]['scoretype'];
+                        $score = $this->_cards[$type]['score'];
+
+                        if ($position == 'cardposition_1')
+                        {
+                            if($scoretype == 0)
+                            {
+                                $score1 = $score;
+                            }
+
+                            else
+                            {
+                                $score1 = $nbresigne[$nextplayer][$scoretype-1] * $score;
+                            }
+
+                            if ($score1 >=0)
+                            {
+                                self::DbQuery( "UPDATE player set score1 = '{$score1}'  WHERE player_id = '{$player}'" );
+                            }
+
+
+                        }
+
+                        if ($position == 'cardposition_2')
+                        {
+
+                            if($scoretype == 0)
+                            {
+                                $score2 = $score;
+                            }
+
+                            else
+                            {
+                                $score2 = $nbresigne[$player][$scoretype-1] * $score;
+                            }
+
+                            if ($score2 >=0)
+                            {
+                                self::DbQuery( "UPDATE player set score2 = '{$score2}'  WHERE player_id = '{$player}'" );
+                            }
+
+
+
+                        }
+
+                        if ($position == 'cardposition_3')
+                        {
+
+                            if($scoretype == 0)
+                            {
+                                $score3 = $score;
+                            }
+
+                            else
+                            {
+                                $score3 = $nbresigne[$player][$scoretype-1] * $score;
+                            }
+
+                            if ($score3 >=0)
+                            {
+                                self::DbQuery( "UPDATE player set score3 = '{$score3}'  WHERE player_id = '{$player}'" );
+                            }
+
+
+                        }
+
+                        if ($position == 'cardposition_4')
+                        {
+
+                            if($scoretype == 0)
+                            {
+                                $score4 = $score;
+                            }
+
+                            else
+                            {
+                                $score4 = $nbresigne[$beforeplayer][$scoretype-1] * $score;
+                            }
+
+                            if ($score4 >=0)
+                            {
+                                self::DbQuery( "UPDATE player set score4 = '{$score4}'  WHERE player_id = '{$player}'" );
+                            }
+
+
+                        }
+
+                        if ($position == 'cardposition_5')
+                        {
+
+                            if($scoretype == 0)
+                            {
+                                $score5 = $score;
+                            }
+
+                            else
+                            {
+                                $score5 = $nbresigne[$nextplayer][$scoretype-1] * $score;
+                            }
+
+                            if ($score5 >=0)
+                            {
+                                self::DbQuery( "UPDATE player set score5 = '{$score5}'  WHERE player_id = '{$player}'" );
+                            }
+
+
+                            
+
+                        }
+
+                        if ($position == 'cardposition_6')
+                        {
+                            if($scoretype == 0)
+                            {
+                                $score6 = $score;
+                            }
+
+                            else
+                            {
+                                $score6= $nbresigne[$player][$scoretype-1] * $score;
+                            }
+
+                            if ($score6 >=0)
+                            {
+                                self::DbQuery( "UPDATE player set score6 = '{$score6}'  WHERE player_id = '{$player}'" );
+                            }
+
+
+
+                            
+                        }
+
+                        if ($position == 'cardposition_7')
+                        {
+                            if($scoretype == 0)
+                            {
+                                $score7 = $score;
+                            }
+
+                            else
+                            {
+                                $score7 = $nbresigne[$player][$scoretype-1] * $score;
+                            }
+
+                            if ($score7 >=0)
+                            {
+                                self::DbQuery( "UPDATE player set score7 = '{$score7}'  WHERE player_id = '{$player}'" );
+                            }
+
+
+
+                        }
+
+                        if ($position == 'cardposition_8')
+                        {
+
+                            if($scoretype == 0)
+                            {
+                                $score8 = $score;
+                            }
+
+                            else
+                            {
+                                $score8 = $nbresigne[$beforeplayer][$scoretype-1] * $score;
+                            }
+
+                            if ($score8 >=0)
+                            {
+                                self::DbQuery( "UPDATE player set score8 = '{$score8}'  WHERE player_id = '{$player}'" );
+                            }
+
+
+
+                        }
+
+                    }
+
+                    $scoretotal = 0;
+
+                    if (self::getUniqueValueFromDB("SELECT score1 FROM player WHERE player_id={$player}") >=0 )
+                    {
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score1 FROM player WHERE player_id={$player}");
+                    }
+
+                    if (self::getUniqueValueFromDB("SELECT score2 FROM player WHERE player_id={$player}") >=0 )
+                    {
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score2 FROM player WHERE player_id={$player}");
+                    }
+
+                    if (self::getUniqueValueFromDB("SELECT score3 FROM player WHERE player_id={$player}") >=0 )
+                    {
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score3 FROM player WHERE player_id={$player}");
+                    }
+
+                    if (self::getUniqueValueFromDB("SELECT score4 FROM player WHERE player_id={$player}") >=0 )
+                    {
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score4 FROM player WHERE player_id={$player}");
+                    }
+
+                    if (self::getUniqueValueFromDB("SELECT score5 FROM player WHERE player_id={$player}") >=0 )
+                    {
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score5 FROM player WHERE player_id={$player}");
+                    }
+
+                    if (self::getUniqueValueFromDB("SELECT score6 FROM player WHERE player_id={$player}") >=0 )
+                    {
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score6 FROM player WHERE player_id={$player}");
+                    }
+
+                    if (self::getUniqueValueFromDB("SELECT score7 FROM player WHERE player_id={$player}") >=0 )
+                    {
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score7 FROM player WHERE player_id={$player}");
+                    }
+
+                    if (self::getUniqueValueFromDB("SELECT score8 FROM player WHERE player_id={$player}") >=0 )
+                    {
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score8 FROM player WHERE player_id={$player}");
+                    }
+
+                    self::DbQuery( "UPDATE player set player_score = '{$scoretotal}'  WHERE player_id = '{$player}'" );
+
+
+
+                    game::$instance->notifyAllPlayers('scorepadequipe','', array(
+                
+                        'player_id' => $player,
+                        'score1' => $score1,
+                        'score2' => $score2,
+                        'score3' => $score3,
+                        'score4' => $score4,
+                        'score5' => $score5,
+                        'score6' => $score6,
+                        'score7' => $score7,
+                        'score8' => $score8,
+                        
+
+                            
+                        )
+                        );
+
+                
+                }
+
+                $score_total_1 = self::getUniqueValueFromDB("SELECT player_score FROM player WHERE player_id={$id_player_1}") + self::getUniqueValueFromDB("SELECT player_score FROM player WHERE player_id={$id_player_3}");
+                $score_total_2 = self::getUniqueValueFromDB("SELECT player_score FROM player WHERE player_id={$id_player_2}") + self::getUniqueValueFromDB("SELECT player_score FROM player WHERE player_id={$id_player_4}");
+
+                self::DbQuery( "UPDATE player set player_score = '{$score_total_1}'  WHERE player_no = 1 OR player_no = 3" );
+                self::DbQuery( "UPDATE player set player_score = '{$score_total_2}'  WHERE player_no = 2 OR player_no = 4" );
+                
+
+                
+
+                game::$instance->notifyAllPlayers('scoreequipe','', array(
+                
+                    'score1' => $score_total_1,
+                    'score2' => $score_total_2,
+                    "player1" => $id_player_1,
+                    "player2" => $id_player_2,
+                    "player3" => $id_player_3,
+                    "player4" => $id_player_4,
+                                      
+
+                        
+                    )
+                    );
+
+
+            }
+        }
+
+
 
 
         if ( $duel == 1)
