@@ -67,8 +67,39 @@ setup: function( gamedatas )
     {
     for( var player_id in gamedatas.players )   
         {
-                             
+                                         
             var player_board_div = $('player_board_'+player_id);
+
+            if(gamedatas.nbre_players == 4)
+                {
+                    if(gamedatas.teammode == 2)
+                    {
+                                    
+                                var teama = _("Team A");
+                                var teamb = _("Team B");
+        
+                                if((gamedatas.players[player_id].no == 1)||(gamedatas.players[player_id].no == 3))
+                                {
+                                    dojo.place( this.format_block('jstpl_team', {id: player_id} ), player_board_div );
+                                    document.getElementById('team_' + player_id).innerHTML = teama;
+                                }
+            
+                                if((gamedatas.players[player_id].no == 2)||(gamedatas.players[player_id].no == 4))
+                                {
+                                    dojo.place( this.format_block('jstpl_team', {id: player_id} ), player_board_div );
+                                    document.getElementById('team_' + player_id).innerHTML = teamb;
+                                    
+                                }
+                    
+                           
+                    
+            
+            
+                    }
+                }
+
+
+
             dojo.place( this.format_block('jstpl_scorepad', {id: player_id} ), player_board_div );
 
             
@@ -85,12 +116,42 @@ setup: function( gamedatas )
         }
     }
 
+        
     if ((gamedatas.scoring_mode == 1)&&(gamedatas.end == 1))
         {
         for( var player_id in gamedatas.players )   
             {
                                  
                 var player_board_div = $('player_board_'+player_id);
+
+                if(gamedatas.nbre_players == 4)
+                    {
+                        if(gamedatas.teammode == 2)
+                        {
+                                        
+                                    var teama = _("Team A");
+                                    var teamb = _("Team B");
+            
+                                    if((gamedatas.players[player_id].no == 1)||(gamedatas.players[player_id].no == 3))
+                                    {
+                                        dojo.place( this.format_block('jstpl_team', {id: player_id} ), player_board_div );
+                                        document.getElementById('team_' + player_id).innerHTML = teama;
+                                    }
+                
+                                    if((gamedatas.players[player_id].no == 2)||(gamedatas.players[player_id].no == 4))
+                                    {
+                                        dojo.place( this.format_block('jstpl_team', {id: player_id} ), player_board_div );
+                                        document.getElementById('team_' + player_id).innerHTML = teamb;
+                                        
+                                    }
+                        
+                               
+                        
+                
+                
+                        }
+                    }
+
                 dojo.place( this.format_block('jstpl_scorepad', {id: player_id} ), player_board_div );
     
                 
@@ -104,6 +165,38 @@ setup: function( gamedatas )
                 
                 
                 
+            }
+        }
+
+
+    if(gamedatas.nbre_players == 4)
+        {
+            if((gamedatas.teammode == 2)&&(gamedatas.end == 0))
+            {
+                for( var player_id in gamedatas.players )   
+                    {
+                        var player_board_div = $('player_board_'+player_id);
+    
+                        var teama = _("Team A");
+                        var teamb = _("Team B");
+
+                        if((gamedatas.players[player_id].no == 1)||(gamedatas.players[player_id].no == 3))
+                        {
+                            dojo.place( this.format_block('jstpl_team', {id: player_id} ), player_board_div );
+                            document.getElementById('team_' + player_id).innerHTML = teama;
+                        }
+    
+                        if((gamedatas.players[player_id].no == 2)||(gamedatas.players[player_id].no == 4))
+                        {
+                            dojo.place( this.format_block('jstpl_team', {id: player_id} ), player_board_div );
+                            document.getElementById('team_' + player_id).innerHTML = teamb;
+                            
+                        }
+            
+                    }
+            
+    
+    
             }
         }
 

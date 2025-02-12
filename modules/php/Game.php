@@ -219,17 +219,17 @@ if($result["nbre_players"] == 2)
 $result["game_mode"] = $this->gamestate->table_globals[101];
 }
 
-/*if($result["nbre_players"] == 4)
+if($result["nbre_players"] == 4)
 {
     if(isset($this->gamestate->table_globals[102]))   // je teste si la variable existe pour éviter de casser les parties en cours
     {
-    $result["team_mode"] = $this->gamestate->table_globals[102];
+    $result["teammode"] = $this->gamestate->table_globals[102];
     }
     else
     {
-        $result["team_mode"] = 1;
+        $result["teammode"] = 1;
     }
-}*/
+}
 
 $result["end"] = game::$instance->getGameStateValue('end');
 

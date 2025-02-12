@@ -10,7 +10,7 @@
 <script type="text/javascript">
 
 var jstpl_card='<div id="card_${id}" class="card" style="background-position-x: ${x}%; background-position-y: ${y}%;"></div>';
-var jstpl_cardback='<div id="card_${id}_back" class="cardback"</div>';
+var jstpl_cardback='<div id="card_${id}_back" class="cardback"></div>';
 
 var jstpl_scorepad = '<div id="player_scorepad_${id}" style="height: 116px; display: flex; align-items: center; flex-direction: column; justify-content: center; z-index: 100; position: relative;">\
 <div class="scorepad">\
@@ -24,6 +24,8 @@ var jstpl_scorepad = '<div id="player_scorepad_${id}" style="height: 116px; disp
 <div id="score8_${id}" style="position: absolute; display: flex; justify-content: center; align-items: center; left: 175px; top: 68px; height: 35px; width: 35px; font-weight: bold; font-size: 25px; font-style: italic;"></div>\
 </div>\
 </div>';
+
+var jstpl_team='<div id="team_${id}" class="team"></div>';
 
 </script>  
 
