@@ -25,7 +25,7 @@ var jstpl_scorepad = '<div id="player_scorepad_${id}" style="height: 116px; disp
 </div>\
 </div>';
 
-var jstpl_team='<div id="team_${id}" class="team"></div>';
+var jstpl_team='<div id="team_${id}" class="${class}"></div>';
 
 </script>  
 

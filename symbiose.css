@@ -599,12 +599,24 @@ body {
 
 
 
-.team {
+.team_a {
     font-weight: bold;
     display: flex; 
-    justify-content: center; 
+    justify-content: flex-start; 
+    margin-left: 10px;
     align-items: center;
     font-style: italic;
+    font-size: 20px;
+}
+
+.team_b {
+    font-weight: bold;
+    display: flex; 
+    justify-content: flex-end; 
+    margin-right: 10px;
+    align-items: center;
+    font-style: italic;
+    font-size: 20px;
 }
 
 

@@ -80,13 +80,13 @@ setup: function( gamedatas )
         
                                 if((gamedatas.players[player_id].no == 1)||(gamedatas.players[player_id].no == 3))
                                 {
-                                    dojo.place( this.format_block('jstpl_team', {id: player_id} ), player_board_div );
+                                    dojo.place( this.format_block('jstpl_team', {id: player_id, class: "team_a"} ), player_board_div );
                                     document.getElementById('team_' + player_id).innerHTML = teama;
                                 }
             
                                 if((gamedatas.players[player_id].no == 2)||(gamedatas.players[player_id].no == 4))
                                 {
-                                    dojo.place( this.format_block('jstpl_team', {id: player_id} ), player_board_div );
+                                    dojo.place( this.format_block('jstpl_team', {id: player_id, class: "team_b"} ), player_board_div );
                                     document.getElementById('team_' + player_id).innerHTML = teamb;
                                     
                                 }
@@ -134,13 +134,13 @@ setup: function( gamedatas )
             
                                     if((gamedatas.players[player_id].no == 1)||(gamedatas.players[player_id].no == 3))
                                     {
-                                        dojo.place( this.format_block('jstpl_team', {id: player_id} ), player_board_div );
+                                        dojo.place( this.format_block('jstpl_team', {id: player_id, class: "team_a"} ), player_board_div );
                                         document.getElementById('team_' + player_id).innerHTML = teama;
                                     }
                 
                                     if((gamedatas.players[player_id].no == 2)||(gamedatas.players[player_id].no == 4))
                                     {
-                                        dojo.place( this.format_block('jstpl_team', {id: player_id} ), player_board_div );
+                                        dojo.place( this.format_block('jstpl_team', {id: player_id, class: "team_b"} ), player_board_div );
                                         document.getElementById('team_' + player_id).innerHTML = teamb;
                                         
                                     }
@@ -182,13 +182,13 @@ setup: function( gamedatas )
 
                         if((gamedatas.players[player_id].no == 1)||(gamedatas.players[player_id].no == 3))
                         {
-                            dojo.place( this.format_block('jstpl_team', {id: player_id} ), player_board_div );
+                            dojo.place( this.format_block('jstpl_team', {id: player_id, class: "team_a"} ), player_board_div );
                             document.getElementById('team_' + player_id).innerHTML = teama;
                         }
     
                         if((gamedatas.players[player_id].no == 2)||(gamedatas.players[player_id].no == 4))
                         {
-                            dojo.place( this.format_block('jstpl_team', {id: player_id} ), player_board_div );
+                            dojo.place( this.format_block('jstpl_team', {id: player_id, class: "team_b"} ), player_board_div );
                             document.getElementById('team_' + player_id).innerHTML = teamb;
                             
                         }
