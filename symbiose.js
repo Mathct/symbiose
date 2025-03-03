@@ -448,9 +448,12 @@ return box;
 createBoard: function() {
 
     const parent = document.getElementById("board");
+    //console.warn (this.gamedatas.nbre_players);
+    //console.warn (this.gamedatas.game_mode);
     
     if ((this.gamedatas.nbre_players == 2)&&(this.gamedatas.game_mode == 2))
     {
+        
         parent.className = "board2_1";
 
             const Playercards0 = document.createElement("div");

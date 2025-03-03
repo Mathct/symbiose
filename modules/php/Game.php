@@ -216,7 +216,17 @@ $result["scoring_mode"] = $this->gamestate->table_globals[100];
 
 if($result["nbre_players"] == 2)
 {
-$result["game_mode"] = $this->gamestate->table_globals[101];
+    $result["game_mode"] = $this->gamestate->table_globals[101];
+
+    /*if($this->gamestate->table_globals[101] != null)
+    {
+    $result["game_mode"] = $this->gamestate->table_globals[101];
+    }
+    else
+    {
+        $result["game_mode"] = 2;
+        $this->gamestate->nextState( 'end' ); 
+    }*/
 }
 
 if($result["nbre_players"] == 4)
