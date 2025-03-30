@@ -40,6 +40,8 @@
                             
         },
 
+        "default": 1,
+
         "displaycondition": [
             {
                 "type": "maxplayers",

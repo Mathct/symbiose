@@ -123,9 +123,13 @@ class Pending extends APP_GameClass
             game::$instance->notifyAllPlayers('affichescore','', array(
                 )
                 );
+
+            game::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1000] );
             
             }
             game::$instance->Score();
+
+            game::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 2000] );
 
             game::$instance->gamestate->nextState( 'end' );
         }

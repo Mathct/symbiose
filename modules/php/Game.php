@@ -366,6 +366,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
     {
         $duel = 0;
         $equipe = 0;
+        $mode = game::$instance->getGameStateValue('scoring_mode');
 
         
         $nbreplayers = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));

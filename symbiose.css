@@ -619,6 +619,32 @@ body {
     font-size: 20px;
 }
 
+.animatescore{
+  
+    animation: animescore 1s linear forwards;
+      
+      
+  }
+  
+  @keyframes animescore {
+    0% {
+        
+  
+    }
+
+    50% {
+        transform: scale(2);
+        color: red
+    
+      }
+   
+    100% {
+      transform: scale(1);
+      color: black;
+      
+    }
+  }
+
 
 
 

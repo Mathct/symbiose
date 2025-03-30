@@ -1462,7 +1462,20 @@ notif_score: function( notif )
 {
     if (notif.args.score1 != 'no')
     {
+        let scoreElement = $('score1_' + notif.args.player_id);
+        let previousScore = scoreElement.innerHTML;
+
         $('score1_'+notif.args.player_id).innerHTML = notif.args.score1;
+
+              
+        if(String(previousScore) !== String(notif.args.score1))
+        {
+        const element = document.getElementById('score1_'+notif.args.player_id);
+        dojo.query("#"+element.id).removeClass("animatescore");
+        setTimeout(() => {
+        dojo.query("#"+element.id).addClass("animatescore");
+        }, 10);
+        }
     }
 
     else
@@ -1472,7 +1485,20 @@ notif_score: function( notif )
 
     if (notif.args.score2 != 'no')
     {
+        let scoreElement = $('score2_' + notif.args.player_id);
+        let previousScore = scoreElement.innerHTML;
+
         $('score2_'+notif.args.player_id).innerHTML = notif.args.score2;
+
+              
+        if(String(previousScore) !== String(notif.args.score2))
+        {
+        const element = document.getElementById('score2_'+notif.args.player_id);
+        dojo.query("#"+element.id).removeClass("animatescore");
+        setTimeout(() => {
+        dojo.query("#"+element.id).addClass("animatescore");
+        }, 10);
+        }
     }
 
     else
@@ -1482,7 +1508,20 @@ notif_score: function( notif )
 
     if (notif.args.score3 != 'no')
     {
+        let scoreElement = $('score3_' + notif.args.player_id);
+        let previousScore = scoreElement.innerHTML;
+
         $('score3_'+notif.args.player_id).innerHTML = notif.args.score3;
+
+              
+        if(String(previousScore) !== String(notif.args.score3))
+        {
+        const element = document.getElementById('score3_'+notif.args.player_id);
+        dojo.query("#"+element.id).removeClass("animatescore");
+        setTimeout(() => {
+        dojo.query("#"+element.id).addClass("animatescore");
+        }, 10);
+        }
     }
 
     else
@@ -1492,7 +1531,21 @@ notif_score: function( notif )
 
     if (notif.args.score4 != 'no')
     {
+        let scoreElement = $('score4_' + notif.args.player_id);
+        let previousScore = scoreElement.innerHTML;
+
+       
         $('score4_'+notif.args.player_id).innerHTML = notif.args.score4;
+
+                      
+        if(String(previousScore) !== String(notif.args.score4))
+        {
+        const element = document.getElementById('score4_'+notif.args.player_id);
+        dojo.query("#"+element.id).removeClass("animatescore");
+        setTimeout(() => {
+        dojo.query("#"+element.id).addClass("animatescore");
+        }, 10);
+        }
     }
 
     else
@@ -1502,7 +1555,20 @@ notif_score: function( notif )
 
     if (notif.args.score5 != 'no')
     {
+        let scoreElement = $('score5_' + notif.args.player_id);
+        let previousScore = scoreElement.innerHTML;
+
         $('score5_'+notif.args.player_id).innerHTML = notif.args.score5;
+
+              
+        if(String(previousScore) !== String(notif.args.score5))
+        {
+        const element = document.getElementById('score5_'+notif.args.player_id);
+        dojo.query("#"+element.id).removeClass("animatescore");
+        setTimeout(() => {
+        dojo.query("#"+element.id).addClass("animatescore");
+        }, 10);
+        }
     }
 
     else
@@ -1512,7 +1578,20 @@ notif_score: function( notif )
 
     if (notif.args.score6 != 'no')
     {
+        let scoreElement = $('score6_' + notif.args.player_id);
+        let previousScore = scoreElement.innerHTML;
+
         $('score6_'+notif.args.player_id).innerHTML = notif.args.score6;
+
+              
+        if(String(previousScore) !== String(notif.args.score6))
+        {
+        const element = document.getElementById('score6_'+notif.args.player_id);
+        dojo.query("#"+element.id).removeClass("animatescore");
+        setTimeout(() => {
+        dojo.query("#"+element.id).addClass("animatescore");
+        }, 10);
+        }
     }
 
     else
@@ -1522,7 +1601,20 @@ notif_score: function( notif )
 
     if (notif.args.score7 != 'no')
     {
+        let scoreElement = $('score7_' + notif.args.player_id);
+        let previousScore = scoreElement.innerHTML;
+
         $('score7_'+notif.args.player_id).innerHTML = notif.args.score7;
+
+              
+        if(String(previousScore) !== String(notif.args.score7))
+        {
+        const element = document.getElementById('score7_'+notif.args.player_id);
+        dojo.query("#"+element.id).removeClass("animatescore");
+        setTimeout(() => {
+        dojo.query("#"+element.id).addClass("animatescore");
+        }, 10);
+        }
     }
 
     else
@@ -1532,7 +1624,20 @@ notif_score: function( notif )
 
     if (notif.args.score8 != 'no')
     {
+        let scoreElement = $('score8_' + notif.args.player_id);
+        let previousScore = scoreElement.innerHTML;
+
         $('score8_'+notif.args.player_id).innerHTML = notif.args.score8;
+
+              
+        if(String(previousScore) !== String(notif.args.score8))
+        {
+        const element = document.getElementById('score8_'+notif.args.player_id);
+        dojo.query("#"+element.id).removeClass("animatescore");
+        setTimeout(() => {
+        dojo.query("#"+element.id).addClass("animatescore");
+        }, 10);
+        }
     }
 
     else
@@ -1548,7 +1653,20 @@ notif_scorepadequipe: function( notif )
 {
     if (notif.args.score1 != 'no')
     {
+        let scoreElement = $('score1_' + notif.args.player_id);
+        let previousScore = scoreElement.innerHTML;
+
         $('score1_'+notif.args.player_id).innerHTML = notif.args.score1;
+
+              
+        if(String(previousScore) !== String(notif.args.score1))
+        {
+        const element = document.getElementById('score1_'+notif.args.player_id);
+        dojo.query("#"+element.id).removeClass("animatescore");
+        setTimeout(() => {
+        dojo.query("#"+element.id).addClass("animatescore");
+        }, 10);
+        }
     }
 
     else
@@ -1558,7 +1676,20 @@ notif_scorepadequipe: function( notif )
 
     if (notif.args.score2 != 'no')
     {
+        let scoreElement = $('score2_' + notif.args.player_id);
+        let previousScore = scoreElement.innerHTML;
+
         $('score2_'+notif.args.player_id).innerHTML = notif.args.score2;
+
+              
+        if(String(previousScore) !== String(notif.args.score2))
+        {
+        const element = document.getElementById('score2_'+notif.args.player_id);
+        dojo.query("#"+element.id).removeClass("animatescore");
+        setTimeout(() => {
+        dojo.query("#"+element.id).addClass("animatescore");
+        }, 10);
+        }
     }
 
     else
@@ -1568,7 +1699,20 @@ notif_scorepadequipe: function( notif )
 
     if (notif.args.score3 != 'no')
     {
+        let scoreElement = $('score3_' + notif.args.player_id);
+        let previousScore = scoreElement.innerHTML;
+
         $('score3_'+notif.args.player_id).innerHTML = notif.args.score3;
+
+              
+        if(String(previousScore) !== String(notif.args.score3))
+        {
+        const element = document.getElementById('score3_'+notif.args.player_id);
+        dojo.query("#"+element.id).removeClass("animatescore");
+        setTimeout(() => {
+        dojo.query("#"+element.id).addClass("animatescore");
+        }, 10);
+        }
     }
 
     else
@@ -1578,7 +1722,20 @@ notif_scorepadequipe: function( notif )
 
     if (notif.args.score4 != 'no')
     {
+        let scoreElement = $('score4_' + notif.args.player_id);
+        let previousScore = scoreElement.innerHTML;
+
         $('score4_'+notif.args.player_id).innerHTML = notif.args.score4;
+
+              
+        if(String(previousScore) !== String(notif.args.score4))
+        {
+        const element = document.getElementById('score4_'+notif.args.player_id);
+        dojo.query("#"+element.id).removeClass("animatescore");
+        setTimeout(() => {
+        dojo.query("#"+element.id).addClass("animatescore");
+        }, 10);
+        }
     }
 
     else
@@ -1588,7 +1745,20 @@ notif_scorepadequipe: function( notif )
 
     if (notif.args.score5 != 'no')
     {
+        let scoreElement = $('score5_' + notif.args.player_id);
+        let previousScore = scoreElement.innerHTML;
+
         $('score5_'+notif.args.player_id).innerHTML = notif.args.score5;
+
+              
+        if(String(previousScore) !== String(notif.args.score5))
+        {
+        const element = document.getElementById('score5_'+notif.args.player_id);
+        dojo.query("#"+element.id).removeClass("animatescore");
+        setTimeout(() => {
+        dojo.query("#"+element.id).addClass("animatescore");
+        }, 10);
+        }
     }
 
     else
@@ -1598,7 +1768,20 @@ notif_scorepadequipe: function( notif )
 
     if (notif.args.score6 != 'no')
     {
+        let scoreElement = $('score6_' + notif.args.player_id);
+        let previousScore = scoreElement.innerHTML;
+
         $('score6_'+notif.args.player_id).innerHTML = notif.args.score6;
+
+              
+        if(String(previousScore) !== String(notif.args.score6))
+        {
+        const element = document.getElementById('score6_'+notif.args.player_id);
+        dojo.query("#"+element.id).removeClass("animatescore");
+        setTimeout(() => {
+        dojo.query("#"+element.id).addClass("animatescore");
+        }, 10);
+        }
     }
 
     else
@@ -1608,7 +1791,20 @@ notif_scorepadequipe: function( notif )
 
     if (notif.args.score7 != 'no')
     {
+        let scoreElement = $('score7_' + notif.args.player_id);
+        let previousScore = scoreElement.innerHTML;
+
         $('score7_'+notif.args.player_id).innerHTML = notif.args.score7;
+
+              
+        if(String(previousScore) !== String(notif.args.score7))
+        {
+        const element = document.getElementById('score7_'+notif.args.player_id);
+        dojo.query("#"+element.id).removeClass("animatescore");
+        setTimeout(() => {
+        dojo.query("#"+element.id).addClass("animatescore");
+        }, 10);
+        }
     }
 
     else
@@ -1618,7 +1814,20 @@ notif_scorepadequipe: function( notif )
 
     if (notif.args.score8 != 'no')
     {
+        let scoreElement = $('score8_' + notif.args.player_id);
+        let previousScore = scoreElement.innerHTML;
+
         $('score8_'+notif.args.player_id).innerHTML = notif.args.score8;
+
+              
+        if(String(previousScore) !== String(notif.args.score8))
+        {
+        const element = document.getElementById('score8_'+notif.args.player_id);
+        dojo.query("#"+element.id).removeClass("animatescore");
+        setTimeout(() => {
+        dojo.query("#"+element.id).addClass("animatescore");
+        }, 10);
+        }
     }
 
     else
