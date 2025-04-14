@@ -177,6 +177,14 @@ protected function setupNewGame($players, $options = [])
 
     game::$instance->setGameStateValue('end', 0);
 
+    if ($nbreplayers == 2)
+    {
+        if($this->gamestate->table_globals[101] == null)
+        {
+            game::$instance->setGameStateValue('game_mode', 1);
+        }
+    }
+
 
     /************ Init Pending *****/
          
