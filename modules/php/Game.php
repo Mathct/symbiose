@@ -107,6 +107,18 @@ protected function setupNewGame($players, $options = [])
     $this->reattributeColorsBasedOnPreferences($players, $gameinfos["player_colors"]);
     $this->reloadPlayersBasicInfos();
 
+     //init global ///
+
+     game::$instance->setGameStateValue('end', 0);
+
+    if ($nbreplayers == 2)
+    {
+        if($this->gamestate->table_globals[101] == null)
+        {
+            game::$instance->setGameStateValue('game_mode', 1);
+        }
+    }
+
 
     /* init cards */
 
@@ -173,17 +185,7 @@ protected function setupNewGame($players, $options = [])
     }
 
     
-    //init global ///
-
-    game::$instance->setGameStateValue('end', 0);
-
-    if ($nbreplayers == 2)
-    {
-        if($this->gamestate->table_globals[101] == null)
-        {
-            game::$instance->setGameStateValue('game_mode', 1);
-        }
-    }
+   
 
 
     /************ Init Pending *****/
