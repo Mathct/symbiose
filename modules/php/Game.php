@@ -111,6 +111,8 @@ protected function setupNewGame($players, $options = [])
 
      game::$instance->setGameStateValue('end', 0);
 
+     $nbreplayers = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
+     
     if ($nbreplayers == 2)
     {
         if($this->gamestate->table_globals[101] == null)
