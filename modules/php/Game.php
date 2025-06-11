@@ -42,6 +42,12 @@ class Game extends \Table
             "team_mode" => 102,
 
             "end" => 10,
+            // mode comptetitif
+            "nb_round" => 11,
+            "score1_player_1" => 12,
+            "score1_player_2" => 13,
+            "score2_player_1" => 14,
+            "score2_player_2" => 15,
             
         ]);  
         
@@ -109,7 +115,12 @@ protected function setupNewGame($players, $options = [])
 
      //init global ///
 
-     game::$instance->setGameStateValue('end', 0);
+     game::$instance->setGameStateInitialValue('end', 0);
+     game::$instance->setGameStateInitialValue('nb_round', 1);
+     game::$instance->setGameStateInitialValue('score1_player_1', 0);
+     game::$instance->setGameStateInitialValue('score1_player_2', 0);
+     game::$instance->setGameStateInitialValue('score2_player_1', 0);
+     game::$instance->setGameStateInitialValue('score2_player_2', 0);
 
      $nbreplayers = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
      
@@ -171,7 +182,7 @@ protected function setupNewGame($players, $options = [])
             self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river'");
         }
 
-        if( $this->gamestate->table_globals[101] == 1)
+        if(( $this->gamestate->table_globals[101] == 1)||( $this->gamestate->table_globals[101] == 3))
         {
             for ($i = 1; $i <= 8; $i++) {
 
@@ -255,6 +266,17 @@ if($result["nbre_players"] == 4)
 
 $result["end"] = game::$instance->getGameStateValue('end');
 
+$p1 = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no=1");
+$p2 = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no=2");
+$score_round1_p1 = game::$instance->getGameStateValue('score1_player_1');
+$score_round1_p2 = game::$instance->getGameStateValue('score1_player_2');
+$score_round2_p1 = game::$instance->getGameStateValue('score2_player_1');
+$score_round2_p2 = game::$instance->getGameStateValue('score2_player_2');
+
+$result["score_round1"][$p1][] = $score_round1_p1;
+$result["score_round2"][$p1][] = $score_round2_p1;
+$result["score_round1"][$p2][] = $score_round1_p2;
+$result["score_round2"][$p2][] = $score_round2_p2;
 
 
 return $result;
@@ -385,7 +407,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
         if($nbreplayers == 2)
         {
-            if($this->gamestate->table_globals[101] == 1)
+            if(( $this->gamestate->table_globals[101] == 2)||( $this->gamestate->table_globals[101] == 3))
             {
                 $duel = 1;
             }
@@ -1538,6 +1560,23 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
                     {
                         $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score8 FROM player WHERE player_id={$player}");
                     }
+                   
+                    $score_round = $scoretotal;
+
+                    if((game::$instance->gamestate->table_globals[101] == 3)&&(game::$instance->getGameStateValue('nb_round')==1))
+                    {
+                       
+                        $no = self::getUniqueValueFromDB("SELECT player_no FROM player WHERE player_id={$player}");
+                        game::$instance->setGameStateValue('score1_player_'.$no, $score_round);
+                        
+                    }
+
+                    
+                    if((game::$instance->gamestate->table_globals[101] == 3)&&(game::$instance->getGameStateValue('nb_round')==2))
+                    {
+                        $no = self::getUniqueValueFromDB("SELECT player_no FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + game::$instance->getGameStateValue('score1_player_'.$no);
+                    }
 
                     self::DbQuery( "UPDATE player set player_score = '{$scoretotal}'  WHERE player_id = '{$player}'" );
 
@@ -1555,6 +1594,9 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
                         'score7' => $score7,
                         'score8' => $score8,
                         'scoretotal' => $scoretotal,
+                        'mode' => game::$instance->gamestate->table_globals[101],
+                        'competitive_round' => game::$instance->getGameStateValue('nb_round'),
+                        'score_round' => $score_round,
 
                             
                         )
@@ -1670,6 +1712,14 @@ public function actButton(string $arg1)
     
 }
 
+public function actContinue(string $arg1)
+{
+    $player_id = $this->getCurrentPlayerId();
+    $this->giveExtraTime($player_id);
+    $this->gamestate->setPlayerNonMultiactive($player_id, 'next');
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////// 
 //     _____                             _        _                                                    _       
 //    / ____|                           | |      | |                                                  | |      
@@ -1708,6 +1758,16 @@ public function argPlayerTurn()
     $arg = $this->callPending($pending, false);
 
     return $arg;
+}
+
+public function argPlayerContinue()
+{
+    $args = array();
+    $args["buttons"] = array();
+
+    $args["buttons"][] = 'continue';
+
+    return $args;
 }
 
 
@@ -1791,12 +1851,156 @@ else
 
 public function st_MultiPlayerActivation() 
 {
+
+    $nbreplayers = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
+     
+    if ($nbreplayers == 2)
+    {
+
+        if($this->gamestate->table_globals[101] == 3)
+        {
+            $player1 = self::getUniqueValueFromDB("SELECT player_name FROM player WHERE player_no = 1");
+            $player2 = self::getUniqueValueFromDB("SELECT player_name FROM player WHERE player_no = 2");
+
+            if(game::$instance->getGameStateValue('nb_round') == 1)
+            {
+                game::$instance->notifyAllPlayers('message', clienttranslate('${message}'), [
+                'message' => [
+                    'log' => '<div class="notif_newRound">${round}</div>',
+                    'args' => [
+                        'round' => clienttranslate('First Leg'),
+                        'i18n' => ['round']
+                    ],
+                    
+                ]
+                ]);
+
+            game::$instance->notifyAllPlayers(
+                'message',
+                clienttranslate('First player: ${player_name}'),
+                array(
+                    'player_name' => $player1,
+
+                )
+            );
+
+            }
+            
+
+            if(game::$instance->getGameStateValue('nb_round') == 2)
+            {
+                game::$instance->notifyAllPlayers('message', clienttranslate('${message}'), [
+                'message' => [
+                    'log' => '<div class="notif_newRound">${round}</div>',
+                    'args' => [
+                        'round' => clienttranslate('Return Leg'),
+                        'i18n' => ['round']
+                    ],
+                    
+                ]
+                ]);
+
+                game::$instance->notifyAllPlayers(
+                'message',
+                clienttranslate('First player: ${player_name}'),
+                array(
+                    'player_name' => $player2,
+
+                )
+                );
+
+            }
+            
+        }
+    }
  
     
     game::$instance->gamestate->setAllPlayersMultiactive();
+
+    
    
     
 }
+
+public function st_PlayerContinue()
+    {
+         
+    
+        game::$instance->gamestate->setAllPlayersMultiactive();
+    }
+
+
+
+public function st_NewRound()
+    {
+         
+        game::$instance->setGameStateValue('nb_round', 2);
+        $players = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+
+                              
+        self::DbQuery("UPDATE cards set card_visible = 0");
+        self::DbQuery("UPDATE cards set card_location = 'deck'");
+        $this->cards->shuffle('deck');
+        
+        foreach($players as $player)
+        {
+            for ($i = 1; $i <= 8; $i++) 
+            {
+                $this->cards->pickCardForLocation('deck', 'cardposition_'.$i, $player);
+            }
+            
+        }
+
+
+        for ($i = 1; $i <= 8; $i++) {
+
+                $this->cards->pickCardForLocation('deck', 'river', $i);
+            }
+
+        self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river' AND card_location_arg = 1");
+        self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river' AND card_location_arg = 2");
+        self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river' AND card_location_arg = 3");
+        self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river' AND card_location_arg = 4");
+
+        $cards = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, card_visible visible FROM cards WHERE card_location != 'deck'");
+
+        game::$instance->notifyAllPlayers('nettoyage','', array(
+
+            'cards' => $cards,
+           
+        )
+        );
+
+
+        self::DbQuery("DELETE FROM `pending`;");
+
+        $player1 = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no=1");
+        $player2 = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no=2");
+
+        $this->addPendingFirst($player2, "NormalTurn");
+        $this->addPendingFirst($player1, "NormalTurn");
+
+
+        self::DbQuery("UPDATE player set score1 = -1");
+        self::DbQuery("UPDATE player set score2 = -1");
+        self::DbQuery("UPDATE player set score3 = -1");
+        self::DbQuery("UPDATE player set score4 = -1");
+        self::DbQuery("UPDATE player set score5 = -1");
+        self::DbQuery("UPDATE player set score6 = -1");
+        self::DbQuery("UPDATE player set score7 = -1");
+        self::DbQuery("UPDATE player set score8 = -1");
+
+        game::$instance->notifyAllPlayers('reinit_score','', array(
+
+            'scoring_mode' => game::$instance->getGameStateValue('scoring_mode'),
+                       
+        )
+        );
+
+        game::$instance->setGameStateValue('end', 0);
+       
+        $this->gamestate->nextState('next');
+    }
 
 ///////////////////////////////////////////////////////////////////////////////// 
 //     _____  ____                                    _      

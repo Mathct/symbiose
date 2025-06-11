@@ -27,6 +27,9 @@ var jstpl_scorepad = '<div id="player_scorepad_${id}" style="height: 116px; disp
 
 var jstpl_team='<div id="team_${id}" class="${class}"></div>';
 
+var jstpl_round_score1='<div class="round_score" class="round_score"><span id="texte_round_score1_${id}"></span><span id="round_score1_${id}" class="nb_score"></span></div>';
+var jstpl_round_score2='<div class="round_score" class="round_score"><span id="texte_round_score2_${id}"></span><span id="round_score2_${id}" class="nb_score"></span></div>';
+
 </script>  
 
 {OVERALL_GAME_FOOTER}

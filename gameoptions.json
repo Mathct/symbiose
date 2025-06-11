@@ -35,9 +35,14 @@
                 "name": "Normal", 
                 "tmdisplay": "Normal"
                 
+            },
+
+            "3": {
+                "name": "Competitive Duel", 
+                "tmdisplay": "Competitive Duel",
+                "description": "Two matches in Duel mode - The first player will be switched"
             }
             
-                            
         },
 
         "default": 1,

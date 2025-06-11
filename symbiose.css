@@ -646,5 +646,29 @@ body {
   }
 
 
+  .notif_newRound {
+  background: #167b4d;
+  text-align: center;
+  color: #efd5ab;
+  border: 1px solid black;
+  font-weight: bold;
+  padding: 5px 2px 2px;
+  font-size: 24px;
+  display: block;
+  position: relative; 
+  
+}
+
+.round_score {
+    text-align: center;
+    
+}
+
+.nb_score {
+
+font-weight: bold;
+}
+
+
 
 

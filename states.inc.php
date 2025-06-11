@@ -72,6 +72,26 @@ $machinestates = [
         "possibleactions" => array( "actSelect"),
         "transitions" => array("next" => 2, "same" => 4, "zombiePass" => 4, "end" => 99)
     ),
+ 
+
+    10 => array(
+        "name" => "playerContinue",
+        "description" => clienttranslate('The other players must perform their actions'),
+        "descriptionmyturn" => clienttranslate('Are ${you} ready for the return leg?'),
+        "type" => "multipleactiveplayer",
+        "args" => "argPlayerContinue",
+        "action" => 'st_PlayerContinue',
+        "possibleactions" => array( "actSelect", "actContinue"),
+        "transitions" => array("next" => 11, "same" => 10, "zombiePass" => 10, "end" => 99)
+    ),
+
+    11 => [
+        "name" => "newRound",
+        "description" => '',
+        "type" => "game",
+        "action" => "st_NewRound",
+        "transitions" => ["end" => 99, "next" => 4]
+    ],
 
     
     2 => array(
@@ -80,7 +100,7 @@ $machinestates = [
         "type" => "game",
         "action" => "stPending",
         "updateGameProgression" => true,
-        "transitions" => array("end" => 99, "player"=> 3, "same" => 2, "multi" =>4)
+        "transitions" => array("end" => 99, "multi" => 10, "player"=> 3, "same" => 2)
     ),
     
     3 => array(
@@ -90,7 +110,7 @@ $machinestates = [
         "type" => "activeplayer",
         "args" => "argPlayerTurn",
         "possibleactions" => array( "actSelect", "actButton"),
-        "transitions" => array( "next" => 2, "zombiePass" => 2, "end" => 99, "multi" =>4)
+        "transitions" => array( "next" => 2, "zombiePass" => 2, "end" => 99, "multi" => 10)
     ), 
 
     // Final state.

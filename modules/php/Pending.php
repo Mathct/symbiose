@@ -81,7 +81,7 @@ class Pending extends APP_GameClass
 
             if($nbreplayers == 2)
             {
-                if(game::$instance->gamestate->table_globals[101] == 1)
+                if((game::$instance->gamestate->table_globals[101] == 1)||(game::$instance->gamestate->table_globals[101] == 3))
                 {
 
                     $list = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location ='river' AND card_visible = 0", true );
@@ -119,19 +119,40 @@ class Pending extends APP_GameClass
             if (game::$instance->getGameStateValue('scoring_mode') == 1)  // affichage score
             {
             
-            game::$instance->setGameStateValue('end', 1);
-            game::$instance->notifyAllPlayers('affichescore','', array(
-                )
-                );
+                game::$instance->setGameStateValue('end', 1);
+                game::$instance->notifyAllPlayers('affichescore','', array(
+                    )
+                    );
 
-            game::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1000] );
+                game::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 1000] );
             
             }
+            
             game::$instance->Score();
 
-            game::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 2000] );
+            if($nbreplayers == 2)
+            {
+                if((game::$instance->gamestate->table_globals[101] == 3)&&(game::$instance->getGameStateValue('nb_round')==1))
+                {
+                    
+                    game::$instance->gamestate->nextState( 'multi' );
+                }
+                else
+                {
+                    game::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 2000] );
+                    game::$instance->gamestate->nextState( 'end' );
 
-            game::$instance->gamestate->nextState( 'end' );
+                }
+
+            }
+
+            else
+            {
+                game::$instance->notifyAllPlayers( 'simplePause', '', [ 'time' => 2000] );
+                game::$instance->gamestate->nextState( 'end' );
+            }
+
+            
         }
         else
         {

@@ -63,6 +63,29 @@ setup: function( gamedatas )
 
     this.players = gamedatas.players; // A RAJOUTER POUR MOTEUR (UTILITY METHODS)
 
+
+    if((gamedatas.nbre_players == 2)&&(gamedatas.game_mode == 3))
+    {
+        var textescore1 = _("First Leg: ");
+        var textescore2 = _("Return Leg: ");
+
+        for( var player_id in gamedatas.players )   
+        {
+            var player_board_div = $('player_board_'+player_id);
+            dojo.place( this.format_block('jstpl_round_score1', {id: player_id} ), player_board_div );
+            dojo.place( this.format_block('jstpl_round_score2', {id: player_id} ), player_board_div );
+            document.getElementById('texte_round_score1_'+player_id).innerHTML = textescore1;
+            document.getElementById('texte_round_score2_'+player_id).innerHTML = textescore2;
+            document.getElementById('round_score1_'+player_id).innerHTML = gamedatas.score_round1[player_id];
+            document.getElementById('round_score2_'+player_id).innerHTML = gamedatas.score_round2[player_id];
+            
+
+        }
+
+       
+    }
+
+
     if (gamedatas.scoring_mode == 2)
     {
     for( var player_id in gamedatas.players )   
@@ -297,14 +320,23 @@ onEnteringState: function( stateName, args )
     case 'playerTurnMulti':
         this.args = args.args;
 
-        if(this.isCurrentPlayerActive())
+        setTimeout(() => 
         {
-        for( var sid in this.args['selectable'][this.getCurrentPlayerId()])
+            if(this.isCurrentPlayerActive())
             {
-                dojo.query("#"+this.args['selectable'][this.getCurrentPlayerId()][sid]).addClass("selectable");
+                
+                
+                for( var sid in this.args['selectable'][this.getCurrentPlayerId()])
+                    {
+                        
+                        dojo.query("#"+this.args['selectable'][this.getCurrentPlayerId()][sid]).addClass("selectable");
+                    }
+
             }
 
-        }
+        }, "100");
+                
+        
     break;
 
 
@@ -366,6 +398,20 @@ onUpdateActionButtons: function( stateName, args )
                              if(args.buttons[nb] == "pass")
                              {
                                 this.addActionButton( 'pass', _("Pass") ,'onOpButton', null, null, 'red' );
+                             }
+                             
+                    }
+                              
+                    
+                    break;
+
+                case "playerContinue":
+                    for( var nb in args.buttons )
+                     { 
+                             
+                            if(args.buttons[nb] == "continue")
+                             {
+                                this.addActionButton( 'continue', _("Continue") ,'onOpContinue', null, null, 'blue' );
                              }
                     }
                               
@@ -522,7 +568,7 @@ createBoard: function() {
             parent.appendChild(River);
     }
 
-    if ((this.gamedatas.nbre_players == 2)&&(this.gamedatas.game_mode == 1))
+    if ((this.gamedatas.nbre_players == 2)&&((this.gamedatas.game_mode == 1)||(this.gamedatas.game_mode == 3)))
         {
             var TexteRiver = _("River");
             parent.className = "board2";
@@ -1077,6 +1123,18 @@ onOpButton: function(evt)
 
 },
 
+onOpContinue: function(evt)
+{
+    
+    // Preventing default browser reaction
+    dojo.stopEvent( evt );
+    
+    this.bgaPerformAction('actContinue', { arg1: evt.currentTarget.id });
+    
+    
+
+},
+
 
 ///////////////////////////////////////////////////////////////////////////////// 
 //       _   _       _   _  __ _           _   _                 
@@ -1111,8 +1169,9 @@ setupNotifications: function()
     dojo.subscribe( 'affichescore', this, "notif_affichescore" );
     dojo.subscribe( 'scorepadequipe', this, "notif_scorepadequipe" );
     dojo.subscribe( 'scoreequipe', this, "notif_scoreequipe" );
+    dojo.subscribe( 'nettoyage', this, "notif_nettoyage" );
+    dojo.subscribe( 'reinit_score', this, "notif_reinit_score" );
 
-    
 },  
 
 notif_firstcard: function( notif )
@@ -1646,6 +1705,23 @@ notif_score: function( notif )
     }
 
     this.scoreCtrl[ notif.args.player_id ].toValue( notif.args.scoretotal );
+
+    if(notif.args.mode == 3)
+    {
+        if(notif.args.competitive_round == 1)
+        {
+            $('round_score1_'+notif.args.player_id).innerHTML = notif.args.score_round;
+        }
+
+        if(notif.args.competitive_round == 2)
+        {
+            $('round_score2_'+notif.args.player_id).innerHTML = notif.args.score_round;
+        }
+
+    }
+
+
+
    
 },
 
@@ -1862,6 +1938,48 @@ notif_affichescore: function( notif )
             
             
         }
+
+    
+},
+
+notif_nettoyage: function( notif )
+{
+    
+   document.getElementById("board").innerHTML = '';
+   
+   this.createBoard();
+
+    for( var card in notif.args.cards )   
+        {
+            var card = notif.args.cards[card];
+
+            this.addCard(card.id, card.type, card.location, card.location_arg, card.visible);
+        }
+
+    
+    
+},
+
+
+notif_reinit_score: function( notif )
+{
+    
+    for( var player_id in this.gamedatas.players )   
+    {
+        for (let i = 1; i <= 8; i++) {
+            $('score'+i+'_'+player_id).innerHTML = "";
+            
+        }
+        if(notif.args.scoring_mode == 1)
+        {
+        var element = document.getElementById("player_scorepad_"+player_id);
+        element.remove();
+        }
+
+        
+    }
+
+    
 
     
 },
