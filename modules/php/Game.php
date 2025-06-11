@@ -407,7 +407,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
         if($nbreplayers == 2)
         {
-            if(( $this->gamestate->table_globals[101] == 2)||( $this->gamestate->table_globals[101] == 3))
+            if(( $this->gamestate->table_globals[101] == 1)||( $this->gamestate->table_globals[101] == 3))
             {
                 $duel = 1;
             }
