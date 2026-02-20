@@ -1,16 +1,15 @@
 <?php
 
 namespace Bga\Games\Symbiose;   // ATTENTION NOM DU JEU
-use APP_GameClass;
+use Bga\GameFramework\Table;
 
-
-class Pending extends APP_GameClass
+class Pending
 {
     
     public function __construct($player_id)
     {
         $this->player_id = $player_id;
-        $p = self::getObjectFromDB("SELECT * FROM player WHERE player_id = {$player_id}");        
+        $p = Table::getObjectFromDB("SELECT * FROM `player` WHERE `player_id` = {$player_id}");        
         $this->player_no = $p['player_no'];
         $this->player_id = $p['player_id'];
         $this->player_name = $p['player_name'];
@@ -48,12 +47,12 @@ class Pending extends APP_GameClass
         $ret['title'] = clienttranslate('${actplayer} must take an action');
         $ret['titleyou'] = clienttranslate('${you} must choose a river card');
 
-        //$cards = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location = 'river'", true );
+        //$cards = Table::getObjectListFromDB( "SELECT `card_id` FROM `cards` WHERE `card_location` = 'river'", true );
 
-        $cards_visible = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location = 'river' AND card_visible = 1", true );
-        $cards_novisible = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location = 'river' AND card_visible = 0 ", true );
+        $cards_visible = Table::getObjectListFromDB( "SELECT `card_id` FROM `cards` WHERE `card_location` = 'river' AND `card_visible` = 1", true );
+        $cards_novisible = Table::getObjectListFromDB( "SELECT `card_id` FROM `cards` WHERE `card_location` = 'river' AND `card_visible` = 0 ", true );
 
-        $nbre = count(self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location_arg = '{$this->player_id}' AND card_visible = 1", true ));
+        $nbre = count(Table::getObjectListFromDB( "SELECT `card_id` FROM `cards` WHERE `card_location_arg` = '{$this->player_id}' AND `card_visible` = 1", true ));
 
         
         if($nbre < 8)
@@ -77,14 +76,14 @@ class Pending extends APP_GameClass
     {
         if ($varg1 == null)
         {
-            $nbreplayers = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
+            $nbreplayers = count(Table::getObjectListFromDB( "SELECT `player_id` FROM `player`", true ));
 
             if($nbreplayers == 2)
             {
-                if((game::$instance->gamestate->table_globals[101] == 1)||(game::$instance->gamestate->table_globals[101] == 3))
+                if((game::$instance->bga->tableOptions->get(101) == 1)||(game::$instance->bga->tableOptions->get(101) == 3))
                 {
 
-                    $list = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location ='river' AND card_visible = 0", true );
+                    $list = Table::getObjectListFromDB( "SELECT `card_id` FROM `cards` WHERE `card_location` ='river' AND `card_visible` = 0", true );
                     $nbrelist = count ($list);
 
                     if ($nbrelist >= 1)
@@ -94,8 +93,8 @@ class Pending extends APP_GameClass
                         foreach ($list as $card)
                         {
 
-                            self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_id = '{$card}'");
-                            $cardinfo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM cards WHERE card_id = '{$card}'" );
+                            Table::DbQuery("UPDATE `cards` set `card_visible` = 1 WHERE `card_id` = '{$card}'");
+                            $cardinfo = Table::getObjectListFromDB( "SELECT `card_id` `id`, `card_type` type, `card_location` location, `card_location_arg` location_arg FROM `cards` WHERE `card_id` = '{$card}'" );
         
                             game::$instance->notifyAllPlayers('flip','', array(
                     
@@ -132,7 +131,7 @@ class Pending extends APP_GameClass
 
             if($nbreplayers == 2)
             {
-                if((game::$instance->gamestate->table_globals[101] == 3)&&(game::$instance->getGameStateValue('nb_round')==1))
+                if((game::$instance->bga->tableOptions->get(101) == 3)&&(game::$instance->getGameStateValue('nb_round')==1))
                 {
                     
                     game::$instance->gamestate->nextState( 'multi' );
@@ -160,8 +159,8 @@ class Pending extends APP_GameClass
 
             if (str_ends_with($varg1, "back"))
                 {
-                    self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_id = '{$explode_card_river[1]}'");
-                    $cardinfo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM cards WHERE card_id = '{$explode_card_river[1]}'" );
+                    Table::DbQuery("UPDATE `cards` set `card_visible` = 1 WHERE `card_id` = '{$explode_card_river[1]}'");
+                    $cardinfo = Table::getObjectListFromDB( "SELECT `card_id` `id`, `card_type` type, `card_location` location, `card_location_arg` location_arg FROM `cards` WHERE `card_id` = '{$explode_card_river[1]}'" );
 
                     game::$instance->notifyAllPlayers('flip','', array(
             
@@ -190,8 +189,8 @@ class Pending extends APP_GameClass
         $ret['title'] = clienttranslate('${actplayer} must take an action');
         $ret['titleyou'] = clienttranslate('${you} must choose a location for the pond');
 
-        $cards_visible = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location_arg = '{$this->player_id}' AND card_visible = 1", true );
-        $cards_novisible = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location_arg = '{$this->player_id}' AND card_visible = 0 ", true );
+        $cards_visible = Table::getObjectListFromDB( "SELECT `card_id` FROM `cards` WHERE `card_location_arg` = '{$this->player_id}' AND `card_visible` = 1", true );
+        $cards_novisible = Table::getObjectListFromDB( "SELECT `card_id` FROM `cards` WHERE `card_location_arg` = '{$this->player_id}' AND `card_visible` = 0 ", true );
 
         
         foreach ($cards_visible as $card)
@@ -233,17 +232,17 @@ class Pending extends APP_GameClass
         {
             
             $explode_card_river = explode('_', $parg1);
-            $position_card_river = self::getUniqueValueFromDB("SELECT card_location_arg FROM cards WHERE card_id = '{$explode_card_river[1]}'");
+            $position_card_river = Table::getUniqueValueFromDB("SELECT `card_location_arg` FROM `cards` WHERE `card_id` = '{$explode_card_river[1]}'");
 
             $explode_card_mare = explode('_', $varg1);
-            $position_card_mare = self::getUniqueValueFromDB("SELECT card_location FROM cards WHERE card_id = '{$explode_card_mare[1]}'");
+            $position_card_mare = Table::getUniqueValueFromDB("SELECT `card_location` FROM `cards` WHERE `card_id` = '{$explode_card_mare[1]}'");
 
 
             if (str_ends_with($varg1, "back"))
             {
-                self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_id = '{$explode_card_mare[1]}'");
+                Table::DbQuery("UPDATE `cards` set `card_visible` = 1 WHERE `card_id` = '{$explode_card_mare[1]}'");
                 
-                $cardinfo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM cards WHERE card_id = '{$explode_card_mare[1]}'" );
+                $cardinfo = Table::getObjectListFromDB( "SELECT `card_id` `id`, `card_type` type, `card_location` location, `card_location_arg` location_arg FROM `cards` WHERE `card_id` = '{$explode_card_mare[1]}'" );
                 game::$instance->notifyAllPlayers('flip','', array(
             
                     'cardinfo' => $cardinfo,
@@ -254,8 +253,8 @@ class Pending extends APP_GameClass
 
                 /*if (str_ends_with($parg1, "back"))
                 {
-                    self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_id = '{$explode_card_river[1]}'");
-                    $cardinfo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM cards WHERE card_id = '{$explode_card_river[1]}'" );
+                    Table::DbQuery("UPDATE `cards` set `card_visible` = 1 WHERE `card_id` = '{$explode_card_river[1]}'");
+                    $cardinfo = Table::getObjectListFromDB( "SELECT `card_id` `id`, `card_type` type, `card_location` location, `card_location_arg` location_arg FROM `cards` WHERE `card_id` = '{$explode_card_river[1]}'" );
 
                     game::$instance->notifyAllPlayers('flip','', array(
             
@@ -299,8 +298,8 @@ class Pending extends APP_GameClass
 
                 if (str_ends_with($parg1, "back"))
                 {
-                    self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_id = '{$explode_card_river[1]}'");
-                    $cardinfo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM cards WHERE card_id = '{$explode_card_river[1]}'" );
+                    Table::DbQuery("UPDATE `cards` set `card_visible` = 1 WHERE `card_id` = '{$explode_card_river[1]}'");
+                    $cardinfo = Table::getObjectListFromDB( "SELECT `card_id` `id`, `card_type` type, `card_location` location, `card_location_arg` location_arg FROM `cards` WHERE `card_id` = '{$explode_card_river[1]}'" );
 
                     game::$instance->notifyAllPlayers('flip','', array(
             
@@ -356,7 +355,7 @@ class Pending extends APP_GameClass
         $ret['titleyou'] = clienttranslate('${you} must flip a new card from the pond');
 
         
-        $cards_novisible = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location_arg = '{$this->player_id}' AND card_visible = 0 ", true );
+        $cards_novisible = Table::getObjectListFromDB( "SELECT `card_id` FROM `cards` WHERE `card_location_arg` = '{$this->player_id}' AND `card_visible` = 0 ", true );
 
         
        
@@ -377,9 +376,9 @@ class Pending extends APP_GameClass
     {
         $explode_card_mare = explode('_', $varg1);
 
-        self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_id = '{$explode_card_mare[1]}'");
+        Table::DbQuery("UPDATE `cards` set `card_visible` = 1 WHERE `card_id` = '{$explode_card_mare[1]}'");
 
-        $cardinfo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM cards WHERE card_id = '{$explode_card_mare[1]}'" );
+        $cardinfo = Table::getObjectListFromDB( "SELECT `card_id` `id`, `card_type` type, `card_location` location, `card_location_arg` location_arg FROM `cards` WHERE `card_id` = '{$explode_card_mare[1]}'" );
         game::$instance->notifyAllPlayers('flip',clienttranslate('${player_name} reveals a new card of the pond'), array(
             'player_name' => $this->player_name,
             'cardinfo' => $cardinfo,

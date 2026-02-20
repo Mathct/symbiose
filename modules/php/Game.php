@@ -18,16 +18,21 @@ declare(strict_types=1);
 
 namespace Bga\Games\symbiose;
 
-require_once(APP_GAMEMODULE_PATH . "module/table/table.game.php");
+use Bga\GameFramework\Components\Deck;
+use Bga\GameFramework\Table;
+use Bga\GameFramework\UserException;
+use Bga\GameFramework\VisibleSystemException;
 
 include('Pending.php'); // ATTENTION
 
-class Game extends \Table
+class Game extends Table
 {
 
     public static $instance = null;  // ATTENTION
 
+    public Deck $cards;
 
+    public array $_cards;
     
     public function __construct()
     {
@@ -53,20 +58,9 @@ class Game extends \Table
         
         self::$instance = $this; // ATTENTION
 
-        $this->cards = self::getNew("module.common.deck");
-        $this->cards->init("cards");
+        $this->cards = $this->bga->deckFactory->createDeck("cards");
 
         
-    }
-
-    /**
-     * Returns the game name.
-     *
-     * IMPORTANT: Please do not modify.
-     */
-    protected function getGameName()
-    {
-        return "symbiose";
     }
 
 
@@ -122,11 +116,11 @@ protected function setupNewGame($players, $options = [])
      game::$instance->setGameStateInitialValue('score2_player_1', 0);
      game::$instance->setGameStateInitialValue('score2_player_2', 0);
 
-     $nbreplayers = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
+     $nbreplayers = count(self::getObjectListFromDB( "SELECT `player_id` FROM `player`", true ));
      
     if ($nbreplayers == 2)
     {
-        if($this->gamestate->table_globals[101] == null)
+        if($this->bga->tableOptions->get(101) == null)
         {
             game::$instance->setGameStateValue('game_mode', 1);
         }
@@ -156,7 +150,7 @@ protected function setupNewGame($players, $options = [])
 
     /* init cards river*/
 
-    $nbreplayers = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
+    $nbreplayers = count(self::getObjectListFromDB( "SELECT `player_id` FROM `player`", true ));
 
     if ($nbreplayers >=3)
     {
@@ -166,23 +160,23 @@ protected function setupNewGame($players, $options = [])
         $this->cards->pickCardForLocation('deck', 'river', $i);
     }
 
-    self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river'");
+    self::DbQuery("UPDATE `cards` set `card_visible` = 1 WHERE `card_location` = 'river'");
     }
 
     if ($nbreplayers == 2)
 
     {
-        if( $this->gamestate->table_globals[101] == 2)
+        if( $this->bga->tableOptions->get(101) == 2)
         {
             for ($i = 1; $i <= 4; $i++) {
 
                 $this->cards->pickCardForLocation('deck', 'river', $i);
             }
         
-            self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river'");
+            self::DbQuery("UPDATE `cards` set `card_visible` = 1 WHERE `card_location` = 'river'");
         }
 
-        if(( $this->gamestate->table_globals[101] == 1)||( $this->gamestate->table_globals[101] == 3))
+        if(( $this->bga->tableOptions->get(101) == 1)||( $this->bga->tableOptions->get(101) == 3))
         {
             for ($i = 1; $i <= 8; $i++) {
 
@@ -190,10 +184,10 @@ protected function setupNewGame($players, $options = [])
             }
 
                   
-            self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river' AND card_location_arg = 1");
-            self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river' AND card_location_arg = 2");
-            self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river' AND card_location_arg = 3");
-            self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river' AND card_location_arg = 4");
+            self::DbQuery("UPDATE `cards` set `card_visible` = 1 WHERE `card_location` = 'river' AND `card_location_arg` = 1");
+            self::DbQuery("UPDATE `cards` set `card_visible` = 1 WHERE `card_location` = 'river' AND `card_location_arg` = 2");
+            self::DbQuery("UPDATE `cards` set `card_visible` = 1 WHERE `card_location` = 'river' AND `card_location_arg` = 3");
+            self::DbQuery("UPDATE `cards` set `card_visible` = 1 WHERE `card_location` = 'river' AND `card_location_arg` = 4");
         }
     }
 
@@ -208,7 +202,7 @@ protected function setupNewGame($players, $options = [])
         $this->addPendingFirst($player_id, "NormalTurn");
     }
 
-    
+    return 4;
 }
 
 /////////////////////////////////////////////////////////////////////////////////  
@@ -229,21 +223,21 @@ $result = [];
 
 $current_player_id = (int) $this->getCurrentPlayerId();
 
-$result["players"] = self::getCollectionFromDB( "SELECT player_id id, player_name name, player_no no, player_score score, score1 score1, score2 score2, score3 score3, score4 score4, score5 score5, score6 score6, score7 score7, score8 score8 FROM player" );
-$result['cards'] = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, card_visible visible FROM cards WHERE card_location != 'deck'");
+$result["players"] = self::getCollectionFromDB( "SELECT `player_id` `id`, `player_name` name, `player_no` no, `player_score` score, `score1` `score1`, `score2` `score2`, `score3` `score3`, `score4` `score4`, `score5` `score5`, `score6` `score6`, `score7` `score7`, `score8` `score8` FROM `player`" );
+$result['cards'] = self::getObjectListFromDB( "SELECT `card_id` `id`, `card_type` type, `card_type_arg` type_arg, `card_location` location, `card_location_arg` location_arg, `card_visible` visible FROM `cards` WHERE `card_location` != 'deck'");
 $result["new_ordre_players"] = $this->getPlayerRelativePositions();
 
 $result["nbre_players"] = count($result["players"]);
 
-$result["scoring_mode"] = $this->gamestate->table_globals[100];
+$result["scoring_mode"] = $this->bga->tableOptions->get(100);
 
 if($result["nbre_players"] == 2)
 {
-    $result["game_mode"] = $this->gamestate->table_globals[101];
+    $result["game_mode"] = $this->bga->tableOptions->get(101);
 
-    /*if($this->gamestate->table_globals[101] != null)
+    /*if($this->bga->tableOptions->get(101) != null)
     {
-    $result["game_mode"] = $this->gamestate->table_globals[101];
+    $result["game_mode"] = $this->bga->tableOptions->get(101);
     }
     else
     {
@@ -254,9 +248,9 @@ if($result["nbre_players"] == 2)
 
 if($result["nbre_players"] == 4)
 {
-    if(isset($this->gamestate->table_globals[102]))   // je teste si la variable existe pour éviter de casser les parties en cours
+    if($this->bga->tableOptions->get(102))   // je teste si la variable existe pour éviter de casser les parties en cours
     {
-    $result["teammode"] = $this->gamestate->table_globals[102];
+    $result["teammode"] = $this->bga->tableOptions->get(102);
     }
     else
     {
@@ -266,8 +260,8 @@ if($result["nbre_players"] == 4)
 
 $result["end"] = game::$instance->getGameStateValue('end');
 
-$p1 = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no=1");
-$p2 = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no=2");
+$p1 = self::getUniqueValueFromDB("SELECT `player_id` FROM `player` WHERE `player_no`=1");
+$p2 = self::getUniqueValueFromDB("SELECT `player_id` FROM `player` WHERE `player_no`=2");
 $score_round1_p1 = game::$instance->getGameStateValue('score1_player_1');
 $score_round1_p2 = game::$instance->getGameStateValue('score1_player_2');
 $score_round2_p1 = game::$instance->getGameStateValue('score2_player_1');
@@ -297,12 +291,12 @@ return $result;
 public function getGameProgression()
 {
     $count = array();
-    $players = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+    $players = self::getObjectListFromDB( "SELECT `player_id` `id` FROM `player`", true );
     $nbreplayers = count($players);
 
     foreach($players as $player)
     {
-        $count[] = count(self::getObjectListFromDB( "SELECT card_id id FROM cards WHERE card_location_arg = '{$player}' AND card_visible = 1", true ));
+        $count[] = count(self::getObjectListFromDB( "SELECT `card_id` `id` FROM `cards` WHERE `card_location_arg` = '{$player}' AND `card_visible` = 1", true ));
     }
 
     //$min = min($count);
@@ -342,18 +336,18 @@ public function getGameProgression()
 /////////////////////////////////////////////////////////////////////////////////  
 
 function addPending($player_id, $function, $arg = NULL, $arg2 = NULL, $arg3 = NULL, $arg4 = NULL) {
-$sql = "INSERT INTO pending (player_id, function, arg, arg2, arg3, arg4) VALUES (".$player_id.", '".$function."', '".$arg."', '".$arg2."', '".$arg3."', '".$arg4."')";
+$sql = "INSERT INTO `pending` (`player_id`, `function`, `arg`, `arg2`, `arg3`, `arg4`) VALUES (".$player_id.", '".$function."', '".$arg."', '".$arg2."', '".$arg3."', '".$arg4."')";
 self::DbQuery( $sql );
 }
 
 /*function addPendingTarget($player_id, $function, $target, $arg = NULL, $arg2 = NULL, $arg3 = NULL, $arg4 = NULL) {
-$sql = "INSERT INTO pending (player_id, function, target, arg, arg2, arg3, arg4) VALUES (".$player_id.", '".$function."', '".$target."', '".$arg."', '".$arg2."', '".$arg3."', '".$arg4."')";
+$sql = "INSERT INTO `pending` (`player_id`, `function`, `target`, `arg`, `arg2`, `arg3`, `arg4`) VALUES (".$player_id.", '".$function."', '".$target."', '".$arg."', '".$arg2."', '".$arg3."', '".$arg4."')";
 self::DbQuery( $sql );
 }*/
 
 function addPendingFirst($player_id, $function, $arg = NULL, $arg2 = NULL, $arg3 = NULL, $arg4 = NULL) {
-$minid = self::getUniqueValueFromDB( "select min(id) from pending")-1;
-$sql = "INSERT INTO pending (id, player_id, function, arg, arg2) VALUES (".$minid.",".$player_id.", '".$function."', '".$arg."', '".$arg2."')";
+$minid = self::getUniqueValueFromDB( "select min(`id`) from `pending`")-1;
+$sql = "INSERT INTO `pending` (`id`, `player_id`, `function`, `arg`, `arg2`) VALUES (".$minid.",".$player_id.", '".$function."', '".$arg."', '".$arg2."')";
 self::DbQuery( $sql );
 }
 
@@ -363,7 +357,7 @@ function checkArgs($arg1)
 
     if(!in_array($arg1,$ret['selectable']) && !in_array($arg1,$ret['buttons']))
     {
-        throw new feException( "Not a valid selection");
+        throw new UserException( "Not a valid selection");
     }
     
 }
@@ -403,11 +397,11 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
         $mode = game::$instance->getGameStateValue('scoring_mode');
 
         
-        $nbreplayers = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
+        $nbreplayers = count(self::getObjectListFromDB( "SELECT `player_id` FROM `player`", true ));
 
         if($nbreplayers == 2)
         {
-            if(( $this->gamestate->table_globals[101] == 1)||( $this->gamestate->table_globals[101] == 3))
+            if(( $this->bga->tableOptions->get(101) == 1)||( $this->bga->tableOptions->get(101) == 3))
             {
                 $duel = 1;
             }
@@ -415,13 +409,13 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
         if($nbreplayers == 4)
         {
-            if(isset($this->gamestate->table_globals[102]))   // je teste si la variable existe pour éviter de casser les parties en cours
+            if($this->bga->tableOptions->get(102))   // je teste si la variable existe pour éviter de casser les parties en cours
             {
-                if($this->gamestate->table_globals[102] == 1)
+                if($this->bga->tableOptions->get(102) == 1)
                 {
                     $equipe = 0;
                 }
-                if($this->gamestate->table_globals[102] == 2)
+                if($this->bga->tableOptions->get(102) == 2)
                 {
                     $equipe = 1;
                 }
@@ -443,11 +437,11 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
             {
                 $listcard = array();
                 $nbresigne = array();
-                $listplayers = self::getObjectListFromDB( "SELECT player_id FROM player", true );
+                $listplayers = self::getObjectListFromDB( "SELECT `player_id` FROM `player`", true );
 
                 foreach ($listplayers as $player)
                 {
-                    $listcard[$player] = self::getObjectListFromDB( "SELECT card_type FROM cards WHERE card_location_arg = '{$player}' AND card_visible = 1 ", true );
+                    $listcard[$player] = self::getObjectListFromDB( "SELECT `card_type` FROM `cards` WHERE `card_location_arg` = '{$player}' AND `card_visible` = 1 ", true );
 
                     $gr = 0;
                     $es = 0;
@@ -529,7 +523,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                     foreach ($listcard[$player] as $type)
                     {
-                        $position = self::getUniqueValueFromDB("SELECT card_location FROM cards WHERE card_type = '{$type}'");
+                        $position = self::getUniqueValueFromDB("SELECT `card_location` FROM `cards` WHERE `card_type` = '{$type}'");
                         $scoretype = $this->_cards[$type]['scoretype'];
                         $score = $this->_cards[$type]['score'];
 
@@ -547,7 +541,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score1 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score1 = '{$score1}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score1` = '{$score1}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -568,7 +562,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score2 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score2 = '{$score2}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score2` = '{$score2}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -590,7 +584,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score3 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score3 = '{$score3}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score3` = '{$score3}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -611,7 +605,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score4 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score4 = '{$score4}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score4` = '{$score4}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -632,7 +626,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score5 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score5 = '{$score5}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score5` = '{$score5}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -654,7 +648,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score6 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score6 = '{$score6}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score6` = '{$score6}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -676,7 +670,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score7 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score7 = '{$score7}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score7` = '{$score7}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -698,7 +692,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score8 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score8 = '{$score8}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score8` = '{$score8}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -709,47 +703,47 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                     $scoretotal = 0;
 
-                    if (self::getUniqueValueFromDB("SELECT score1 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score1` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score1 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score1` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score2 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score2` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score2 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score2` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score3 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score3` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score3 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score3` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score4 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score4` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score4 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score4` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score5 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score5` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score5 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score5` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score6 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score6` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score6 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score6` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score7 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score7` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score7 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score7` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score8 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score8` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score8 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score8` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    self::DbQuery( "UPDATE player set player_score = '{$scoretotal}'  WHERE player_id = '{$player}'" );
+                    self::DbQuery( "UPDATE `player` set `player_score` = '{$scoretotal}'  WHERE `player_id` = '{$player}'" );
 
 
 
@@ -786,11 +780,11 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
             {
                 $listcard = array();
                 $nbresigne = array();
-                $listplayers = self::getObjectListFromDB( "SELECT player_id FROM player", true );
+                $listplayers = self::getObjectListFromDB( "SELECT `player_id` FROM `player`", true );
 
                 foreach ($listplayers as $player)
                 {
-                    $listcard[$player] = self::getObjectListFromDB( "SELECT card_type FROM cards WHERE card_location_arg = '{$player}' AND card_visible = 1 ", true );
+                    $listcard[$player] = self::getObjectListFromDB( "SELECT `card_type` FROM `cards` WHERE `card_location_arg` = '{$player}' AND `card_visible` = 1 ", true );
 
                     $gr = 0;
                     $es = 0;
@@ -858,12 +852,12 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
                 
                 foreach ($listplayers as $player)
                 {
-                    $no_player = self::getUniqueValueFromDB("SELECT player_no FROM player WHERE player_id = '{$player}'");
+                    $no_player = self::getUniqueValueFromDB("SELECT `player_no` FROM `player` WHERE `player_id` = '{$player}'");
 
-                    $id_player_1 = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no = 1");
-                    $id_player_2 = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no = 2");
-                    $id_player_3 = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no = 3");
-                    $id_player_4 = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no = 4");
+                    $id_player_1 = self::getUniqueValueFromDB("SELECT `player_id` FROM `player` WHERE `player_no` = 1");
+                    $id_player_2 = self::getUniqueValueFromDB("SELECT `player_id` FROM `player` WHERE `player_no` = 2");
+                    $id_player_3 = self::getUniqueValueFromDB("SELECT `player_id` FROM `player` WHERE `player_no` = 3");
+                    $id_player_4 = self::getUniqueValueFromDB("SELECT `player_id` FROM `player` WHERE `player_no` = 4");
 
                     if($no_player == 1)
                     {
@@ -901,7 +895,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                     foreach ($listcard[$player] as $type)
                     {
-                        $position = self::getUniqueValueFromDB("SELECT card_location FROM cards WHERE card_type = '{$type}'");
+                        $position = self::getUniqueValueFromDB("SELECT `card_location` FROM `cards` WHERE `card_type` = '{$type}'");
                         $scoretype = $this->_cards[$type]['scoretype'];
                         $score = $this->_cards[$type]['score'];
 
@@ -919,7 +913,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score1 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score1 = '{$score1}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score1` = '{$score1}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -940,7 +934,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score2 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score2 = '{$score2}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score2` = '{$score2}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -962,7 +956,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score3 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score3 = '{$score3}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score3` = '{$score3}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -983,7 +977,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score4 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score4 = '{$score4}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score4` = '{$score4}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -1004,7 +998,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score5 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score5 = '{$score5}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score5` = '{$score5}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -1026,7 +1020,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score6 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score6 = '{$score6}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score6` = '{$score6}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -1048,7 +1042,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score7 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score7 = '{$score7}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score7` = '{$score7}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -1070,7 +1064,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score8 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score8 = '{$score8}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score8` = '{$score8}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -1081,47 +1075,47 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                     $scoretotal = 0;
 
-                    if (self::getUniqueValueFromDB("SELECT score1 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score1` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score1 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score1` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score2 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score2` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score2 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score2` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score3 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score3` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score3 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score3` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score4 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score4` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score4 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score4` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score5 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score5` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score5 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score5` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score6 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score6` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score6 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score6` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score7 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score7` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score7 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score7` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score8 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score8` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score8 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score8` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    self::DbQuery( "UPDATE player set player_score = '{$scoretotal}'  WHERE player_id = '{$player}'" );
+                    self::DbQuery( "UPDATE `player` set `player_score` = '{$scoretotal}'  WHERE `player_id` = '{$player}'" );
 
 
 
@@ -1145,11 +1139,11 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
                 
                 }
 
-                $score_total_1 = self::getUniqueValueFromDB("SELECT player_score FROM player WHERE player_id={$id_player_1}") + self::getUniqueValueFromDB("SELECT player_score FROM player WHERE player_id={$id_player_3}");
-                $score_total_2 = self::getUniqueValueFromDB("SELECT player_score FROM player WHERE player_id={$id_player_2}") + self::getUniqueValueFromDB("SELECT player_score FROM player WHERE player_id={$id_player_4}");
+                $score_total_1 = self::getUniqueValueFromDB("SELECT `player_score` FROM `player` WHERE `player_id`={$id_player_1}") + self::getUniqueValueFromDB("SELECT `player_score` FROM `player` WHERE `player_id`={$id_player_3}");
+                $score_total_2 = self::getUniqueValueFromDB("SELECT `player_score` FROM `player` WHERE `player_id`={$id_player_2}") + self::getUniqueValueFromDB("SELECT `player_score` FROM `player` WHERE `player_id`={$id_player_4}");
 
-                self::DbQuery( "UPDATE player set player_score = '{$score_total_1}'  WHERE player_no = 1 OR player_no = 3" );
-                self::DbQuery( "UPDATE player set player_score = '{$score_total_2}'  WHERE player_no = 2 OR player_no = 4" );
+                self::DbQuery( "UPDATE `player` set `player_score` = '{$score_total_1}'  WHERE `player_no` = 1 OR `player_no` = 3" );
+                self::DbQuery( "UPDATE `player` set `player_score` = '{$score_total_2}'  WHERE `player_no` = 2 OR `player_no` = 4" );
                 
 
                 
@@ -1182,11 +1176,11 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
             {
                 $listcard = array();
                 $nbresigne = array();
-                $listplayers = self::getObjectListFromDB( "SELECT player_id FROM player", true );
+                $listplayers = self::getObjectListFromDB( "SELECT `player_id` FROM `player`", true );
 
                 foreach ($listplayers as $player)
                 {
-                    $listcard[$player] = self::getObjectListFromDB( "SELECT card_type FROM cards WHERE card_location_arg = '{$player}' AND card_visible = 1 ", true );
+                    $listcard[$player] = self::getObjectListFromDB( "SELECT `card_type` FROM `cards` WHERE `card_location_arg` = '{$player}' AND `card_visible` = 1 ", true );
 
                     $gr = 0;
                     $es = 0;
@@ -1251,7 +1245,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                 }
 
-                $listcard['river'] = self::getObjectListFromDB( "SELECT card_type FROM cards WHERE card_location = 'river' AND card_visible = 1 ", true );
+                $listcard['river'] = self::getObjectListFromDB( "SELECT `card_type` FROM `cards` WHERE `card_location` = 'river' AND `card_visible` = 1 ", true );
 
                     $gr = 0;
                     $es = 0;
@@ -1316,7 +1310,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
                 
                 foreach ($listplayers as $player)
                 {
-                    $numero = self::getUniqueValueFromDB("SELECT player_no FROM player WHERE player_id={$player}");
+                    $numero = self::getUniqueValueFromDB("SELECT `player_no` FROM `player` WHERE `player_id`={$player}");
                     if($numero == 1)
                     {
                         $nextplayer = game::$instance->getPlayerAfter( $player );
@@ -1341,7 +1335,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                     foreach ($listcard[$player] as $type)
                     {
-                        $position = self::getUniqueValueFromDB("SELECT card_location FROM cards WHERE card_type = '{$type}'");
+                        $position = self::getUniqueValueFromDB("SELECT `card_location` FROM `cards` WHERE `card_type` = '{$type}'");
                         $scoretype = $this->_cards[$type]['scoretype'];
                         $score = $this->_cards[$type]['score'];
 
@@ -1359,7 +1353,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score1 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score1 = '{$score1}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score1` = '{$score1}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -1380,7 +1374,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score2 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score2 = '{$score2}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score2` = '{$score2}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -1402,7 +1396,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score3 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score3 = '{$score3}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score3` = '{$score3}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -1423,7 +1417,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score4 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score4 = '{$score4}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score4` = '{$score4}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -1444,7 +1438,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score5 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score5 = '{$score5}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score5` = '{$score5}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -1466,7 +1460,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score6 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score6 = '{$score6}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score6` = '{$score6}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -1488,7 +1482,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score7 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score7 = '{$score7}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score7` = '{$score7}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -1510,7 +1504,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                             if ($score8 >=0)
                             {
-                                self::DbQuery( "UPDATE player set score8 = '{$score8}'  WHERE player_id = '{$player}'" );
+                                self::DbQuery( "UPDATE `player` set `score8` = '{$score8}'  WHERE `player_id` = '{$player}'" );
                             }
 
 
@@ -1521,64 +1515,64 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 
                     $scoretotal = 0;
 
-                    if (self::getUniqueValueFromDB("SELECT score1 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score1` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score1 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score1` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score2 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score2` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score2 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score2` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score3 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score3` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score3 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score3` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score4 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score4` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score4 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score4` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score5 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score5` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score5 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score5` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score6 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score6` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score6 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score6` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score7 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score7` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score7 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score7` FROM `player` WHERE `player_id`={$player}");
                     }
 
-                    if (self::getUniqueValueFromDB("SELECT score8 FROM player WHERE player_id={$player}") >=0 )
+                    if (self::getUniqueValueFromDB("SELECT `score8` FROM `player` WHERE `player_id`={$player}") >=0 )
                     {
-                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT score8 FROM player WHERE player_id={$player}");
+                        $scoretotal = $scoretotal + self::getUniqueValueFromDB("SELECT `score8` FROM `player` WHERE `player_id`={$player}");
                     }
                    
                     $score_round = $scoretotal;
 
-                    if((game::$instance->gamestate->table_globals[101] == 3)&&(game::$instance->getGameStateValue('nb_round')==1))
+                    if(($this->bga->tableOptions->get(101) == 3)&&(game::$instance->getGameStateValue('nb_round')==1))
                     {
                        
-                        $no = self::getUniqueValueFromDB("SELECT player_no FROM player WHERE player_id={$player}");
+                        $no = self::getUniqueValueFromDB("SELECT `player_no` FROM `player` WHERE `player_id`={$player}");
                         game::$instance->setGameStateValue('score1_player_'.$no, $score_round);
                         
                     }
 
                     
-                    if((game::$instance->gamestate->table_globals[101] == 3)&&(game::$instance->getGameStateValue('nb_round')==2))
+                    if(($this->bga->tableOptions->get(101) == 3)&&(game::$instance->getGameStateValue('nb_round')==2))
                     {
-                        $no = self::getUniqueValueFromDB("SELECT player_no FROM player WHERE player_id={$player}");
+                        $no = self::getUniqueValueFromDB("SELECT `player_no` FROM `player` WHERE `player_id`={$player}");
                         $scoretotal = $scoretotal + game::$instance->getGameStateValue('score1_player_'.$no);
                     }
 
-                    self::DbQuery( "UPDATE player set player_score = '{$scoretotal}'  WHERE player_id = '{$player}'" );
+                    self::DbQuery( "UPDATE `player` set `player_score` = '{$scoretotal}'  WHERE `player_id` = '{$player}'" );
 
 
 
@@ -1594,7 +1588,7 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
                         'score7' => $score7,
                         'score8' => $score8,
                         'scoretotal' => $scoretotal,
-                        'mode' => game::$instance->gamestate->table_globals[101],
+                        'mode' => $this->bga->tableOptions->get(101),
                         'competitive_round' => game::$instance->getGameStateValue('nb_round'),
                         'score_round' => $score_round,
 
@@ -1631,14 +1625,14 @@ function getPlayerRelativePositions()  // permet de mettre dans view.php les jou
 public function actSelect(string $arg1)
 {
 
-    if($this->gamestate->state()['name'] == "playerTurnMulti")
+    if($this->gamestate->getCurrentMainState()->name == "playerTurnMulti")
     {
         $explode = explode('_', $arg1);
         $player_id = $this->getCurrentPlayerId(); // CURRENT!!! not active
-        $name = self::getUniqueValueFromDB("SELECT player_name FROM player WHERE player_id={$player_id}");
-        self::DbQuery("UPDATE cards set card_visible = 2 WHERE card_id = '{$explode[1]}'");
+        $name = self::getUniqueValueFromDB("SELECT `player_name` FROM `player` WHERE `player_id`={$player_id}");
+        self::DbQuery("UPDATE `cards` set `card_visible` = 2 WHERE `card_id` = '{$explode[1]}'");
 
-        $cards = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location_arg = '{$player_id}'", true );
+        $cards = self::getObjectListFromDB( "SELECT `card_id` FROM `cards` WHERE `card_location_arg` = '{$player_id}'", true );
     
         game::$instance->notifyAllPlayers('firstcard',clienttranslate('${player_name} flips the first card'), array(
             'player_name' => $name, 
@@ -1649,18 +1643,18 @@ public function actSelect(string $arg1)
             )
             );
 
-        $nbreplayers = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
-        $cards = self::getObjectListFromDB( "SELECT card_id id FROM cards WHERE card_visible = 2", true );
+        $nbreplayers = count(self::getObjectListFromDB( "SELECT `player_id` FROM `player`", true ));
+        $cards = self::getObjectListFromDB( "SELECT `card_id` `id` FROM `cards` WHERE `card_visible` = 2", true );
         $nbrecard = count($cards);
 
         if($nbrecard == $nbreplayers)
         {
             foreach($cards as $card)
             {
-                self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_id = '{$card}'");
+                self::DbQuery("UPDATE `cards` set `card_visible` = 1 WHERE `card_id` = '{$card}'");
 
         
-                $cardinfo = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_location location, card_location_arg location_arg FROM cards WHERE card_id = '{$card}'" );
+                $cardinfo = self::getObjectListFromDB( "SELECT `card_id` `id`, `card_type` type, `card_location` location, `card_location_arg` location_arg FROM `cards` WHERE `card_id` = '{$card}'" );
 
                 game::$instance->notifyAllPlayers('flip','', array(
                     
@@ -1678,8 +1672,8 @@ public function actSelect(string $arg1)
 
 
         
-        $this->giveExtraTime($this->getCurrentPlayerId());
-        $this->gamestate->setPlayerNonMultiactive($player_id, 'next'); // desactivation player et redirection vers next quand tous les joueurs seront desactivés
+        $this->giveExtraTime((int)$this->getCurrentPlayerId());
+        $this->gamestate->setPlayerNonMultiactive((int)$player_id, 'next'); // desactivation player et redirection vers next quand tous les joueurs seront desactivés
     }
 
 
@@ -1689,9 +1683,9 @@ public function actSelect(string $arg1)
 
     self::checkArgs($arg1);        
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
     $this->callPending($pending, true, $arg1);
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     //$this->giveExtraTime(self::getActivePlayerId());
     $this->gamestate->nextState( 'next');
 
@@ -1704,9 +1698,9 @@ public function actButton(string $arg1)
 
     self::checkArgs($arg1);       
     
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
     $this->callPending($pending, true, $arg1);
-    self::DbQuery("delete from pending where id=".$pending['id']);
+    self::DbQuery("delete from `pending` where `id`=".$pending['id']);
     //$this->giveExtraTime(self::getActivePlayerId());
     $this->gamestate->nextState( 'next');
     
@@ -1714,7 +1708,7 @@ public function actButton(string $arg1)
 
 public function actContinue(string $arg1)
 {
-    $player_id = $this->getCurrentPlayerId();
+    $player_id = (int)$this->getCurrentPlayerId();
     $this->giveExtraTime($player_id);
     $this->gamestate->setPlayerNonMultiactive($player_id, 'next');
 
@@ -1736,11 +1730,11 @@ public function argPlayerTurnMulti()
 {
     $args = array();
 
-    $players = self::getObjectListFromDB( "SELECT player_id FROM player", true );
+    $players = self::getObjectListFromDB( "SELECT `player_id` FROM `player`", true );
 
     foreach ($players as $player)
     {
-        $cards = self::getObjectListFromDB( "SELECT card_id FROM cards WHERE card_location_arg = '{$player}'", true );
+        $cards = self::getObjectListFromDB( "SELECT `card_id` FROM `cards` WHERE `card_location_arg` = '{$player}'", true );
 
         foreach($cards as $card)
         {
@@ -1754,7 +1748,7 @@ public function argPlayerTurnMulti()
 
 public function argPlayerTurn()
 {
-    $pending =  self::getObjectFromDB( "SELECT* FROM pending order by id desc limit 1");
+    $pending =  self::getObjectFromDB( "SELECT* FROM `pending` order by `id` desc limit 1");
     $arg = $this->callPending($pending, false);
 
     return $arg;
@@ -1811,7 +1805,7 @@ return $ret;
 
 public function stPending() {
 
-$pending =  self::getObjectFromDB( "SELECT * FROM pending order by id desc limit 1");
+$pending =  self::getObjectFromDB( "SELECT * FROM `pending` order by `id` desc limit 1");
 if($pending == null)
 {
     
@@ -1835,7 +1829,7 @@ else
    {
        //no args required, execute
        $this->callPending($pending, true);
-       self::DbQuery("delete from pending where id=".$pending['id']);
+       self::DbQuery("delete from `pending` where `id`=".$pending['id']);
        $this->gamestate->nextState( 'same' );  
    }
    
@@ -1852,15 +1846,15 @@ else
 public function st_MultiPlayerActivation() 
 {
 
-    $nbreplayers = count(self::getObjectListFromDB( "SELECT player_id FROM player", true ));
+    $nbreplayers = count(self::getObjectListFromDB( "SELECT `player_id` FROM `player`", true ));
      
     if ($nbreplayers == 2)
     {
 
-        if($this->gamestate->table_globals[101] == 3)
+        if($this->bga->tableOptions->get(101) == 3)
         {
-            $player1 = self::getUniqueValueFromDB("SELECT player_name FROM player WHERE player_no = 1");
-            $player2 = self::getUniqueValueFromDB("SELECT player_name FROM player WHERE player_no = 2");
+            $player1 = self::getUniqueValueFromDB("SELECT `player_name` FROM `player` WHERE `player_no` = 1");
+            $player2 = self::getUniqueValueFromDB("SELECT `player_name` FROM `player` WHERE `player_no` = 2");
 
             if(game::$instance->getGameStateValue('nb_round') == 1)
             {
@@ -1935,11 +1929,11 @@ public function st_NewRound()
     {
          
         game::$instance->setGameStateValue('nb_round', 2);
-        $players = self::getObjectListFromDB( "SELECT player_id id FROM player", true );
+        $players = self::getObjectListFromDB( "SELECT `player_id` `id` FROM `player`", true );
 
                               
-        self::DbQuery("UPDATE cards set card_visible = 0");
-        self::DbQuery("UPDATE cards set card_location = 'deck'");
+        self::DbQuery("UPDATE `cards` set `card_visible` = 0");
+        self::DbQuery("UPDATE `cards` set `card_location` = 'deck'");
         $this->cards->shuffle('deck');
         
         foreach($players as $player)
@@ -1957,12 +1951,12 @@ public function st_NewRound()
                 $this->cards->pickCardForLocation('deck', 'river', $i);
             }
 
-        self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river' AND card_location_arg = 1");
-        self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river' AND card_location_arg = 2");
-        self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river' AND card_location_arg = 3");
-        self::DbQuery("UPDATE cards set card_visible = 1 WHERE card_location = 'river' AND card_location_arg = 4");
+        self::DbQuery("UPDATE `cards` set `card_visible` = 1 WHERE `card_location` = 'river' AND `card_location_arg` = 1");
+        self::DbQuery("UPDATE `cards` set `card_visible` = 1 WHERE `card_location` = 'river' AND `card_location_arg` = 2");
+        self::DbQuery("UPDATE `cards` set `card_visible` = 1 WHERE `card_location` = 'river' AND `card_location_arg` = 3");
+        self::DbQuery("UPDATE `cards` set `card_visible` = 1 WHERE `card_location` = 'river' AND `card_location_arg` = 4");
 
-        $cards = self::getObjectListFromDB( "SELECT card_id id, card_type type, card_type_arg type_arg, card_location location, card_location_arg location_arg, card_visible visible FROM cards WHERE card_location != 'deck'");
+        $cards = self::getObjectListFromDB( "SELECT `card_id` `id`, `card_type` type, `card_type_arg` type_arg, `card_location` location, `card_location_arg` location_arg, `card_visible` visible FROM `cards` WHERE `card_location` != 'deck'");
 
         game::$instance->notifyAllPlayers('nettoyage','', array(
 
@@ -1974,21 +1968,21 @@ public function st_NewRound()
 
         self::DbQuery("DELETE FROM `pending`;");
 
-        $player1 = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no=1");
-        $player2 = self::getUniqueValueFromDB("SELECT player_id FROM player WHERE player_no=2");
+        $player1 = self::getUniqueValueFromDB("SELECT `player_id` FROM `player` WHERE `player_no`=1");
+        $player2 = self::getUniqueValueFromDB("SELECT `player_id` FROM `player` WHERE `player_no`=2");
 
         $this->addPendingFirst($player2, "NormalTurn");
         $this->addPendingFirst($player1, "NormalTurn");
 
 
-        self::DbQuery("UPDATE player set score1 = -1");
-        self::DbQuery("UPDATE player set score2 = -1");
-        self::DbQuery("UPDATE player set score3 = -1");
-        self::DbQuery("UPDATE player set score4 = -1");
-        self::DbQuery("UPDATE player set score5 = -1");
-        self::DbQuery("UPDATE player set score6 = -1");
-        self::DbQuery("UPDATE player set score7 = -1");
-        self::DbQuery("UPDATE player set score8 = -1");
+        self::DbQuery("UPDATE `player` set `score1` = -1");
+        self::DbQuery("UPDATE `player` set `score2` = -1");
+        self::DbQuery("UPDATE `player` set `score3` = -1");
+        self::DbQuery("UPDATE `player` set `score4` = -1");
+        self::DbQuery("UPDATE `player` set `score5` = -1");
+        self::DbQuery("UPDATE `player` set `score6` = -1");
+        self::DbQuery("UPDATE `player` set `score7` = -1");
+        self::DbQuery("UPDATE `player` set `score8` = -1");
 
         game::$instance->notifyAllPlayers('reinit_score','', array(
 
@@ -2041,7 +2035,7 @@ protected function zombieTurn(array $state, int $active_player): void
             default:
             {
                 //$player_id = $this->getActivePlayerId();
-                //self::DbQuery("delete from pending where player_id = {$player_id}");
+                //self::DbQuery("delete from `pending` where `player_id` = {$player_id}");
                 $this->gamestate->nextState("end");
                 break;
             }
@@ -2058,6 +2052,6 @@ protected function zombieTurn(array $state, int $active_player): void
         return;
     }
 
-    throw new \feException("Zombie mode not supported at this game state: \"{$state_name}\".");
+    throw new VisibleSystemException("Zombie mode not supported at this game state: \"{$state_name}\".");
 }
 }
